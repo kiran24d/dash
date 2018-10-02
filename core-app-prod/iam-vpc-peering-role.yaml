@@ -1,0 +1,32 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: IAM role assumed by other accounts to set up VPC peering connections.
+
+Resources: 
+
+  VpcPeeringRole: 
+    Type: AWS::IAM::Role
+    Properties: 
+      AssumeRolePolicyDocument: 
+        Version: "2012-10-17"
+        Statement: 
+          - 
+            Effect: "Allow"
+            Principal: 
+              AWS:
+                # Couchbase (core-cb-prod) account
+                - "arn:aws:iam::594924633499:root"
+
+            Action: 
+              - "sts:AssumeRole"
+      Path: "/"
+      Policies: 
+        - 
+          PolicyName: core-app-prod-vpc-peering
+          PolicyDocument: 
+            Version: "2012-10-17"
+            Statement: 
+              - 
+                Effect: "Allow"
+                Action: "ec2:AcceptVpcPeeringConnection"
+                Resource: "*"
+      RoleName: core-app-prod-vpc-peering

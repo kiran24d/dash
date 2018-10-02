@@ -1,0 +1,53 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: IAM role assumed by other accounts to set up VPC peering connections.
+
+Resources: 
+
+  VpcPeeringRole: 
+    Type: AWS::IAM::Role
+    Properties: 
+      AssumeRolePolicyDocument: 
+        Version: "2012-10-17"
+        Statement: 
+          - 
+            Effect: "Allow"
+            Principal: 
+              AWS: 
+                # Common Data tier (core-cdt-prod) account
+                - "arn:aws:iam::611736519059:root"
+
+                # Security (core-cdt-sec) account
+                - "arn:aws:iam::980043037575:root"
+
+                # Transit (core-cdt-tst) account
+                - "arn:aws:iam::028821455465:root"
+
+                # Application (core-app-prod) account
+                - "arn:aws:iam::924052762697:root"
+
+                # Couchbase (core-cb-prod) account
+                - "arn:aws:iam::594924633499:root"
+
+                # Elasticsearch (core-els-prod) account
+                - "arn:aws:iam::270991354588:root"
+
+                # RabbitMQ (core-rmq-prod) account
+                - "arn:aws:iam::298967238569:root"
+
+                # Foundation (core-fnd-prod) account
+                - "arn:aws:iam::752921502988:root"
+
+            Action: 
+              - "sts:AssumeRole"
+      Path: "/"
+      Policies: 
+        - 
+          PolicyName: core-fnd-prod-vpc-peering
+          PolicyDocument: 
+            Version: "2012-10-17"
+            Statement: 
+              - 
+                Effect: "Allow"
+                Action: "ec2:AcceptVpcPeeringConnection"
+                Resource: "*"
+      RoleName: core-fnd-prod-vpc-peering
