@@ -4,7 +4,7 @@ Description: Create base IAM roles
 Resources:
 
 
-    CoreAppProdPower:
+    CoreCdtProdPower:
         Type: AWS::IAM::Role
         Properties:
             AssumeRolePolicyDocument: !Sub
@@ -36,9 +36,9 @@ Resources:
                 }
             ManagedPolicyArns:
                 - arn:aws:iam::aws:policy/PowerUserAccess
-            RoleName: core-app-prod-power
+            RoleName: core-cdt-prod-power
 
-    CoreAppProdView:
+    CoreCdtProdView:
         Type: AWS::IAM::Role
         Properties:
             AssumeRolePolicyDocument: !Sub
@@ -70,9 +70,9 @@ Resources:
                 }
             ManagedPolicyArns:
                 - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
-            RoleName: core-app-prod-view
+            RoleName: core-cdt-prod-view
 
-    CoreAppProdDevs:
+    CoreCdtProdDevs:
         Type: AWS::IAM::Role
         Properties:
             AssumeRolePolicyDocument: !Sub
@@ -104,9 +104,9 @@ Resources:
                 }
             ManagedPolicyArns:
                 - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
-            RoleName: core-app-prod-devs
+            RoleName: core-cdt-prod-devs
 
-    CoreAppProdQa:
+    CoreCdtProdQa:
         Type: AWS::IAM::Role
         Properties:
             AssumeRolePolicyDocument: !Sub
@@ -138,9 +138,9 @@ Resources:
                 }
             ManagedPolicyArns:
                 - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
-            RoleName: core-app-prod-qa
+            RoleName: core-cdt-prod-qa
 
-    CoreAppProdAppSupport:
+    CoreCdtProdAppSupport:
         Type: AWS::IAM::Role
         Properties:
             AssumeRolePolicyDocument: !Sub
@@ -172,9 +172,9 @@ Resources:
                 }
             ManagedPolicyArns:
                 - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
-            RoleName: core-app-prod-appsupport
+            RoleName: core-cdt-prod-appsupport
 
-    CoreAppProdAppUi:
+    CoreCdtProdAppUi:
         Type: AWS::IAM::Role
         Properties:
             AssumeRolePolicyDocument: !Sub
@@ -206,9 +206,9 @@ Resources:
                 }
             ManagedPolicyArns:
                 - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
-            RoleName: core-app-prod-ui
+            RoleName: core-cdt-prod-ui
 
-    CoreAppProdSre:
+    CoreCdtProdSre:
         Type: AWS::IAM::Role
         Properties:
             AssumeRolePolicyDocument: !Sub
@@ -240,4 +240,72 @@ Resources:
                 }
             ManagedPolicyArns:
                 - arn:aws:iam::aws:policy/PowerUserAccess
-            RoleName: core-app-prod-sre
+            RoleName: core-cdt-prod-sre
+
+    CoreCdtAttendeeJourneyDatomicpeer:
+        Type: AWS::IAM::Role
+        Properties:
+            AssumeRolePolicyDocument: !Sub
+                |
+                {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+                      },
+                      "Action": "sts:AssumeRoleWithSAML",
+                      "Condition": {
+                        "StringEquals": {
+                          "SAML:aud": "https://signin.aws.amazon.com/saml"
+                        }
+                      }
+                    },
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "AWS": "arn:aws:iam::667621734181:root"
+                      },
+                      "Action": "sts:AssumeRole",
+                      "Condition": {}
+                    }
+                  ]
+                }
+            ManagedPolicyArns:
+                - arn:aws:iam::aws:policy/job-function/AmazonDynamoDBFullAccess
+            RoleName: core-cdt-attendee-journey-datomicpeer
+
+    CoreCdtAttendeeJourneyDatomictransactor:
+        Type: AWS::IAM::Role
+        Properties:
+            AssumeRolePolicyDocument: !Sub
+                |
+                {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+                      },
+                      "Action": "sts:AssumeRoleWithSAML",
+                      "Condition": {
+                        "StringEquals": {
+                          "SAML:aud": "https://signin.aws.amazon.com/saml"
+                        }
+                      }
+                    },
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "AWS": "arn:aws:iam::667621734181:root"
+                      },
+                      "Action": "sts:AssumeRole",
+                      "Condition": {}
+                    }
+                  ]
+                }
+            ManagedPolicyArns:
+                - arn:aws:iam::aws:policy/job-function/AmazonDynamoDBFullAccess
+            RoleName: core-cdt-attendee-journey-datomictransactor
