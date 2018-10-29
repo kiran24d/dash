@@ -242,7 +242,7 @@ Resources:
                 - arn:aws:iam::aws:policy/PowerUserAccess
             RoleName: core-cdt-prod-sre
 
-    CoreCdtAttendeeJourneyDatomicpeer:
+    CoreCdtAttendeeJourneyDatomicPeer:
         Type: AWS::IAM::Role
         Properties:
             AssumeRolePolicyDocument: !Sub
@@ -272,11 +272,36 @@ Resources:
                     }
                   ]
                 }
-            ManagedPolicyArns:
-                - arn:aws:iam::aws:policy/job-function/AmazonDynamoDBFullAccess
+            Policies:
+                - 
+                  PolicyName: "attendee-journey-ephemera-P2-peer"
+                  PolicyDocument: 
+                    Version: "2012-10-17"
+                    Statement: 
+                      - 
+                        Effect: "Allow"
+                        Action: 
+                          - dynamodb:GetItem
+                          - dynamodb:BatchGetItem
+                          - dynamodb:Scan
+                          - dynamodb:Query
+                        Resource: "arn:aws:dynamodb:*:${AWS::AccountId}:table/core-cdt-prod-attendee-journey-ephemera-P2-production-eu-west-1"
+                - 
+                  PolicyName: "attendee-journey-kenoma-P2-peer"
+                  PolicyDocument: 
+                    Version: "2012-10-17"
+                    Statement: 
+                      - 
+                        Effect: "Allow"
+                        Action: 
+                          - dynamodb:GetItem
+                          - dynamodb:BatchGetItem
+                          - dynamodb:Scan
+                          - dynamodb:Query
+                        Resource: "arn:aws:dynamodb:*:${AWS::AccountId}:table/core-cdt-prod-attendee-journey-kenoma-P2-production-eu-west-1"
             RoleName: core-cdt-attendee-journey-datomicpeer
 
-    CoreCdtAttendeeJourneyDatomictransactor:
+    CoreCdtAttendeeJourneyDatomicTransactor:
         Type: AWS::IAM::Role
         Properties:
             AssumeRolePolicyDocument: !Sub
@@ -306,6 +331,58 @@ Resources:
                     }
                   ]
                 }
-            ManagedPolicyArns:
-                - arn:aws:iam::aws:policy/job-function/AmazonDynamoDBFullAccess
+            Policies:
+                - 
+                  PolicyName: "cvent-policy-attendee-journey-datomic"
+                  PolicyDocument: 
+                    Version: "2012-10-17"
+                    Statement: 
+                      - 
+                        Effect: "Allow"
+                        Action: 
+                          - dynamodb:*
+                        Resource: 
+                          - "arn:aws:dynamodb:*:${AWS::AccountId}:table/core-cdt-prod-attendee-journey-ephemera-P2-production-eu-west-1"
+                          - "arn:aws:dynamodb:*:${AWS::AccountId}:table/core-cdt-prod-attendee-journey-kenoma-P2-production-eu-west-1"
+                      - 
+                        Effect: "Allow"
+                        Action: 
+                          - cloudwatch:PutMetricData
+                          - cloudwatch:PutMetricDataBatch
+                        Resource: "*"
+                        Condition:
+                          Bool:
+                            aws:SecureTransport: 'true'
+                - 
+                  PolicyName: "attendee-journey-ephemera-P2-transactor"
+                  PolicyDocument: 
+                    Version: "2012-10-17"
+                    Statement: 
+                      - 
+                        Effect: "Allow"
+                        Action: "dynamodb:*"
+                        Resource: "arn:aws:dynamodb:*:${AWS::AccountId}:table/core-cdt-prod-attendee-journey-ephemera-P2-production-eu-west-1"
+                - 
+                  PolicyName: "attendee-journey-kenoma-P2-transactor"
+                  PolicyDocument: 
+                    Version: "2012-10-17"
+                    Statement: 
+                      - 
+                        Effect: "Allow"
+                        Action: "dynamodb:*"
+                        Resource: "arn:aws:dynamodb:*:${AWS::AccountId}:table/core-cdt-prod-attendee-journey-kenoma-P2-production-eu-west-1"
+                - 
+                  PolicyName: "transactor-metrics"
+                  PolicyDocument: 
+                    Version: "2012-10-17"
+                    Statement: 
+                      - 
+                        Effect: "Allow"
+                        Action: 
+                          - cloudwatch:PutMetricData
+                          - cloudwatch:PutMetricDataBatch
+                        Resource: "*"
+                        Condition:
+                          Bool:
+                            aws:SecureTransport: 'true'
             RoleName: core-cdt-attendee-journey-datomictransactor
