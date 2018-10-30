@@ -4,7 +4,7 @@ Description: Create base IAM roles
 Resources:
 
 
-    CoreAppProdPower:
+    CoreCdtProdPower:
         Type: AWS::IAM::Role
         Properties:
             AssumeRolePolicyDocument: !Sub
@@ -36,9 +36,9 @@ Resources:
                 }
             ManagedPolicyArns:
                 - arn:aws:iam::aws:policy/PowerUserAccess
-            RoleName: core-app-prod-power
+            RoleName: core-cdt-prod-power
 
-    CoreAppProdView:
+    CoreCdtProdView:
         Type: AWS::IAM::Role
         Properties:
             AssumeRolePolicyDocument: !Sub
@@ -70,9 +70,9 @@ Resources:
                 }
             ManagedPolicyArns:
                 - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
-            RoleName: core-app-prod-view
+            RoleName: core-cdt-prod-view
 
-    CoreAppProdDevs:
+    CoreCdtProdDevs:
         Type: AWS::IAM::Role
         Properties:
             AssumeRolePolicyDocument: !Sub
@@ -104,9 +104,9 @@ Resources:
                 }
             ManagedPolicyArns:
                 - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
-            RoleName: core-app-prod-devs
+            RoleName: core-cdt-prod-devs
 
-    CoreAppProdQa:
+    CoreCdtProdQa:
         Type: AWS::IAM::Role
         Properties:
             AssumeRolePolicyDocument: !Sub
@@ -138,9 +138,9 @@ Resources:
                 }
             ManagedPolicyArns:
                 - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
-            RoleName: core-app-prod-qa
+            RoleName: core-cdt-prod-qa
 
-    CoreAppProdAppSupport:
+    CoreCdtProdAppSupport:
         Type: AWS::IAM::Role
         Properties:
             AssumeRolePolicyDocument: !Sub
@@ -172,9 +172,9 @@ Resources:
                 }
             ManagedPolicyArns:
                 - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
-            RoleName: core-app-prod-appsupport
+            RoleName: core-cdt-prod-appsupport
 
-    CoreAppProdAppUi:
+    CoreCdtProdAppUi:
         Type: AWS::IAM::Role
         Properties:
             AssumeRolePolicyDocument: !Sub
@@ -206,9 +206,9 @@ Resources:
                 }
             ManagedPolicyArns:
                 - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
-            RoleName: core-app-prod-ui
+            RoleName: core-cdt-prod-ui
 
-    CoreAppProdSre:
+    CoreCdtProdSre:
         Type: AWS::IAM::Role
         Properties:
             AssumeRolePolicyDocument: !Sub
@@ -240,4 +240,229 @@ Resources:
                 }
             ManagedPolicyArns:
                 - arn:aws:iam::aws:policy/PowerUserAccess
-            RoleName: core-app-prod-sre
+            RoleName: core-cdt-prod-sre
+
+    CoreCdtAttendeeJourneyDatomicPeer:
+        Type: AWS::IAM::Role
+        Properties:
+            AssumeRolePolicyDocument: !Sub
+                |
+                {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+                      },
+                      "Action": "sts:AssumeRoleWithSAML",
+                      "Condition": {
+                        "StringEquals": {
+                          "SAML:aud": "https://signin.aws.amazon.com/saml"
+                        }
+                      }
+                    },
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "AWS": "arn:aws:iam::667621734181:root"
+                      },
+                      "Action": "sts:AssumeRole",
+                      "Condition": {}
+                    }
+                  ]
+                }
+            RoleName: core-cdt-attendee-journey-datomicpeer
+
+    CoreCdtAttendeeJourneyDatomicTransactor:
+        Type: AWS::IAM::Role
+        Properties:
+            AssumeRolePolicyDocument: !Sub
+                |
+                {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+                      },
+                      "Action": "sts:AssumeRoleWithSAML",
+                      "Condition": {
+                        "StringEquals": {
+                          "SAML:aud": "https://signin.aws.amazon.com/saml"
+                        }
+                      }
+                    },
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "AWS": "arn:aws:iam::667621734181:root"
+                      },
+                      "Action": "sts:AssumeRole",
+                      "Condition": {}
+                    }
+                  ]
+                }
+            RoleName: core-cdt-attendee-journey-datomictransactor
+
+# Define Custom Policies
+    DatomicPeerPolicy1:
+        Type: AWS::IAM::policy
+        Properties:
+            PolicyDocument: !Sub
+                |
+                {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Action": [
+                          "dynamodb:GetItem",
+                          "dynamodb:BatchGetItem",
+                          "dynamodb:Scan",
+                          "dynamodb:Query"
+                      ],
+                      "Resource": "arn:aws:dynamodb:*:${AWS::AccountId}:table/core-cdt-prod-attendee-journey-ephemera-P2-production-eu-west-1"
+                    }
+                  ]
+                }
+            PolicyName: attendee-journey-ephemera-P2-peer
+            Roles:
+                -
+                    Ref: "CoreCdtAttendeeJourneyDatomicPeer"
+
+    DatomicPeerPolicy2:
+        Type: AWS::IAM::policy
+        Properties:
+            PolicyDocument: !Sub
+                |
+                {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Action": [
+                          "dynamodb:GetItem",
+                          "dynamodb:BatchGetItem",
+                          "dynamodb:Scan",
+                          "dynamodb:Query"
+                      ],
+                      "Resource": "arn:aws:dynamodb:*:${AWS::AccountId}:table/core-cdt-prod-attendee-journey-kenoma-P2-production-eu-west-1"
+                    }
+                  ]
+                }
+            PolicyName: attendee-journey-kenoma-P2-peer
+            Roles:
+                -
+                    Ref: "CoreCdtAttendeeJourneyDatomicPeer"
+
+    DatomicTransactorPolicy1:
+        Type: AWS::IAM::policy
+        Properties:
+            PolicyDocument: !Sub
+                |
+                {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                      {
+                          "Effect": "Allow",
+                          "Action": [
+                              "dynamodb:*"
+                          ],
+                          "Resource": [
+                              "arn:aws:dynamodb:*:${AWS::AccountId}:table/core-cdt-prod-attendee-journey-ephemera-P2-production-eu-west-1",
+                              "arn:aws:dynamodb:*:${AWS::AccountId}:table/core-cdt-prod-attendee-journey-kenoma-P2-production-eu-west-1"
+                          ]
+                      },
+                      {
+                          "Effect": "Allow",
+                          "Action": [
+                              "cloudwatch:PutMetricData",
+                              "cloudwatch:PutMetricDataBatch"
+                          ],
+                          "Resource": "*",
+                          "Condition": {
+                              "Bool": {
+                                  "aws:SecureTransport": "true"
+                              }
+                          }
+                      }
+                  ]
+                }
+            PolicyName: cvent-policy-attendee-journey-datomic
+            Roles:
+                -
+                    Ref: "CoreCdtAttendeeJourneyDatomicTransactor"
+
+    DatomicTransactorPolicy2:
+        Type: AWS::IAM::policy
+        Properties:
+            PolicyDocument: !Sub
+                |
+                {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                      {
+                          "Effect": "Allow",
+                          "Action": [
+                              "dynamodb:*"
+                          ],
+                          "Resource": "arn:aws:dynamodb:*:${AWS::AccountId}:table/core-cdt-prod-attendee-journey-ephemera-P2-production-eu-west-1"
+                      }
+                  ]
+                }
+            PolicyName: attendee-journey-ephemera-P2-transactor
+            Roles:
+                -
+                    Ref: "CoreCdtAttendeeJourneyDatomicTransactor"
+
+    DatomicTransactorPolicy3:
+        Type: AWS::IAM::policy
+        Properties:
+            PolicyDocument: !Sub
+                |
+                {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                      {
+                          "Effect": "Allow",
+                          "Action": [
+                              "dynamodb:*"
+                          ],
+                          "Resource": "arn:aws:dynamodb:*:${AWS::AccountId}:table/core-cdt-prod-attendee-journey-kenoma-P2-production-eu-west-1"
+                      }
+                  ]
+                }
+            PolicyName: attendee-journey-kenoma-P2-transactor
+            Roles:
+                -
+                    Ref: "CoreCdtAttendeeJourneyDatomicTransactor"
+
+    DatomicTransactorPolicy4:
+        Type: AWS::IAM::policy
+        Properties:
+            PolicyDocument: !Sub
+                |
+                {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                      {
+                          "Effect": "Allow",
+                          "Action": [
+                              "cloudwatch:PutMetricData",
+                              "cloudwatch:PutMetricDataBatch"
+                          ],
+                          "Resource": "*",
+                          "Condition": {
+                              "Bool": {
+                                  "aws:SecureTransport": "true"
+                              }
+                          }
+                      }
+                  ]
+                }
+            PolicyName: transactor-metrics
+            Roles:
+                -
+                    Ref: "CoreCdtAttendeeJourneyDatomicTransactor"
