@@ -3,8 +3,42 @@ Description: Create base IAM roles
 
 Resources:
 
+    RoleCoreCdtProdView:
+        Type: AWS::IAM::Role
+        Properties:
+            AssumeRolePolicyDocument: !Sub
+                |
+                {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+                      },
+                      "Action": "sts:AssumeRoleWithSAML",
+                      "Condition": {
+                        "StringEquals": {
+                          "SAML:aud": "https://signin.aws.amazon.com/saml"
+                        }
+                      }
+                    },
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "AWS": "arn:aws:iam::667621734181:root"
+                      },
+                      "Action": "sts:AssumeRole",
+                      "Condition": {}
+                    }
+                  ]
+                }
+            ManagedPolicyArns:
+                - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
+                - arn:aws:iam::aws:policy/AWSCloudFormationReadOnlyAccess
+            RoleName: core-cdt-prod-view
 
-    CoreCdtProdPower:
+    RoleCoreCdtProdPower:
         Type: AWS::IAM::Role
         Properties:
             AssumeRolePolicyDocument: !Sub
@@ -38,7 +72,7 @@ Resources:
                 - arn:aws:iam::aws:policy/PowerUserAccess
             RoleName: core-cdt-prod-power
 
-    CoreCdtProdView:
+    RoleCoreCdtProdDba:
         Type: AWS::IAM::Role
         Properties:
             AssumeRolePolicyDocument: !Sub
@@ -69,8 +103,44 @@ Resources:
                   ]
                 }
             ManagedPolicyArns:
-                - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
-            RoleName: core-cdt-prod-view
+                - arn:aws:iam::aws:policy/AmazonEC2FullAccess
+                - arn:aws:iam::aws:policy/AmazonRDSFullAccess
+                - arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess
+            RoleName: core-cdt-prod-dba
+
+    RoleCoreCdtProdDbaLeads:
+        Type: AWS::IAM::Role
+        Properties:
+            AssumeRolePolicyDocument: !Sub
+                |
+                {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+                      },
+                      "Action": "sts:AssumeRoleWithSAML",
+                      "Condition": {
+                        "StringEquals": {
+                          "SAML:aud": "https://signin.aws.amazon.com/saml"
+                        }
+                      }
+                    },
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "AWS": "arn:aws:iam::667621734181:root"
+                      },
+                      "Action": "sts:AssumeRole",
+                      "Condition": {}
+                    }
+                  ]
+                }
+            ManagedPolicyArns:
+                - arn:aws:iam::aws:policy/PowerUserAccess
+            RoleName: core-cdt-prod-dbaleads
 
     CoreCdtProdDevs:
         Type: AWS::IAM::Role
@@ -308,7 +378,7 @@ Resources:
 
 # Define Custom Policies
     DatomicPeerPolicy1:
-        Type: AWS::IAM::policy
+        Type: AWS::IAM::Policy
         Properties:
             PolicyDocument: !Sub
                 |
@@ -333,7 +403,7 @@ Resources:
                     Ref: "CoreCdtAttendeeJourneyDatomicPeer"
 
     DatomicPeerPolicy2:
-        Type: AWS::IAM::policy
+        Type: AWS::IAM::Policy
         Properties:
             PolicyDocument: !Sub
                 |
@@ -358,7 +428,7 @@ Resources:
                     Ref: "CoreCdtAttendeeJourneyDatomicPeer"
 
     DatomicTransactorPolicy1:
-        Type: AWS::IAM::policy
+        Type: AWS::IAM::Policy
         Properties:
             PolicyDocument: !Sub
                 |
@@ -396,7 +466,7 @@ Resources:
                     Ref: "CoreCdtAttendeeJourneyDatomicTransactor"
 
     DatomicTransactorPolicy2:
-        Type: AWS::IAM::policy
+        Type: AWS::IAM::Policy
         Properties:
             PolicyDocument: !Sub
                 |
@@ -418,7 +488,7 @@ Resources:
                     Ref: "CoreCdtAttendeeJourneyDatomicTransactor"
 
     DatomicTransactorPolicy3:
-        Type: AWS::IAM::policy
+        Type: AWS::IAM::Policy
         Properties:
             PolicyDocument: !Sub
                 |
@@ -440,7 +510,7 @@ Resources:
                     Ref: "CoreCdtAttendeeJourneyDatomicTransactor"
 
     DatomicTransactorPolicy4:
-        Type: AWS::IAM::policy
+        Type: AWS::IAM::Policy
         Properties:
             PolicyDocument: !Sub
                 |
