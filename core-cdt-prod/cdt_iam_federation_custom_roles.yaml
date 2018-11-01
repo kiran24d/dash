@@ -106,6 +106,7 @@ Resources:
                 - arn:aws:iam::aws:policy/AmazonEC2FullAccess
                 - arn:aws:iam::aws:policy/AmazonRDSFullAccess
                 - arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess
+                - arn:aws:iam::aws:policy/AWSCloudFormationReadOnlyAccess
             RoleName: core-cdt-prod-dba
 
     RoleCoreCdtProdDbaLeads:
