@@ -377,6 +377,25 @@ Resources:
                 }
             RoleName: core-cdt-attendee-journey-datomictransactor
 
+    CoreCdtDynamoDBAutoscalingRole:
+        Type: AWS::IAM::Role
+        Properties:
+            AssumeRolePolicyDocument: !Sub
+                |
+                {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "Service": "application-autoscaling.amazonaws.com"
+                      },
+                      "Action": "sts:AssumeRole",
+                    }
+                  ]
+                }
+            RoleName: core-cdt-dynamodb-autoscaling
+
 # Define Custom Policies
     DatomicPeerPolicy1:
         Type: AWS::IAM::Policy
@@ -537,3 +556,31 @@ Resources:
             Roles:
                 -
                     Ref: "CoreCdtAttendeeJourneyDatomicTransactor"
+
+    DynamoDBPolicy:
+        Type: AWS::IAM::Policy
+        Properties:
+            PolicyDocument: !Sub
+                |
+                {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Action": [
+                          "dynamodb:DescribeTable",
+                          "dynamodb:UpdateTable",
+                          "cloudwatch:PutMetricAlarm",
+                          "cloudwatch:DescribeAlarms",
+                          "cloudwatch:GetMetricStatistics",
+                          "cloudwatch:cloudwatch:SetAlarmState",
+                          "cloudwatch:cloudwatch:DeleteAlarms"
+                      ],
+                      "Resource": "*"
+                    }
+                  ]
+                }
+            PolicyName: dynamodb-autoscaling
+            Roles:
+                -
+                    Ref: "CoreCdtDynamoDBAutoscalingRole"
