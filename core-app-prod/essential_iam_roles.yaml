@@ -207,6 +207,8 @@ Resources:
             ManagedPolicyArns:
                 - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
                 - arn:aws:iam::aws:policy/PowerUserAccess
+                # Granting the NE team temp admin access, so that they can run the ReanCloud Cloudformation templates.
+                - arn:aws:iam::aws:policy/AdministratorAccess
             RoleName: aws-cvt-networking
 
 
