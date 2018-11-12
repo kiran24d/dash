@@ -16,7 +16,7 @@ Resources:
                       "Principal": {
                         "Service": "application-autoscaling.amazonaws.com"
                       },
-                      "Action": "sts:AssumeRole",
+                      "Action": "sts:AssumeRole"
                     }
                   ]
                 }
@@ -29,24 +29,23 @@ Resources:
             PolicyDocument: !Sub
                 |
                 {
-                  "Version": "2012-10-17",
-                  "Statement": [
-                    {
-                      "Effect": "Allow",
-                      "Action": [
-                          "dynamodb:DescribeTable",
-                          "dynamodb:UpdateTable",
-                          "cloudwatch:PutMetricAlarm",
-                          "cloudwatch:DescribeAlarms",
-                          "cloudwatch:GetMetricStatistics",
-                          "cloudwatch:cloudwatch:SetAlarmState",
-                          "cloudwatch:cloudwatch:DeleteAlarms"
-                      ],
-                      "Resource": "*"
-                    }
-                  ]
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "dynamodb:DescribeTable",
+                                "dynamodb:UpdateTable",
+                                "cloudwatch:PutMetricAlarm",
+                                "cloudwatch:DescribeAlarms",
+                                "cloudwatch:GetMetricStatistics",
+                                "cloudwatch:SetAlarmState",
+                                "cloudwatch:DeleteAlarms"
+                            ],
+                            "Resource": "*"
+                        }
+                    ]
                 }
-            PolicyName: dynamodb-autoscaling
+            PolicyName: DynamoDBAutoscalePolicy
             Roles:
-                -
-                    Ref: "CoreCdtDynamoDBAutoscalingRole"
+              - Ref: "CoreCdtDynamoDBAutoscalingRole"
