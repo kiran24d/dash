@@ -590,3 +590,23 @@ Resources:
             Roles: 
               - !Ref RoleCoreCdtProdPower
 
+    ViewPolicy:
+      Type: AWS::IAM::Policy
+      Properties:
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            -
+              Effect: Allow
+              Action:
+                - elasticloadbalancing:DescribeInstanceHealth
+              Resource: "*"
+        PolicyName:
+              Fn::Join:
+                - "-"
+                -
+                  - !FindInMap [ AccountMap, !Ref "AWS::AccountId", AccountName ]
+                  - View
+            Roles: 
+              - !Ref RoleCoreCdtProdView
+
