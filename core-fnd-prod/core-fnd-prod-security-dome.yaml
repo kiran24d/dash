@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: Create IAM ROle and Policy for Dome9 SecurityAudit
 Resources:
-    Dome9Connect:
+    core-app-prod-security-dome9:
         Type: AWS::IAM::Role
         Properties:
             AssumeRolePolicyDocument: !Sub
