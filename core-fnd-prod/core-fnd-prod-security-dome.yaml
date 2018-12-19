@@ -1,32 +1,24 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: Create IAM ROle and Policy for Dome9 SecurityAudit
 Resources:
-    core-app-prod-security-dome9:
+    CoreFndProdSecurityDome9:
         Type: AWS::IAM::Role
         Properties:
-            AssumeRolePolicyDocument: !Sub
-                |
-                {
-                  "Version": "2012-10-17",
-                  "Statement": [
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "AWS": "arn:aws:iam::634729597623:root"
-                      },
-                      "Action": "sts:AssumeRole",
-                      "Condition": {
-                        "StringEquals": {
-                          "sts:ExternalId": "@rXTFJpSMSozQMSeoBMOkfJy"
-                        }
-                      }
-                    }
-                  ]
-                }
+            AssumeRolePolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                - Effect: Allow
+                  Principal:
+                    AWS: arn:aws:iam::634729597623:root
+                  Action: sts:AssumeRole
+                  Condition:
+                    StringEquals:
+                      sts:ExternalId: "@rXTFJpSMSozQMSeoBMOkfJy"
             ManagedPolicyArns:
                 - arn:aws:iam::aws:policy/AmazonInspectorReadOnlyAccess
                 - arn:aws:iam::aws:policy/SecurityAudit
-            RoleName: Dome9-Connect
+            RoleName: core-fnd-prod-security-dome9
+
     Dome9ReadOnly:
       Type: "AWS::IAM::Policy"
       Properties:
@@ -60,4 +52,4 @@ Resources:
             Resource: "*"
         Roles:
                 -
-                  Ref: "Dome9Connect"
+                  Ref: "CoreFndProdSecurityDome9"
