@@ -13,13 +13,13 @@ Resources:
             Effect: "Allow"
             Principal: 
               AWS:
-                # Foundational Account
-                - "arn:aws:iam::752921502988:root"
-
                 # Common Data tier (core-cdt-prod) account
                 - "arn:aws:iam::611736519059:root"
 
-                # Transit (core-cdt-tst) account
+                # Security (core-sec-prod) account
+                - "arn:aws:iam::980043037575:root"
+
+                # Transit (core-tst-prod) account
                 - "arn:aws:iam::028821455465:root"
 
                 # Application (core-app-prod) account
@@ -33,6 +33,9 @@ Resources:
 
                 # RabbitMQ (core-rmq-prod) account
                 - "arn:aws:iam::298967238569:root"
+
+                # Foundation (core-fnd-prod) account
+                - "arn:aws:iam::752921502988:root"
 
             Action: 
               - "sts:AssumeRole"

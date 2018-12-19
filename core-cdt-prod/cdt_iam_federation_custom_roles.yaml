@@ -1,6 +1,38 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: Create base IAM roles
 
+
+Mappings:
+
+  AccountMap:
+    # cvent-sandbox
+    '572724207364':
+      AccountName: cvent-sandbox
+    # cvent-development
+    '504055967630':
+      AccountName: cvent-development
+    # cvent-integration
+    '834623602341':
+      AccountName: cvent-integration
+    # cvent-production
+    '659687181524':
+      AccountName: cvent-production
+    # cvent-management
+    '667621734181':
+      AccountName: cvent-management
+    # core-app-prod
+    '924052762697':
+      AccountName: core-app-prod
+    # core-cdt-prod
+    '611736519059':
+      AccountName: core-cdt-prod
+    # core-fnd-prod
+    '752921502988':
+      AccountName: core-fnd-prod
+    # eu-ecommerce-prod
+    '380741956730':
+      AccountName: eu-ecommerce-prod
+
 Resources:
 
     RoleCoreCdtProdView:
@@ -537,3 +569,44 @@ Resources:
             Roles:
                 -
                     Ref: "CoreCdtAttendeeJourneyDatomicTransactor"
+
+    PowerPolicy:
+        Type: AWS::IAM::Policy
+        Properties: 
+            PolicyDocument:
+              Version: 2012-10-17
+              Statement:
+                -
+                  Effect: Allow
+                  Action:
+                    - iam:GetRole
+                  Resource: "*"
+            PolicyName:
+              Fn::Join:
+                - "-"
+                -
+                  - !FindInMap [ AccountMap, !Ref "AWS::AccountId", AccountName ]
+                  - power
+            Roles: 
+              - !Ref RoleCoreCdtProdPower
+
+    ViewPolicy:
+      Type: AWS::IAM::Policy
+      Properties:
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            -
+              Effect: Allow
+              Action:
+                - elasticloadbalancing:DescribeInstanceHealth
+              Resource: "*"
+        PolicyName:
+              Fn::Join:
+                - "-"
+                -
+                  - !FindInMap [ AccountMap, !Ref "AWS::AccountId", AccountName ]
+                  - View
+            Roles: 
+              - !Ref RoleCoreCdtProdView
+
