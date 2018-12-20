@@ -17,7 +17,7 @@ Resources:
             ManagedPolicyArns:
                 - arn:aws:iam::aws:policy/AmazonInspectorReadOnlyAccess
                 - arn:aws:iam::aws:policy/SecurityAudit
-            RoleName: core-cb-prod-security-dome9
+            RoleName: core-els-prod-security-dome9
 
     Dome9ReadOnly:
       Type: "AWS::IAM::Policy"
