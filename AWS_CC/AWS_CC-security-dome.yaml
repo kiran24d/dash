@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: Create IAM ROle and Policy for Dome9 SecurityAudit
 Resources:
-    CoreCdtProdSecurityDome9:
+    AwsCcSecurityDome9:
         Type: AWS::IAM::Role
         Properties:
             AssumeRolePolicyDocument:
@@ -17,7 +17,7 @@ Resources:
             ManagedPolicyArns:
                 - arn:aws:iam::aws:policy/AmazonInspectorReadOnlyAccess
                 - arn:aws:iam::aws:policy/SecurityAudit
-            RoleName: core-cdt-prod-security-dome9
+            RoleName: aws-cc-security-dome9
 
     Dome9ReadOnly:
       Type: "AWS::IAM::Policy"
@@ -52,4 +52,4 @@ Resources:
             Resource: "*"
         Roles:
                 -
-                  Ref: "CoreCdtProdSecurityDome9"
+                  Ref: "AwsCcSecurityDome9"
