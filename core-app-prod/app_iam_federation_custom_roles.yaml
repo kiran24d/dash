@@ -241,3 +241,61 @@ Resources:
             ManagedPolicyArns:
                 - arn:aws:iam::aws:policy/PowerUserAccess
             RoleName: core-app-prod-sre
+
+    CoreAppProdDbDynamo:
+        Type: AWS::IAM::Role
+        Properties:
+            AssumeRolePolicyDocument:
+                Version: "2012-10-17"
+                Statement:
+                - Effect: "Allow"
+                  Principal:
+                    Federated: "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+                  Action: "sts:AssumeRoleWithSAML"
+                  Condition:
+                    StringEquals:
+                      SAML:aud: "https://signin.aws.amazon.com/saml"
+                - Effect: "Allow"
+                  Principal:
+                    AWS: "arn:aws:iam::667621734181:root"
+                  Action: "sts:AssumeRole"
+                  Condition:
+                    ArnEquals:
+                      iam:PolicyArn: "arn:aws:iam::667621734181:policy/core-app-prod-dynamo"
+            RoleName: core-app-prod-dba
+
+    CoreAppProdDbDynamoAccess:
+        Type: "AWS::IAM::Policy"
+        Properties:
+          PolicyName: "core-app-prod-dynamo"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+            - Sid: "ListAndDescribe"
+              Effect: "Allow"
+              Action:
+              - "dynamodb:List*"
+              - "dynamodb:DescribeReservedCapacity*"
+              - "dynamodb:DescribeLimits"
+              - "dynamodb:DescribeTimeToLive"
+              Resource:
+                  - "arn:aws:dynamodb:eu-west-1:924052762697:table/core-app-prod-attendee-journey-ephemera-P2-production-eu-west-1"
+                  - "arn:aws:dynamodb:eu-west-1:924052762697:table/core-app-prod-attendee-journey-kenoma-P2-production-eu-west-1"
+            - Sid: "SpecificTable"
+              Effect: "Allow"
+              Action:
+              - "dynamodb:BatchGet*"
+              - "dynamodb:DescribeStream"
+              - "dynamodb:DescribeTable"
+              - "dynamodb:Get*"
+              - "dynamodb:Query"
+              - "dynamodb:Scan"
+              - "dynamodb:BatchWrite*"
+              - "dynamodb:CreateTable"
+              - "dynamodb:Delete*"
+              - "dynamodb:Update*"
+              - "dynamodb:PutItem"
+              Resource: "*"
+          Roles:
+                -
+                  Ref: "CoreAppProdDbDynamo"
