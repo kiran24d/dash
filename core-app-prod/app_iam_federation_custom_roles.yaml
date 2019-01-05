@@ -296,6 +296,6 @@ Resources:
               Resource:
                   - "arn:aws:dynamodb:eu-west-1:924052762697:table/core-app-prod-attendee-journey-ephemera-P2-production-eu-west-1"
                   - "arn:aws:dynamodb:eu-west-1:924052762697:table/core-app-prod-attendee-journey-kenoma-P2-production-eu-west-1"
-              Roles:
-                    -
-                      Ref: "CoreAppProdDbDynamo"
+          Roles:
+                -
+                  Ref: "CoreAppProdDbDynamo"
