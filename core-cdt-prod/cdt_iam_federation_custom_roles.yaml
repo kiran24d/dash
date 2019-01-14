@@ -611,6 +611,6 @@ Resources:
                 -
                   - !FindInMap [ AccountMap, !Ref "AWS::AccountId", AccountName ]
                   - View
-            Roles: 
-              - !Ref RoleCoreCdtProdView
+        Roles: 
+          - !Ref RoleCoreCdtProdView
 
