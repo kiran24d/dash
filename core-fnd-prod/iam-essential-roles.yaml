@@ -1,0 +1,318 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Create base IAM roles
+
+Resources:
+
+    AdminRole:
+        Type: AWS::IAM::Role
+        Properties:
+            AssumeRolePolicyDocument: !Sub
+                |
+                {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+                      },
+                      "Action": "sts:AssumeRoleWithSAML",
+                      "Condition": {
+                        "StringEquals": {
+                          "SAML:aud": "https://signin.aws.amazon.com/saml"
+                        }
+                      }
+                    },
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "AWS": "arn:aws:iam::667621734181:root"
+                      },
+                      "Action": "sts:AssumeRole",
+                      "Condition": {}
+                    }
+                  ]
+                }
+            ManagedPolicyArns:
+                - arn:aws:iam::aws:policy/AdministratorAccess
+            RoleName: aws-cvt-admins
+
+    DevopsLeads:
+        Type: AWS::IAM::Role
+        Properties:
+            AssumeRolePolicyDocument: !Sub
+                |
+                {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+                      },
+                      "Action": "sts:AssumeRoleWithSAML",
+                      "Condition": {
+                        "StringEquals": {
+                          "SAML:aud": "https://signin.aws.amazon.com/saml"
+                        }
+                      }
+                    },
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "AWS": "arn:aws:iam::667621734181:root"
+                      },
+                      "Action": "sts:AssumeRole",
+                      "Condition": {}
+                    }
+                  ]
+                }
+            ManagedPolicyArns:
+                - arn:aws:iam::aws:policy/AdministratorAccess
+            RoleName: aws-cvt-devopsleads
+
+    NocRole:
+        Type: AWS::IAM::Role
+        Properties:
+            AssumeRolePolicyDocument: !Sub
+                |
+                {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+                      },
+                      "Action": "sts:AssumeRoleWithSAML",
+                      "Condition": {
+                        "StringEquals": {
+                          "SAML:aud": "https://signin.aws.amazon.com/saml"
+                        }
+                      }
+                    },
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "AWS": "arn:aws:iam::667621734181:root"
+                      },
+                      "Action": "sts:AssumeRole",
+                      "Condition": {}
+                    }
+                  ]
+                }
+            ManagedPolicyArns:
+                - arn:aws:iam::aws:policy/AWSSupportAccess
+                - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
+            RoleName: aws-cvt-noc
+
+    SysengRole:
+        Type: AWS::IAM::Role
+        Properties:
+            AssumeRolePolicyDocument: !Sub
+                |
+                {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+                      },
+                      "Action": "sts:AssumeRoleWithSAML",
+                      "Condition": {
+                        "StringEquals": {
+                          "SAML:aud": "https://signin.aws.amazon.com/saml"
+                        }
+                      }
+                    },
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "AWS": "arn:aws:iam::667621734181:root"
+                      },
+                      "Action": "sts:AssumeRole",
+                      "Condition": {}
+                    }
+                  ]
+                }
+            ManagedPolicyArns:
+                - arn:aws:iam::aws:policy/PowerUserAccess
+            RoleName: aws-cvt-syseng
+
+    InfosecRole:
+        Type: AWS::IAM::Role
+        Properties:
+            AssumeRolePolicyDocument: !Sub
+                |
+                {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+                      },
+                      "Action": "sts:AssumeRoleWithSAML",
+                      "Condition": {
+                        "StringEquals": {
+                          "SAML:aud": "https://signin.aws.amazon.com/saml"
+                        }
+                      }
+                    },
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "AWS": "arn:aws:iam::667621734181:root"
+                      },
+                      "Action": "sts:AssumeRole",
+                      "Condition": {}
+                    }
+                  ]
+                }
+            ManagedPolicyArns:
+                - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
+            RoleName: aws-cvt-infosec
+
+    NetworkRole:
+        Type: AWS::IAM::Role
+        Properties:
+            AssumeRolePolicyDocument: !Sub
+                |
+                {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+                      },
+                      "Action": "sts:AssumeRoleWithSAML",
+                      "Condition": {
+                        "StringEquals": {
+                          "SAML:aud": "https://signin.aws.amazon.com/saml"
+                        }
+                      }
+                    },
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "AWS": "arn:aws:iam::667621734181:root"
+                      },
+                      "Action": "sts:AssumeRole",
+                      "Condition": {}
+                    }
+                  ]
+                }
+            ManagedPolicyArns:
+                - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
+                - arn:aws:iam::aws:policy/PowerUserAccess
+            RoleName: aws-cvt-networking
+
+
+    # Define Custom Policies
+
+    NetworkPolicy:
+        Type: AWS::IAM::Policy
+        Properties: 
+            PolicyDocument: !Sub
+                |
+                {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Action": [
+                        "ec2:DescribePlacementGroups",
+                        "ec2:DescribeAddresses",
+                        "ec2:DescribeAvailabilityZones",
+                        "ec2:DescribeClassicLinkInstances",
+                        "ec2:DescribeCustomerGateways",
+                        "ec2:DescribeVpcClassicLinkDnsSupport",
+                        "ec2:DescribeDhcpOptions",
+                        "ec2:DescribeFlowLogs",
+                        "ec2:DescribeInstances",
+                        "ec2:DescribeInternetGateways",
+                        "ec2:DescribeKeyPairs",
+                        "ec2:DescribeMovingAddresses",
+                        "ec2:DescribeNatGateways",
+                        "ec2:DescribeNetworkAcls",
+                        "ec2:DescribeNetworkInterfaceAttribute",
+                        "ec2:DescribeNetworkInterfaces",
+                        "ec2:DescribePrefixLists",
+                        "ec2:DescribeRouteTables",
+                        "ec2:DescribeSecurityGroups",
+                        "ec2:DescribeSubnets",
+                        "ec2:DescribeTags",
+                        "ec2:DescribeVpcAttribute",
+                        "ec2:DescribeVpcClassicLink",
+                        "ec2:DescribeVpcEndpoints",
+                        "ec2:DescribeVpcEndpointServices",
+                        "ec2:DescribeVpcPeeringConnections",
+                        "ec2:DescribeVpcs",
+                        "ec2:DescribeVpnConnections",
+                        "ec2:DescribeVpnGateways",
+                        "cloudwatch:DescribeAlarms",
+                        "cloudwatch:GetMetricStatistics",
+                        "logs:DescribeLogGroups",
+                        "logs:DescribeLogStreams",
+                        "logs:GetLogEvents",
+                        "directconnect:ConfirmPrivateVirtualInterface",
+                        "directconnect:DescribeConnections",
+                        "directconnect:ConfirmPublicVirtualInterface",
+                        "directconnect:DescribeConnectionLoa",
+                        "directconnect:DescribeVirtualInterfaces",
+                        "directconnect:DescribeInterconnects",
+                        "directconnect:DescribeLocations",
+                        "directconnect:DescribeInterconnectLoa",
+                        "directconnect:DescribeConnectionsOnInterconnect",
+                        "directconnect:DescribeVirtualGateways",
+                        "directconnect:ConfirmConnection"
+                      ],
+                      "Resource": "*"
+                    }
+                  ]
+                }
+            PolicyName: cvent-networking
+            Roles: 
+                - 
+                    Ref: "NetworkRole"
+
+    CventNocPolicy:
+        Type: AWS::IAM::Policy
+        Properties:
+          PolicyName: cvent-noc-policy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+            - Sid: CventNocPolicy
+              Action:
+              - ec2:RebootInstances
+              - ec2:StartInstances
+              - ec2:StopInstances
+              - ec2:ModifyVolume
+              - elasticloadbalancing:RegisterTargets",
+              - elasticloadbalancing:DeregisterTargets",
+              - ecs:ListAttributes
+              - ecs:StartTask
+              - ecs:DescribeTaskDefinition
+              - ecs:DescribeClusters
+              - ecs:ListServices
+              - ecs:UpdateService
+              - ecs:RunTask
+              - ecs:ListTasks
+              - ecs:ListTaskDefinitionFamilies
+              - ecs:StopTask
+              - ecs:DescribeServices
+              - ecs:ListContainerInstances
+              - ecs:DescribeContainerInstances
+              - ecs:DescribeTasks
+              - ecs:ListTaskDefinitions
+              - ecs:ListClusters
+              - rds:DescribeDBInstances
+              - rds:ModifyDBInstance
+              Effect: Allow
+              Resource: "*"
+          Roles:
+              - 
+                Ref: "NocRole"

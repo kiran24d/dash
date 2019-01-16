@@ -2,74 +2,40 @@ AWSTemplateFormatVersion: 2010-09-09
 Description: Create base IAM roles
 
 Resources:
-
-    AdminRole:
-        Type: AWS::IAM::Role
-        Properties:
-            AssumeRolePolicyDocument: !Sub
-                |
-                {
-                  "Version": "2012-10-17",
-                  "Statement": [
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
-                      },
-                      "Action": "sts:AssumeRoleWithSAML",
-                      "Condition": {
-                        "StringEquals": {
-                          "SAML:aud": "https://signin.aws.amazon.com/saml"
-                        }
-                      }
-                    },
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "AWS": "arn:aws:iam::667621734181:root"
-                      },
-                      "Action": "sts:AssumeRole",
-                      "Condition": {}
-                    }
-                  ]
-                }
-            ManagedPolicyArns:
-                - arn:aws:iam::aws:policy/AdministratorAccess
-            RoleName: aws-cvt-admins
-
-    DevopsLeads:
-        Type: AWS::IAM::Role
-        Properties:
-            AssumeRolePolicyDocument: !Sub
-                |
-                {
-                  "Version": "2012-10-17",
-                  "Statement": [
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
-                      },
-                      "Action": "sts:AssumeRoleWithSAML",
-                      "Condition": {
-                        "StringEquals": {
-                          "SAML:aud": "https://signin.aws.amazon.com/saml"
-                        }
-                      }
-                    },
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "AWS": "arn:aws:iam::667621734181:root"
-                      },
-                      "Action": "sts:AssumeRole",
-                      "Condition": {}
-                    }
-                  ]
-                }
-            ManagedPolicyArns:
-                - arn:aws:iam::aws:policy/AdministratorAccess
-            RoleName: aws-cvt-devopsleads
+    # Admin Role was already created, commenting this role out
+    # AdminRole:
+    #     Type: AWS::IAM::Role
+    #     Properties:
+    #         AssumeRolePolicyDocument: !Sub
+    #             |
+    #             {
+    #               "Version": "2012-10-17",
+    #               "Statement": [
+    #                 {
+    #                   "Effect": "Allow",
+    #                   "Principal": {
+    #                     "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+    #                   },
+    #                   "Action": "sts:AssumeRoleWithSAML",
+    #                   "Condition": {
+    #                     "StringEquals": {
+    #                       "SAML:aud": "https://signin.aws.amazon.com/saml"
+    #                     }
+    #                   }
+    #                 },
+    #                 {
+    #                   "Effect": "Allow",
+    #                   "Principal": {
+    #                     "AWS": "arn:aws:iam::667621734181:root"
+    #                   },
+    #                   "Action": "sts:AssumeRole",
+    #                   "Condition": {}
+    #                 }
+    #               ]
+    #             }
+    #         ManagedPolicyArns:
+    #             - arn:aws:iam::aws:policy/AdministratorAccess
+    #         RoleName: aws-cvt-admins
 
     NocRole:
         Type: AWS::IAM::Role
@@ -104,6 +70,7 @@ Resources:
             ManagedPolicyArns:
                 - arn:aws:iam::aws:policy/AWSSupportAccess
                 - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
+                - arn:aws:iam::aws:policy/AWSCloudFormationReadOnlyAccess
             RoleName: aws-cvt-noc
 
     SysengRole:
@@ -140,6 +107,40 @@ Resources:
                 - arn:aws:iam::aws:policy/PowerUserAccess
             RoleName: aws-cvt-syseng
 
+    DevopsleadsRole:
+        Type: AWS::IAM::Role
+        Properties:
+            AssumeRolePolicyDocument: !Sub
+                |
+                {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+                      },
+                      "Action": "sts:AssumeRoleWithSAML",
+                      "Condition": {
+                        "StringEquals": {
+                          "SAML:aud": "https://signin.aws.amazon.com/saml"
+                        }
+                      }
+                    },
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "AWS": "arn:aws:iam::667621734181:root"
+                      },
+                      "Action": "sts:AssumeRole",
+                      "Condition": {}
+                    }
+                  ]
+                }
+            ManagedPolicyArns:
+                - arn:aws:iam::aws:policy/AdministratorAccess
+            RoleName: aws-cvt-devopsleads
+
     InfosecRole:
         Type: AWS::IAM::Role
         Properties:
@@ -171,8 +172,76 @@ Resources:
                   ]
                 }
             ManagedPolicyArns:
-                - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
+                - arn:aws:iam::aws:policy/ReadOnlyAccess
             RoleName: aws-cvt-infosec
+
+    EUEcommPowerRole:
+        Type: AWS::IAM::Role
+        Properties:
+            AssumeRolePolicyDocument: !Sub
+                |
+                {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+                      },
+                      "Action": "sts:AssumeRoleWithSAML",
+                      "Condition": {
+                        "StringEquals": {
+                          "SAML:aud": "https://signin.aws.amazon.com/saml"
+                        }
+                      }
+                    },
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "AWS": "arn:aws:iam::667621734181:root"
+                      },
+                      "Action": "sts:AssumeRole",
+                      "Condition": {}
+                    }
+                  ]
+                }
+            ManagedPolicyArns:
+                - arn:aws:iam::aws:policy/PowerUserAccess
+            RoleName: aws-eu-ecom-prod-power
+
+    EUEcommViewRole:
+        Type: AWS::IAM::Role
+        Properties:
+            AssumeRolePolicyDocument: !Sub
+                |
+                {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+                      },
+                      "Action": "sts:AssumeRoleWithSAML",
+                      "Condition": {
+                        "StringEquals": {
+                          "SAML:aud": "https://signin.aws.amazon.com/saml"
+                        }
+                      }
+                    },
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "AWS": "arn:aws:iam::667621734181:root"
+                      },
+                      "Action": "sts:AssumeRole",
+                      "Condition": {}
+                    }
+                  ]
+                }
+            ManagedPolicyArns:
+                - arn:aws:iam::aws:policy/ReadOnlyAccess
+            RoleName: aws-eu-ecom-prod-view
 
     NetworkRole:
         Type: AWS::IAM::Role
@@ -206,9 +275,7 @@ Resources:
                 }
             ManagedPolicyArns:
                 - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
-                - arn:aws:iam::aws:policy/PowerUserAccess
-                # Granting the NE team temp admin access, so that they can run the ReanCloud Cloudformation templates.
-                - arn:aws:iam::aws:policy/AdministratorAccess
+                - arn:aws:iam::aws:policy/AWSCloudFormationReadOnlyAccess
             RoleName: aws-cvt-networking
 
 
