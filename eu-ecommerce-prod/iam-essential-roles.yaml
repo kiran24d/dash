@@ -346,3 +346,42 @@ Resources:
             Roles: 
                 - 
                     Ref: "NetworkRole"
+
+    CventNocPolicy:
+        Type: AWS::IAM::Policy
+        Properties:
+          PolicyName: cvent-noc-policy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+            - Sid: CventNocPolicy
+              Action:
+              - ec2:RebootInstances
+              - ec2:StartInstances
+              - ec2:StopInstances
+              - ec2:ModifyVolume
+              - elasticloadbalancing:RegisterTargets",
+              - elasticloadbalancing:DeregisterTargets",
+              - ecs:ListAttributes
+              - ecs:StartTask
+              - ecs:DescribeTaskDefinition
+              - ecs:DescribeClusters
+              - ecs:ListServices
+              - ecs:UpdateService
+              - ecs:RunTask
+              - ecs:ListTasks
+              - ecs:ListTaskDefinitionFamilies
+              - ecs:StopTask
+              - ecs:DescribeServices
+              - ecs:ListContainerInstances
+              - ecs:DescribeContainerInstances
+              - ecs:DescribeTasks
+              - ecs:ListTaskDefinitions
+              - ecs:ListClusters
+              - rds:DescribeDBInstances
+              - rds:ModifyDBInstance
+              Effect: Allow
+              Resource: "*"
+          Roles:
+              - 
+                Ref: "NocRole"
