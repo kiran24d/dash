@@ -637,6 +637,8 @@ Resources:
                     Effect: Allow
                     Action: s3:*
                     Resource:
+                      - arn:aws:s3:::cvent-management-cvent-shared-archives-eu-west-1
+                      - arn:aws:s3:::cvent-management-cvent-shared-archives-eu-central-1
                       - arn:aws:s3:::cvent-management-cvent-shared-archives-eu-west-1/*
                       - arn:aws:s3:::cvent-management-cvent-shared-archives-eu-central-1/*
             PolicyName: SharedArchiveDbaPolicy
