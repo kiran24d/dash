@@ -15,5 +15,5 @@ Resources:
                       Service: ec2.amazonaws.com
                     Action: sts:AssumeRole
             ManagedPolicyArns:
-                - arn:aws:iam::aws:policy/job-function/AmazonEC2ReadOnlyAccess
+                - arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess
             RoleName: core-sec-prod-nessus
