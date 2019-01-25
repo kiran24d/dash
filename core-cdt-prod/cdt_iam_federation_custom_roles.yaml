@@ -419,13 +419,11 @@ Resources:
             AssumeRolePolicyDocument:
                 Version: '2012-10-17'
                 Statement:
-                  - 
-                    Sid: Stmt1492708583276
+                  -
                     Effect: Allow
-                    Action: s3:*
-                    Resource:
-                      - arn:aws:s3:::cvent-management-cvent-shared-archives-eu-west-1/*
-                      - arn:aws:s3:::cvent-management-cvent-shared-archives-eu-central-1/*
+                    Principal:
+                      Service: ec2.amazonaws.com
+                    Action: sts:AssumeRole
             RoleName: core-cdt-shared-dba
 
 # Define Custom Policies
@@ -628,4 +626,20 @@ Resources:
                   - View
         Roles: 
           - !Ref RoleCoreCdtProdView
+
+    SharedArchiveDbaPolicy:
+        Type: AWS::IAM::Policy
+        Properties:
+            PolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                  - 
+                    Effect: Allow
+                    Action: s3:*
+                    Resource:
+                      - arn:aws:s3:::cvent-management-cvent-shared-archives-eu-west-1/*
+                      - arn:aws:s3:::cvent-management-cvent-shared-archives-eu-central-1/*
+            PolicyName: SharedArchiveDbaPolicy
+            Roles:
+              - Ref: "CoreCdtSharedDba"
 
