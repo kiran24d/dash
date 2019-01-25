@@ -3,17 +3,26 @@ Description: Create base IAM roles
 
 Resources:
 
+  # Roles
   CoreSecProdNessus:
-        Type: AWS::IAM::Role
-        Properties:
-            AssumeRolePolicyDocument:
-                Version: '2012-10-17'
-                Statement:
-                  -
-                    Effect: Allow
-                    Principal:
-                      Service: ec2.amazonaws.com
-                    Action: sts:AssumeRole
-            ManagedPolicyArns:
-                - arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess
-            RoleName: core-sec-prod-nessus
+    Type: AWS::IAM::Role
+    Properties:
+        AssumeRolePolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              -
+                Effect: Allow
+                Principal:
+                  Service: ec2.amazonaws.com
+                Action: sts:AssumeRole
+        ManagedPolicyArns:
+            - arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess
+        RoleName: core-sec-prod-nessus
+
+  # Instance Profiles
+  CoreSecProdNessusProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties: 
+      Roles:
+        - !Ref RoleCoreCdtProdView
+      InstanceProfileName: core-sec-prod-nessus-profile
