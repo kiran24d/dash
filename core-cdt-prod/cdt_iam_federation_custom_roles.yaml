@@ -413,19 +413,6 @@ Resources:
                 }
             RoleName: core-cdt-attendee-journey-datomictransactor
 
-    CoreCdtSharedDba:
-        Type: AWS::IAM::Role
-        Properties:
-            AssumeRolePolicyDocument:
-                Version: '2012-10-17'
-                Statement:
-                  -
-                    Effect: Allow
-                    Principal:
-                      Service: ec2.amazonaws.com
-                    Action: sts:AssumeRole
-            RoleName: core-cdt-shared-dba
-
 # Define Custom Policies
     DatomicPeerPolicy1:
         Type: AWS::IAM::Policy
