@@ -17,21 +17,6 @@ Resources:
                 Action: sts:AssumeRole
         RoleName: core-cdt-prod-shared-dba
 
-  CoreCdtProdNessus:
-    Type: AWS::IAM::Role
-    Properties:
-        AssumeRolePolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              -
-                Effect: Allow
-                Principal:
-                  Service: ec2.amazonaws.com
-                Action: sts:AssumeRole
-        ManagedPolicyArns:
-            - arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess
-        RoleName: core-cdt-prod-nessus
-
   # Instance Profiles
   CoreCdtSharedDbaProfile:
     Type: AWS::IAM::InstanceProfile
@@ -39,13 +24,6 @@ Resources:
       Roles:
         - !Ref CoreCdtSharedDba
       InstanceProfileName: core-cdt-prod-shared-dba-profile
-
-  CoreCdtProdNessusProfile:
-    Type: AWS::IAM::InstanceProfile
-    Properties: 
-      Roles:
-        - !Ref CoreCdtProdNessus
-      InstanceProfileName: core-cdt-prod-nessus-profile
 
   # Custom Policies
   SharedArchiveDbaPolicy:
