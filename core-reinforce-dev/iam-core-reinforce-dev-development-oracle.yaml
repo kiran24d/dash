@@ -41,12 +41,12 @@ Mappings:
 
 Resources:
 
-    RoleCoreReinforceProdMessaging:
+    RoleCoreReinforceDevDevelopmentOracle:
       Type: AWS::IAM::Role
       Properties:
         AssumeRolePolicyDocument:
           Version: '2012-10-17'
-            Statement:
+          Statement:
             - 
               Effect: Allow
               Principal:
@@ -55,4 +55,12 @@ Resources:
         ManagedPolicyArns:
             - arn:aws:iam::aws:policy/AmazonEC2FullAccess
             - arn:aws:iam::aws:policy/AmazonS3FullAccess
-        RoleName: core-reinforce-dev-development-oracle.yaml
+        RoleName: core-reinforce-dev-development-oracle
+
+    InstanceProfileCoreReinforceDevDevelopmentOracle:
+      Type: AWS::IAM::InstanceProfile
+      Properties: 
+        Path: /
+        Roles:
+          - !Ref  RoleCoreReinforceDevDevelopmentOracle
+        InstanceProfileName: core-reinforce-dev-development-oracle
