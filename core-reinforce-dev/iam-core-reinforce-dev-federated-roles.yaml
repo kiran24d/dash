@@ -184,7 +184,7 @@ Resources:
       ManagedPolicyArns:
           - arn:aws:iam::aws:policy/AmazonRDSFullAccess
           - arn:aws:iam::aws:policy/CloudWatchFullAccess
-      RoleName: aws-cvt-dbamanagement
+      RoleName: aws-cvt-dba-management
 
   RoleCoreReinforceProdDbaLeads:
     Type: AWS::IAM::Role
@@ -456,6 +456,7 @@ Resources:
         }
       ManagedPolicyArns:
           - arn:aws:iam::aws:policy/AWSSupportAccess
+          - arn:aws:iam::aws:policy/ReadOnlyAccess
       RoleName: aws-cvt-noc
 
   RoleCoreReinforceProdQa:
@@ -590,7 +591,6 @@ Resources:
           Roles: 
               - 
                   Ref: "RoleCoreReinforceProdNetworking"
-
   DbaPolicy:
     Type: AWS::IAM::Policy
     Properties: 
