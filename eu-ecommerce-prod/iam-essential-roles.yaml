@@ -336,7 +336,18 @@ Resources:
                         "directconnect:DescribeInterconnectLoa",
                         "directconnect:DescribeConnectionsOnInterconnect",
                         "directconnect:DescribeVirtualGateways",
-                        "directconnect:ConfirmConnection"
+                        "directconnect:ConfirmConnection",
+                        "ec2:CreateCustomerGateway",
+                        "ec2:CreateVpnConnection",
+                        "ec2:CreateVpnConnectionRoute",
+                        "ec2:CreateVpnGateway",
+                        "ec2:DeleteCustomerGateway",
+                        "ec2:DeleteVpnConnection",
+                        "ec2:DeleteVpnConnectionRoute",
+                        "ec2:DeleteVpnGateway",
+                        "ec2:DescribeVpnConnections",
+                        "ec2:DescribeVpnGateways",
+                        "ec2:DetachVpnGateway"
                       ],
                       "Resource": "*"
                     }
