@@ -332,7 +332,7 @@ Resources:
     CventInfoSecPolicy:
       Type: AWS::IAM::Policy
       Properties:
-        PolicyName: cvent-noc-policy
+        PolicyName: cvent-infosec-policy
         Roles: 
           - !Ref InfosecRole
         PolicyDocument:

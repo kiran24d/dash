@@ -264,7 +264,8 @@ Resources:
                         "directconnect:DescribeConnectionLoa",
                         "directconnect:DescribeVirtualInterfaces",
                         "directconnect:DescribeInterconnects",
-                        "directconnect:DescribeLocations",
+        
+                      "directconnect:DescribeLocations",
                         "directconnect:DescribeInterconnectLoa",
                         "directconnect:DescribeConnectionsOnInterconnect",
                         "directconnect:DescribeVirtualGateways",
@@ -332,7 +333,7 @@ Resources:
     CventInfoSecPolicy:
       Type: AWS::IAM::Policy
       Properties:
-        PolicyName: cvent-noc-policy
+        PolicyName: cvent-infosec-policy
         Roles: 
           - !Ref InfosecRole
         PolicyDocument:
