@@ -171,7 +171,8 @@ Resources:
                   ]
                 }
             ManagedPolicyArns:
-                - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
+                - arn:aws:iam::aws:policy/ReadOnlyAccess
+                - arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
             RoleName: aws-cvt-infosec
 
     NetworkRole:
@@ -329,3 +330,229 @@ Resources:
           Roles:
               - 
                 Ref: "NocRole"
+
+    CventInfoSecPolicy:
+      Type: AWS::IAM::Policy
+      Properties:
+        PolicyName: cvent-infosec-policy
+        Roles: 
+          - !Ref InfosecRole
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - iam:GetAccountPasswordPolicy
+                - ec2:DescribeInstances
+                - iam:GenerateServiceLastAccessedDetails
+                - iam:ListServiceSpecificCredentials
+                - lambda:GetFunctionConfiguration
+                - iam:ListSigningCertificates
+                - ec2:DescribeSnapshots
+                - s3:ListObjects
+                - ec2:DescribeHostReservationOfferings
+                - sns:ListEndpointsByPlatformApplication
+                - iam:SimulateCustomPolicy
+                - ec2:DescribeVolumeStatus
+                - ec2:DescribeScheduledInstanceAvailability
+                - ec2:DescribeVolumes
+                - ec2:DescribeFpgaImageAttribute
+                - ec2:DescribeExportTasks
+                - iam:ListRolePolicies
+                - iam:GetCredentialReport
+                - ec2:DescribeKeyPairs
+                - lambda:GetAlias
+                - ec2:DescribeReservedInstancesListings
+                - trustedadvisor:DescribeNotificationPreferences
+                - iam:ListPolicies
+                - iam:GetRole
+                - sns:ListSubscriptionsByTopic
+                - iam:ListSAMLProviders
+                - iam:GetPolicy
+                - ec2:DescribeSpotFleetRequestHistory
+                - lambda:ListFunctions
+                - lambda:GetEventSourceMapping
+                - ec2:DescribeVpcClassicLinkDnsSupport
+                - ec2:DescribeSnapshotAttribute
+                - ec2:DescribeIdFormat
+                - lambda:ListAliases
+                - iam:ListEntitiesForPolicy
+                - ec2:DescribeVolumeAttribute
+                - ec2:DescribeImportSnapshotTasks
+                - ec2:DescribeVpcEndpointServicePermissions
+                - ec2:GetPasswordData
+                - ec2:DescribeScheduledInstances
+                - cloudwatch:*
+                - ec2:DescribeImageAttribute
+                - ec2:DescribeReservedInstancesModifications
+                - iam:GetOpenIDConnectProvider
+                - ec2:DescribeSubnets
+                - iam:GetRolePolicy
+                - sns:GetSMSAttributes
+                - iam:GenerateCredentialReport
+                - ec2:DescribeMovingAddresses
+                - ec2:DescribeRegions
+                - ec2:DescribeFlowLogs
+                - sns:ListTopics
+                - ec2:DescribeVpcEndpointServices
+                - ec2:DescribeSpotInstanceRequests
+                - iam:GetServiceLastAccessedDetails
+                - ec2:DescribeVpcAttribute
+                - iam:GetServiceLinkedRoleDeletionStatus
+                - iam:ListInstanceProfilesForRole
+                - ec2:DescribeAvailabilityZones
+                - lambda:ListTags
+                - ec2:DescribeNetworkInterfaceAttribute
+                - iam:ListAttachedGroupPolicies
+                - ec2:DescribeVpcEndpointConnections
+                - iam:ListAccessKeys
+                - ec2:DescribeInstanceStatus
+                - trustedadvisor:DescribeCheckRefreshStatuses
+                - ec2:DescribeHostReservations
+                - sns:GetTopicAttributes
+                - iam:ListGroupPolicies
+                - iam:GetSSHPublicKey
+                - guardduty:*
+                - iam:ListRoles
+                - ec2:DescribeBundleTasks
+                - ec2:DescribeIdentityIdFormat
+                - ec2:DescribeClassicLinkInstances
+                - sns:ListSubscriptions
+                - trustedadvisor:DescribeCheckItems
+                - ec2:DescribeVpcEndpointConnectionNotifications
+                - ec2:DescribeSecurityGroups
+                - iam:GetContextKeysForCustomPolicy
+                - ec2:DescribeFpgaImages
+                - iam:CreateServiceLinkedRole
+                - s3:ListAllMyBuckets
+                - ec2:DescribeVpcs
+                - iam:ListAccountAliases
+                - iam:GetUser
+                - iam:ListGroups
+                - iam:GetLoginProfile
+                - sns:ListPlatformApplications
+                - ec2:DescribeStaleSecurityGroups
+                - iam:GetPolicyVersion
+                - iam:ListServerCertificates
+                - ec2:DescribeVolumesModifications
+                - ec2:GetHostReservationPurchasePreview
+                - iam:ListVirtualMFADevices
+                - ec2:DescribePlacementGroups
+                - sns:CheckIfPhoneNumberIsOptedOut
+                - ec2:DescribeInternetGateways
+                - iam:ListSSHPublicKeys
+                - iam:SimulatePrincipalPolicy
+                - ec2:GetLaunchTemplateData
+                - iam:ListAttachedRolePolicies
+                - ec2:DescribeSpotDatafeedSubscription
+                - config:*
+                - ec2:DescribeAccountAttributes
+                - ec2:DescribeNetworkInterfacePermissions
+                - ec2:DescribeReservedInstances
+                - iam:GetAccountAuthorizationDetails
+                - s3:HeadBucket
+                - events:*
+                - ec2:DescribeNetworkAcls
+                - ec2:DescribeRouteTables
+                - ec2:DescribeEgressOnlyInternetGateways
+                - iam:GetServerCertificate
+                - ec2:DescribeLaunchTemplates
+                - ec2:DescribeVpnConnections
+                - ec2:DescribeVpcPeeringConnections
+                - iam:GetAccessKeyLastUsed
+                - ec2:DescribeReservedInstancesOfferings
+                - sns:GetPlatformApplicationAttributes
+                - sns:GetSubscriptionAttributes
+                - ec2:DescribeVpcEndpointServiceConfigurations
+                - ec2:DescribePrefixLists
+                - ec2:GetReservedInstancesExchangeQuote
+                - ec2:DescribeInstanceCreditSpecifications
+                - ec2:DescribeVpcClassicLink
+                - sns:ListPhoneNumbersOptedOut
+                - trustedadvisor:DescribeCheckSummaries
+                - sns:GetEndpointAttributes
+                - iam:GetUserPolicy
+                - waf:*
+                - iam:ListGroupsForUser
+                - lambda:ListEventSourceMappings
+                - iam:GetGroupPolicy
+                - ec2:DescribeVpcEndpoints
+                - ec2:DescribeElasticGpus
+                - ec2:DescribeVpnGateways
+                - iam:GetAccountSummary
+                - ec2:DescribeAddresses
+                - lambda:ListVersionsByFunction
+                - iam:GetServiceLastAccessedDetailsWithEntities
+                - ec2:DescribeInstanceAttribute
+                - iam:ListPoliciesGrantingServiceAccess
+                - ec2:DescribeDhcpOptions
+                - lambda:GetAccountSettings
+                - iam:ListMFADevices
+                - iam:GetGroup
+                - iam:GetContextKeysForPrincipalPolicy
+                - ec2:GetConsoleOutput
+                - ec2:DescribeSpotPriceHistory
+                - ec2:DescribeNetworkInterfaces
+                - iam:ListAttachedUserPolicies
+                - iam:GetSAMLProvider
+                - iam:GetInstanceProfile
+                - ec2:DescribeIamInstanceProfileAssociations
+                - ec2:DescribeTags
+                - lambda:GetFunction
+                - ec2:DescribeLaunchTemplateVersions
+                - ec2:DescribeImportImageTasks
+                - iam:ListUserPolicies
+                - ec2:DescribeNatGateways
+                - iam:ListInstanceProfiles
+                - ec2:DescribeCustomerGateways
+                - ec2:DescribeSpotFleetRequests
+                - ec2:DescribeHosts
+                - ec2:DescribeImages
+                - ec2:DescribeSpotFleetInstances
+                - iam:ListPolicyVersions
+                - iam:ListOpenIDConnectProviders
+                - ec2:DescribeSecurityGroupReferences
+                - iam:ListUsers
+                - ec2:DescribeConversionTasks
+                - lambda:GetPolicy
+              Resource: "*"
+            - Effect: Allow
+              Action:
+                - s3:ListBucketByTags
+                - s3:GetLifecycleConfiguration
+                - s3:ListBucketMultipartUploads
+                - s3:GetBucketTagging
+                - s3:GetInventoryConfiguration
+                - s3:GetBucketWebsite
+                - s3:ListBucketVersions
+                - s3:GetBucketLogging
+                - s3:ListBucket
+                - s3:GetAccelerateConfiguration
+                - s3:GetBucketVersioning
+                - s3:GetBucketAcl
+                - s3:GetBucketNotification
+                - s3:GetBucketPolicy
+                - ec2:GetConsoleScreenshot
+                - s3:GetReplicationConfiguration
+                - s3:GetBucketRequestPayment
+                - s3:GetBucketCORS
+                - s3:GetAnalyticsConfiguration
+                - s3:GetMetricsConfiguration
+                - s3:GetBucketLocation
+                - s3:GetIpConfiguration
+              Resource:
+                - arn:aws:s3:::*
+                - arn:aws:ec2:*:*:instance/*
+            - Effect: Allow
+              Action:
+                - s3:GetObjectVersionTorrent
+                - s3:GetObjectAcl
+                - s3:GetObject
+                - s3:GetObjectTorrent
+                - s3:GetObjectVersionTagging
+                - s3:GetObjectVersionAcl
+                - s3:GetObjectTagging
+                - s3:GetObjectVersionForReplication
+                - s3:GetObjectVersion
+                - s3:ListMultipartUploadParts
+              Resource: arn:aws:s3:::*/*

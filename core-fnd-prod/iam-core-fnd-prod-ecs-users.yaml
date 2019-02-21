@@ -1,0 +1,55 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Parent template to deploy webACL Firehose Streams
+Metadata: {}
+
+Mappings:
+
+  AccountMap:
+    # cvent-sandbox
+    '572724207364':
+      AccountName: cvent-sandbox
+    # cvent-development
+    '504055967630':
+      AccountName: cvent-development
+    # cvent-integration
+    '834623602341':
+      AccountName: cvent-integration
+    # cvent-production
+    '659687181524':
+      AccountName: cvent-production
+    # cvent-management
+    '667621734181':
+      AccountName: cvent-management
+    # core-app-prod
+    '924052762697':
+      AccountName: core-app-prod
+    # core-cdt-prod
+    '611736519059':
+      AccountName: core-cdt-prod
+    # core-fnd-prod
+    '752921502988':
+      AccountName: core-fnd-prod
+    # eu-ecommerce-prod
+    '380741956730':
+      AccountName: eu-ecommerce-prod
+    # core-reinforce-prod
+    '981730702137':
+      AccountName: core-reinforce-prod
+    # core-reinforce-dev
+    '219736445914':
+      AccountName: core-reinforce-dev
+
+Resources: 
+
+  CoreFndProdEcs:
+    Type: AWS::IAM::User
+    Properties: 
+      Path: /
+      UserName: 
+        Fn::Join:
+          - "-"
+          - - !FindInMap [AccountMap, !Ref "AWS::AccountId", AccountName]
+            - ecs
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess
+        - arn:aws:iam::aws:policy/AmazonECS_FullAccess
