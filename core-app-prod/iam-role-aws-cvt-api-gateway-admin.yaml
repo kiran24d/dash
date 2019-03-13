@@ -3,7 +3,7 @@ Description: aws-cvt-api-gateway-admins federated IAM role
 
 Resources:
 
-    AwsCvtApiGatewayAdmins:
+    AwsCvtApiGatewayAdmin:
         Type: AWS::IAM::Role
         Properties:
           AssumeRolePolicyDocument:
@@ -24,4 +24,4 @@ Resources:
           ManagedPolicyArns:
               - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
               - arn:aws:iam::aws:policy/AmazonAPIGatewayAdministrator
-          RoleName: aws-cvt-api-gateway-admins
+          RoleName: aws-cvt-api-gateway-admin
