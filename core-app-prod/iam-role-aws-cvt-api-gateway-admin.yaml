@@ -3,15 +3,15 @@ Description: aws-cvt-api-gateway-admins federated IAM role
 
 Resources:
 
-    AwsCvtApiGatewayAdmins:
+    AwsCvtApiGatewayAdmin:
         Type: AWS::IAM::Role
         Properties:
-          AssumeRolePolicyDocument: !Sub
+          AssumeRolePolicyDocument:
             Version: '2012-10-17'
             Statement:
             - Effect: Allow
               Principal:
-                Federated: arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso
+                Federated: arn:aws:iam::924052762697:saml-provider/okta-sso
               Action: sts:AssumeRoleWithSAML
               Condition:
                 StringEquals:
@@ -24,4 +24,4 @@ Resources:
           ManagedPolicyArns:
               - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
               - arn:aws:iam::aws:policy/AmazonAPIGatewayAdministrator
-          RoleName: aws-cvt-api-gateway-admins
+          RoleName: aws-cvt-api-gateway-admin
