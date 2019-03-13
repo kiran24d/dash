@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: Create base IAM roles
+Description: Create the aws-cvt-api-gateway-admins IAM role
 
 Resources:
 
