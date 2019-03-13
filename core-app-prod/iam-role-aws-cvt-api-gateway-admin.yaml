@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: Create the aws-cvt-api-gateway-admins IAM role
+Description: aws-cvt-api-gateway-admins federated IAM role
 
 Resources:
 
