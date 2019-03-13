@@ -6,12 +6,12 @@ Resources:
     AwsCvtApiGatewayAdmins:
         Type: AWS::IAM::Role
         Properties:
-          AssumeRolePolicyDocument: !Sub
+          AssumeRolePolicyDocument:
             Version: '2012-10-17'
             Statement:
             - Effect: Allow
               Principal:
-                Federated: arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso
+                Federated: arn:aws:iam::924052762697:saml-provider/okta-sso
               Action: sts:AssumeRoleWithSAML
               Condition:
                 StringEquals:
