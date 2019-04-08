@@ -1,0 +1,74 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Creates role for security hub automatic deployment
+
+Parameters:
+
+    AccountName:
+        Type: String
+        Description: Name of the account this has been deployed on
+
+Resources: 
+
+  SecurityHubRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+          - Effect: Allow
+            Principal:
+              AWS: arn:aws:iam::667621734181:role/security-hub-ec2
+            Action: sts:AssumeRole
+            Condition: {}
+      RoleName: security-hub
+
+  SecurityHubPolicy:
+    Type: AWS::IAM::Policy
+    Properties: 
+      PolicyName:
+        Fn::Join:
+          - "-"
+          -
+            - !Ref AccountName
+            - security-hub
+      Roles: 
+        - !Ref SecurityHubRole
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Condition:
+              StringLike:
+                iam:AWSServiceName:
+                  - securityhub.amazonaws.com
+                  - config.amazonaws.com
+            Action: iam:CreateServiceLinkedRole
+            Resource: "*"
+            Effect: Allow
+          - Action: securityhub:*
+            Resource: "*"
+            Effect: Allow
+          - Action:
+              - config:DescribeConfigurationRecorders
+              - config:DescribeDeliveryChannels
+              - config:DescribeConfigurationRecorderStatus
+              - config:DeleteConfigurationRecorder
+              - config:DeleteDeliveryChannel
+              - config:PutConfigurationRecorder
+              - config:PutDeliveryChannel
+              - config:StartConfigurationRecorder
+            Resource: "*"
+            Effect: Allow
+          - Action: iam:PassRole
+            Resource: arn:aws:iam::*:role/aws-service-role/config.amazonaws.com/AWSServiceRoleForConfig
+            Effect: Allow
+          - Action:
+              - s3:CreateBucket
+              - s3:PutBucketPolicy
+              - s3:ListBucket
+            Resource: arn:aws:s3:::config-bucket-*
+            Effect: Allow
+
