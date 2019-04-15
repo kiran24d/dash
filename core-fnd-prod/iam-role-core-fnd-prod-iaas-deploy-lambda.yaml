@@ -1,0 +1,49 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Creates role for ICR lambda deployment
+
+Parameters:
+
+    AccountName:
+        Type: String
+        Description: Name of the account this has been deployed on
+
+Resources: 
+
+  IaasDeployLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      RoleName: 
+        Fn::Join:
+          - "-"
+          -
+            - !Ref AccountName
+            - iaas-deploy-lambda
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AWSLambdaFullAccess
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+
+  IaasDeployLambdaPolicy:
+    Type: AWS::IAM::Policy
+    Properties: 
+      PolicyName:
+        Fn::Join:
+          - "-"
+          -
+            - !Ref AccountName
+            - iaas-deploy-lambda
+      Roles: 
+        - !Ref IaasDeployLambdaRole
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+
+          - Action: cloudformation:*
+            Resource: "*"
+            Effect: Allow
