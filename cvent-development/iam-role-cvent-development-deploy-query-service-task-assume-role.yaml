@@ -1,0 +1,16 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: IAM role for deploy-query-service task
+
+Resources:
+
+  DeployQueryServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: deploy-query-service-task-assume-role
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action: sts:AssumeRole
+            Resource:
+              arn:aws:iam::*:role/deploy-query-service-role
