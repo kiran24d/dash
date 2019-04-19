@@ -3,7 +3,7 @@ Description: IAM role for deploy-query-service task
 
 Resources:
 
-  DeployQueryServiceRole:
+  DeployQueryServiceAssumeRole:
     Type: AWS::IAM::Role
     Properties:
       RoleName: deploy-query-service-task-assume-role
@@ -13,4 +13,19 @@ Resources:
           - Effect: Allow
             Action: sts:AssumeRole
             Resource:
-              arn:aws:iam::*:role/deploy-query-service-role
+              Principle:
+                Service: ecs-tasks.amazonaws.com
+
+  DeployQueryServiceAssumePolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: deploy-query-service-policy
+      Roles:
+        - !Ref DeployQueryServiceAssumeRole
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Resource: arn:aws:iam::*:role/deploy-query-service-role
+            Action:
+              - sts:AssumeRole

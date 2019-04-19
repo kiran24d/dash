@@ -28,7 +28,6 @@ Resources:
           - Effect: Allow
             Resource: "*"
             Action:
-              - sts:AssumeRole
               - ecs:ListServices
               - ecs:ListTagsForResource
               - ecs:ListTasks
