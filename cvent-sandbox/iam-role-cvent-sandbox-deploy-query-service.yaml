@@ -12,7 +12,7 @@ Resources:
         Statement:
           - Effect: Allow
             Principal:
-              AWS: arn:aws:iam::504055967630:role/deploy-query-service-task-assume-role
+              AWS: arn:aws:iam::504055967630:role/cvent-development-deploy-query-service-task-assume-role
             Action: sts:AssumeRole
             Condition: {}
 

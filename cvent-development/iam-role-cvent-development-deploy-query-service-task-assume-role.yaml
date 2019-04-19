@@ -6,7 +6,7 @@ Resources:
   DeployQueryServiceAssumeRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: deploy-query-service-task-assume-role
+      RoleName: cvent-development-deploy-query-service-task-assume-role
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
