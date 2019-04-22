@@ -6,7 +6,7 @@ Resources:
   DeployQueryServiceRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: deploy-query-service-role
+      RoleName: cvent-development-deploy-query-service-role
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -19,7 +19,7 @@ Resources:
   DeployQueryServiceEcsReadOnlyPolicy:
     Type: AWS::IAM::Policy
     Properties:
-      PolicyName: deploy-query-service-policy
+      PolicyName: cvent-development-deploy-query-service-policy
       Roles:
         - !Ref DeployQueryServiceRole
       PolicyDocument:

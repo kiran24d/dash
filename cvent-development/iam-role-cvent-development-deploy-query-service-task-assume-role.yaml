@@ -19,13 +19,13 @@ Resources:
   DeployQueryServiceAssumePolicy:
     Type: AWS::IAM::Policy
     Properties:
-      PolicyName: deploy-query-service-policy
+      PolicyName: cvent-development-deploy-query-service-policy
       Roles:
         - !Ref DeployQueryServiceAssumeRole
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
           - Effect: Allow
-            Resource: arn:aws:iam::*:role/deploy-query-service-role
+            Resource: arn:aws:iam::*:role/*-deploy-query-service-role
             Action:
               - sts:AssumeRole
