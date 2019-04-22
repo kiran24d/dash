@@ -1,0 +1,60 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Creates role for Demisto
+
+Parameters:
+
+    AccountName:
+        Type: String
+        Description: Name of the account this has been deployed on
+
+Resources: 
+
+  DemistoRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      RoleName:
+        Fn::Join:
+          - "-"
+          - - !Ref AccountName
+            - security-demisto
+
+  DemistoInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties: 
+      Roles:
+        - !Ref DemistoRole
+      InstanceProfileName:
+        Fn::Join:
+          - "-"
+          -
+            - !Ref AccountName
+            - security-demisto
+
+  DemistoHubPolicy:
+    Type: AWS::IAM::Policy
+    Properties: 
+      PolicyName:
+        Fn::Join:
+          - "-"
+          -
+            - !Ref AccountName
+            - demisto-assumption
+      Roles: 
+        - !Ref DemistoRole
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Action:
+              - guardduty:Get*
+              - guardduty:List*
+              - securityhub:Get*
+              - securityhub:List*
+            Resource: "*"
+            Effect: Allow

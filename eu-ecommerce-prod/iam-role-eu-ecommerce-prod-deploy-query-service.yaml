@@ -1,12 +1,22 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: IAM roles for deploy-query-service - per account
 
+Parameters:
+
+  AccountName:
+      Type: String
+      Description: Name of the account this has been deployed on
+
 Resources:
 
   DeployQueryServiceRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: eu-ecommerce-prod-deploy-query-service-role
+      RoleName:
+        Fn::Join:
+          - "-"
+          - - !Ref AccountName
+            - deploy-query-service-role
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -19,7 +29,7 @@ Resources:
   DeployQueryServiceEcsReadOnlyPolicy:
     Type: AWS::IAM::Policy
     Properties:
-      PolicyName: eu-ecommerce-prod-deploy-query-service-policy
+      PolicyName: core-app-prod-deploy-query-service-policy
       Roles:
         - !Ref DeployQueryServiceRole
       PolicyDocument:
