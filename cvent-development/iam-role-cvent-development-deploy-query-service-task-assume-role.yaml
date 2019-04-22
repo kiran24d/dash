@@ -12,9 +12,8 @@ Resources:
         Statement:
           - Effect: Allow
             Action: sts:AssumeRole
-            Resource:
-              Principle:
-                Service: ecs-tasks.amazonaws.com
+            Principal:
+              Service: ecs-tasks.amazonaws.com
 
   DeployQueryServiceAssumePolicy:
     Type: AWS::IAM::Policy
