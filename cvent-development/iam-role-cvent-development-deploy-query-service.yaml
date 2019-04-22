@@ -29,7 +29,11 @@ Resources:
   DeployQueryServiceEcsReadOnlyPolicy:
     Type: AWS::IAM::Policy
     Properties:
-      PolicyName: core-app-prod-deploy-query-service-policy
+      PolicyName:
+        Fn::Join:
+          - "-"
+          - - !Ref AccountName
+            - deploy-query-service-policy
       Roles:
         - !Ref DeployQueryServiceRole
       PolicyDocument:
