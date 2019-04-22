@@ -1,0 +1,31 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: IAM role for deploy-query-service task
+
+Resources:
+
+  DeployQueryServiceAssumeRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: cvent-development-deploy-query-service-task-assume-role
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action: sts:AssumeRole
+            Resource:
+              Principle:
+                Service: ecs-tasks.amazonaws.com
+
+  DeployQueryServiceAssumePolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: cvent-development-deploy-query-service-policy
+      Roles:
+        - !Ref DeployQueryServiceAssumeRole
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Resource: arn:aws:iam::*:role/*-deploy-query-service-role
+            Action:
+              - sts:AssumeRole

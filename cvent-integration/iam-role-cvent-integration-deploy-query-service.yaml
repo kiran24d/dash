@@ -1,0 +1,49 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: IAM roles for deploy-query-service - per account
+
+Resources:
+
+  DeployQueryServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: cvent-integration-deploy-query-service-role
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: arn:aws:iam::504055967630:role/cvent-development-deploy-query-service-task-assume-role
+            Action: sts:AssumeRole
+            Condition: {}
+
+  DeployQueryServiceEcsReadOnlyPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: cvent-integration-deploy-query-service-policy
+      Roles:
+        - !Ref DeployQueryServiceRole
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Resource: "*"
+            Action:
+              - ecs:ListServices
+              - ecs:ListTagsForResource
+              - ecs:ListTasks
+              - ecs:ListTaskDefinitionFamilies
+              - ecs:DescribeServices
+              - ecs:ListContainerInstances
+              - ecs:DescribeContainerInstances
+              - ecs:DescribeTasks
+              - ecs:ListTaskDefinitions
+              - ecs:DescribeTaskDefinition
+              - ecs:DescribeClusters
+              - ecs:ListClusters
+              - elasticloadbalancing:DescribeLoadBalancerAttributes
+              - elasticloadbalancing:DescribeLoadBalancers
+              - elasticloadbalancing:DescribeTargetGroupAttributes
+              - elasticloadbalancing:DescribeTargetHealth
+              - elasticloadbalancing:DescribeTargetGroups
+              - ec2:DescribeInstances
+              - ec2:DescribeTags
