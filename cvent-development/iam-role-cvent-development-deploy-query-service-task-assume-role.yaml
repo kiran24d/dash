@@ -1,11 +1,6 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: IAM role for deploy-query-service task
 
-Parameters:
-  KmsPolicyArn:
-    Description: ARN of the KMS Managed Policy
-    Type: String
-
 Resources:
 
   DeployQueryServiceAssumeRole:
@@ -20,7 +15,7 @@ Resources:
             Principal:
               Service: ecs-tasks.amazonaws.com
       ManagedPolicyArns:
-        - !Ref KmsPolicyArn
+        - !Sub arn:aws:iam::${AWS::AccountId}:policy/CrossAccountKMSPolicy-v2-${AWS::Region}
 
   DeployQueryServiceAssumePolicy:
     Type: AWS::IAM::Policy
