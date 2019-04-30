@@ -14,6 +14,8 @@ Resources:
             Action: sts:AssumeRole
             Principal:
               Service: ecs-tasks.amazonaws.com
+      ManagedPolicyArns:
+        - !Sub arn:aws:iam::${AWS::AccountId}:policy/CrossAccountKMSPolicy-v2-${AWS::Region}
 
   DeployQueryServiceAssumePolicy:
     Type: AWS::IAM::Policy
