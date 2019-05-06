@@ -641,6 +641,8 @@ Resources:
               - ec2:RevokeSecurityGroupEgress
               - ec2:DeleteSecurityGroup
               - ec2:ModifyReservedInstances
+              - rds:ModifyDBInstance
+              - es:DescribeReservedElasticsearchInstances
             Resource: "*"
       PolicyName:
         Fn::Join:
