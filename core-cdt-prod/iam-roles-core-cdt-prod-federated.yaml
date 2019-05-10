@@ -613,3 +613,19 @@ Resources:
                   - View
         Roles: 
           - !Ref RoleCoreCdtProdView
+
+    CventDbaPolicy:
+        Type: AWS::IAM::Policy
+        Properties:
+          PolicyName: core-cdt-prod-dba
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+            - Sid: CoreCbProdDbaPolicy
+              Action:
+                - rds:ModifyDBInstance
+                - es:DescribeReservedElasticsearchInstances
+              Effect: Allow
+              Resource: "*"
+          Roles:
+              - Ref: "RoleCoreCdtProdDba"

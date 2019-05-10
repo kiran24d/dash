@@ -26,3 +26,18 @@ Resources:
             - arn:aws:iam::aws:policy/AmazonRDSFullAccess
             - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
         RoleName: corp-entsrv-prod-dba
+
+    PolicyCorpEntsrvProdDba:
+        Type: AWS::IAM::Policy
+        Properties:
+          PolicyName: corp-entsrv-prod-dba
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              Action:
+                - rds:ModifyDBInstance
+                - es:DescribeReservedElasticsearchInstances
+              Effect: Allow
+              Resource: "*"
+          Roles:
+              - Ref: RoleCorpEntsrvProdDba
