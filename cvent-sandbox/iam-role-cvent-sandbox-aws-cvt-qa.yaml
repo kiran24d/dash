@@ -1,0 +1,47 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Description
+Parameters:
+  AccountName:
+    Description: Name of the account this template is being deployed too
+    Type: String
+Resources:
+  AwsCvtQaAwsCvtDevsIamCreateRolePolicy:
+    Properties:
+      PolicyDocument:
+        Statement:
+        - Action: iam:CreateRole
+          Effect: Allow
+          Resource: '*'
+          Sid: VisualEditor0
+        Version: '2012-10-17'
+      PolicyName: cvent-sandbox-aws-cvt-devs-iam-create-role
+      Roles:
+      - Ref: AwsCvtQaRole
+    Type: AWS::IAM::Policy
+  AwsCvtQaRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action: sts:AssumeRoleWithSAML
+          Condition:
+            StringEquals:
+              SAML:aud: https://signin.aws.amazon.com/saml
+          Effect: Allow
+          Principal:
+            Federated: arn:aws:iam::572724207364:saml-provider/okta-idp
+        - Action: sts:AssumeRole
+          Condition: {}
+          Effect: Allow
+          Principal:
+            AWS: arn:aws:iam::667621734181:root
+        Version: '2012-10-17'
+      ManagedPolicyArns:
+      - arn:aws:iam::572724207364:policy/cvent-deny-vpc-changes
+      - arn:aws:iam::aws:policy/IAMReadOnlyAccess
+      - arn:aws:iam::572724207364:policy/iam-pass-policy
+      - arn:aws:iam::aws:policy/AmazonLexFullAccess
+      - arn:aws:iam::aws:policy/PowerUserAccess
+      MaxSessionDuration: 3600
+      Path: /
+      RoleName: aws-cvt-qa
+    Type: AWS::IAM::Role

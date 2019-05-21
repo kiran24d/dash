@@ -1,0 +1,274 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Create base IAM roles
+
+Resources:
+
+    InfosecRole:
+        Type: AWS::IAM::Role
+        Properties:
+            AssumeRolePolicyDocument: !Sub
+                |
+                {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+                      },
+                      "Action": "sts:AssumeRoleWithSAML",
+                      "Condition": {
+                        "StringEquals": {
+                          "SAML:aud": "https://signin.aws.amazon.com/saml"
+                        }
+                      }
+                    },
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "AWS": "arn:aws:iam::667621734181:root"
+                      },
+                      "Action": "sts:AssumeRole",
+                      "Condition": {}
+                    }
+                  ]
+                }
+            ManagedPolicyArns:
+                - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
+                - arn:aws:iam::aws:policy/AWSSupportAccess
+                - arn:aws:iam::aws:policy/IAMReadOnlyAccess
+                - arn:aws:iam::aws:policy/AWSCloudFormationReadOnlyAccess
+                - arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
+                - arn:aws:iam::aws:policy/service-role/AWSShieldDRTAccessPolicy
+            RoleName: aws-cvt-infosec
+
+    CventInfoSecPolicy:
+      Type: AWS::IAM::Policy
+      Properties:
+        PolicyName: cvent-infosec-policy
+        Roles: 
+          - !Ref InfosecRole
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - cloudwatch:*
+                - config:*
+                - events:*
+                - guardduty:*
+                - securityhub:*
+                - waf:*
+                # There is not a specific "AWS Shield" "Action" but there is a "AWSShieldDRTAccessPolicy" managed policy
+              Resource: "*"
+            - Effect: Allow
+              Action:
+                - ec2:DescribeAccountAttributes
+                - ec2:DescribeAddresses
+                - ec2:DescribeAvailabilityZones
+                - ec2:DescribeBundleTasks
+                - ec2:DescribeClassicLinkInstances
+                - ec2:DescribeConversionTasks
+                - ec2:DescribeCustomerGateways
+                - ec2:DescribeDhcpOptions
+                - ec2:DescribeEgressOnlyInternetGateways
+                - ec2:DescribeElasticGpus
+                - ec2:DescribeExportTasks
+                - ec2:DescribeFlowLogs
+                - ec2:DescribeFpgaImageAttribute
+                - ec2:DescribeFpgaImages
+                - ec2:DescribeHostReservationOfferings
+                - ec2:DescribeHostReservations
+                - ec2:DescribeHosts
+                - ec2:DescribeIamInstanceProfileAssociations
+                - ec2:DescribeIdentityIdFormat
+                - ec2:DescribeIdFormat
+                - ec2:DescribeImageAttribute
+                - ec2:DescribeImages
+                - ec2:DescribeImportImageTasks
+                - ec2:DescribeImportSnapshotTasks
+                - ec2:DescribeInstanceAttribute
+                - ec2:DescribeInstanceCreditSpecifications
+                - ec2:DescribeInstances
+                - ec2:DescribeInstanceStatus
+                - ec2:DescribeInternetGateways
+                - ec2:DescribeKeyPairs
+                - ec2:DescribeLaunchTemplates
+                - ec2:DescribeLaunchTemplateVersions
+                - ec2:DescribeMovingAddresses
+                - ec2:DescribeNatGateways
+                - ec2:DescribeNetworkAcls
+                - ec2:DescribeNetworkInterfaceAttribute
+                - ec2:DescribeNetworkInterfacePermissions
+                - ec2:DescribeNetworkInterfaces
+                - ec2:DescribePlacementGroups
+                - ec2:DescribePrefixLists
+                - ec2:DescribeRegions
+                - ec2:DescribeReservedInstances
+                - ec2:DescribeReservedInstancesListings
+                - ec2:DescribeReservedInstancesModifications
+                - ec2:DescribeReservedInstancesOfferings
+                - ec2:DescribeRouteTables
+                - ec2:DescribeScheduledInstanceAvailability
+                - ec2:DescribeScheduledInstances
+                - ec2:DescribeSecurityGroupReferences
+                - ec2:DescribeSecurityGroups
+                - ec2:DescribeSnapshotAttribute
+                - ec2:DescribeSnapshots
+                - ec2:DescribeSpotDatafeedSubscription
+                - ec2:DescribeSpotFleetInstances
+                - ec2:DescribeSpotFleetRequestHistory
+                - ec2:DescribeSpotFleetRequests
+                - ec2:DescribeSpotInstanceRequests
+                - ec2:DescribeSpotPriceHistory
+                - ec2:DescribeStaleSecurityGroups
+                - ec2:DescribeSubnets
+                - ec2:DescribeTags
+                - ec2:DescribeVolumeAttribute
+                - ec2:DescribeVolumes
+                - ec2:DescribeVolumesModifications
+                - ec2:DescribeVolumeStatus
+                - ec2:DescribeVpcAttribute
+                - ec2:DescribeVpcClassicLink
+                - ec2:DescribeVpcClassicLinkDnsSupport
+                - ec2:DescribeVpcEndpointConnectionNotifications
+                - ec2:DescribeVpcEndpointConnections
+                - ec2:DescribeVpcEndpoints
+                - ec2:DescribeVpcEndpointServiceConfigurations
+                - ec2:DescribeVpcEndpointServicePermissions
+                - ec2:DescribeVpcEndpointServices
+                - ec2:DescribeVpcPeeringConnections
+                - ec2:DescribeVpcs
+                - ec2:DescribeVpnConnections
+                - ec2:DescribeVpnGateways
+                - ec2:GetConsoleOutput
+                - ec2:GetHostReservationPurchasePreview
+                - ec2:GetLaunchTemplateData
+                - ec2:GetPasswordData
+                - ec2:GetReservedInstancesExchangeQuote
+                - iam:CreateServiceLinkedRole
+                - iam:GenerateCredentialReport
+                - iam:GenerateServiceLastAccessedDetails
+                - iam:GetAccessKeyLastUsed
+                - iam:GetAccountAuthorizationDetails
+                - iam:GetAccountPasswordPolicy
+                - iam:GetAccountSummary
+                - iam:GetContextKeysForCustomPolicy
+                - iam:GetContextKeysForPrincipalPolicy
+                - iam:GetCredentialReport
+                - iam:GetGroup
+                - iam:GetGroupPolicy
+                - iam:GetInstanceProfile
+                - iam:GetLoginProfile
+                - iam:GetOpenIDConnectProvider
+                - iam:GetPolicy
+                - iam:GetPolicyVersion
+                - iam:GetRole
+                - iam:GetRolePolicy
+                - iam:GetSAMLProvider
+                - iam:GetServerCertificate
+                - iam:GetServiceLastAccessedDetails
+                - iam:GetServiceLastAccessedDetailsWithEntities
+                - iam:GetServiceLinkedRoleDeletionStatus
+                - iam:GetSSHPublicKey
+                - iam:GetUser
+                - iam:GetUserPolicy
+                - iam:ListAccessKeys
+                - iam:ListAccountAliases
+                - iam:ListAttachedGroupPolicies
+                - iam:ListAttachedRolePolicies
+                - iam:ListAttachedUserPolicies
+                - iam:ListEntitiesForPolicy
+                - iam:ListGroupPolicies
+                - iam:ListGroups
+                - iam:ListGroupsForUser
+                - iam:ListInstanceProfiles
+                - iam:ListInstanceProfilesForRole
+                - iam:ListMFADevices
+                - iam:ListOpenIDConnectProviders
+                - iam:ListPolicies
+                - iam:ListPoliciesGrantingServiceAccess
+                - iam:ListPolicyVersions
+                - iam:ListRolePolicies
+                - iam:ListRoles
+                - iam:ListSAMLProviders
+                - iam:ListServerCertificates
+                - iam:ListServiceSpecificCredentials
+                - iam:ListSigningCertificates
+                - iam:ListSSHPublicKeys
+                - iam:ListUserPolicies
+                - iam:ListUsers
+                - iam:ListVirtualMFADevices
+                - iam:SimulateCustomPolicy
+                - iam:SimulatePrincipalPolicy
+                - lambda:GetAccountSettings
+                - lambda:GetAlias
+                - lambda:GetEventSourceMapping
+                - lambda:GetFunction
+                - lambda:GetFunctionConfiguration
+                - lambda:GetPolicy
+                - lambda:ListAliases
+                - lambda:ListEventSourceMappings
+                - lambda:ListFunctions
+                - lambda:ListTags
+                - lambda:ListVersionsByFunction
+                - s3:HeadBucket
+                - s3:ListAllMyBuckets
+                - s3:ListObjects
+                - sns:CheckIfPhoneNumberIsOptedOut
+                - sns:GetEndpointAttributes
+                - sns:GetPlatformApplicationAttributes
+                - sns:GetSMSAttributes
+                - sns:GetSubscriptionAttributes
+                - sns:GetTopicAttributes
+                - sns:ListEndpointsByPlatformApplication
+                - sns:ListPhoneNumbersOptedOut
+                - sns:ListPlatformApplications
+                - sns:ListSubscriptions
+                - sns:ListSubscriptionsByTopic
+                - sns:ListTopics
+                - trustedadvisor:DescribeCheckItems
+                - trustedadvisor:DescribeCheckRefreshStatuses
+                - trustedadvisor:DescribeCheckSummaries
+                - trustedadvisor:DescribeNotificationPreferences
+              Resource: "*"
+            - Effect: Allow
+              Action:
+                - ec2:GetConsoleScreenshot
+                - s3:GetAccelerateConfiguration
+                - s3:GetAnalyticsConfiguration
+                - s3:GetBucketAcl
+                - s3:GetBucketCORS
+                - s3:GetBucketLocation
+                - s3:GetBucketLogging
+                - s3:GetBucketNotification
+                - s3:GetBucketPolicy
+                - s3:GetBucketRequestPayment
+                - s3:GetBucketTagging
+                - s3:GetBucketVersioning
+                - s3:GetBucketWebsite
+                - s3:GetInventoryConfiguration
+                - s3:GetIpConfiguration
+                - s3:GetLifecycleConfiguration
+                - s3:GetMetricsConfiguration
+                - s3:GetReplicationConfiguration
+                - s3:ListBucket
+                - s3:ListBucketByTags
+                - s3:ListBucketMultipartUploads
+                - s3:ListBucketVersions
+              Resource:
+                - arn:aws:s3:::*
+                - arn:aws:ec2:*:*:instance/*
+            - Effect: Allow
+              Action:
+                - s3:GetObject
+                - s3:GetObjectAcl
+                - s3:GetObjectTagging
+                - s3:GetObjectTorrent
+                - s3:GetObjectVersion
+                - s3:GetObjectVersionAcl
+                - s3:GetObjectVersionForReplication
+                - s3:GetObjectVersionTagging
+                - s3:GetObjectVersionTorrent
+                - s3:ListMultipartUploadParts
+              Resource: arn:aws:s3:::*/*

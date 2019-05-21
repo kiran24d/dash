@@ -1,9 +1,10 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: Create base IAM roles
 
 Resources:
 
-  CouchbaseAdminRole:
+  AdminRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
@@ -22,5 +23,5 @@ Resources:
             Action: sts:AssumeRole
             Condition: {}
       ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/AmazonEC2FullAccess
-      RoleName: aws-cvt-couchbase-admin
+        - arn:aws:iam::aws:policy/AdministratorAccess
+      RoleName: aws-cvt-admins
