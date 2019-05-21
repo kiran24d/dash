@@ -21,6 +21,6 @@ Resources:
               AWS: arn:aws:iam::667621734181:root
             Action: sts:AssumeRole
             Condition: {}
-      # ManagedPolicyArns:
-      #   - arn:aws:iam::aws:policy/AmazonEC2FullAccess
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonEC2FullAccess
       RoleName: aws-cvt-couchbase-admin
