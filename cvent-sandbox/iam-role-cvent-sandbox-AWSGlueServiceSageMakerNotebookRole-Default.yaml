@@ -20,7 +20,7 @@ Resources:
       RoleName: AWSGlueServiceSageMakerNotebookRole-Default
     Type: AWS::IAM::Role
 
-    AwsCvtDevsPolicy:
+    AWSGlueServiceSageMakerNotebookPolicy:
       Type: AWS::IAM::Policy
       Properties:
         PolicyName: cvent-noc-policy
