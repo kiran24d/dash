@@ -34,3 +34,44 @@ Resources:
       Path: /
       RoleName: aws-cvt-devs
     Type: AWS::IAM::Role
+
+    CventNocPolicy:
+      Type: AWS::IAM::Policy
+      Properties:
+        PolicyName: cvent-noc-policy
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Action:
+              - s3:ListBucket
+            Effect: Allow
+            Resource:
+            - arn:aws:s3:::cvent-sandbox-datawarehouse-datadev
+          - Action:
+              - s3:GetObject
+              - s3:PutObject
+              - s3:DeleteObject
+            Effect: Allow
+            Resource:
+              - arn:aws:s3:::cvent-sandbox-datawarehouse-datadev*
+          - Action:
+              - logs:CreateLogStream
+              - logs:DescribeLogStreams
+              - logs:PutLogEvents
+              - logs:CreateLogGroup
+            Effect: Allow
+            Resource:
+              - arn:aws:logs:us-east-1:572724207364:log-group:/aws/sagemaker/*
+              - arn:aws:logs:us-east-1:572724207364:log-group:/aws/sagemaker/*:log-stream:aws-glue-*
+          - Action:
+              - glue:UpdateDevEndpoint
+              - glue:GetDevEndpoint
+              - glue:GetDevEndpoints
+            Effect: Allow
+            Resource:
+              - arn:aws:glue:us-east-1:572724207364:devEndpoint/datadev-devep-01*
+          - Action: comprehend:*
+            Effect: Allow
+            Resource: "*"
+        Roles:
+            - Ref: AwsCvtDevsRole
