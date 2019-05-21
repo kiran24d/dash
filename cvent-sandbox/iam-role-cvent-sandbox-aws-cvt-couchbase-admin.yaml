@@ -3,7 +3,7 @@ Description: Create base IAM roles
 
 Resources:
 
-  CouchbaseAdminRole:
+  AwsCvtCouchbaseAdminRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
@@ -21,6 +21,6 @@ Resources:
               AWS: arn:aws:iam::667621734181:root
             Action: sts:AssumeRole
             Condition: {}
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/AmazonEC2FullAccess
+      # ManagedPolicyArns:
+      #   - arn:aws:iam::aws:policy/AmazonEC2FullAccess
       RoleName: aws-cvt-couchbase-admin
