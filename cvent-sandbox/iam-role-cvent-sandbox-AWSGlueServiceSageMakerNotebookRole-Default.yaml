@@ -23,7 +23,7 @@ Resources:
     AWSGlueServiceSageMakerNotebookPolicy:
       Type: AWS::IAM::Policy
       Properties:
-        PolicyName: cvent-noc-policy
+        PolicyName: AWSGlueServiceSageMakerNotebook-policy
         PolicyDocument:
           Version: '2012-10-17'
           Statement:
