@@ -24,3 +24,4 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AmazonEC2FullAccess
       RoleName: aws-cvt-couchbase-admin
+
