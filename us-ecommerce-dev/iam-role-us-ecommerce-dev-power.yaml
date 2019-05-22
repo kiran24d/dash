@@ -1,0 +1,27 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Create base IAM roles
+
+Resources:
+
+  UsEcommerceDevPowerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Federated: !Sub arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso
+            Action: sts:AssumeRoleWithSAML
+            Condition:
+              StringEquals:
+                SAML:aud: https://signin.aws.amazon.com/saml
+          - Effect: Allow
+            Principal:
+              AWS: arn:aws:iam::667621734181:root
+            Action: sts:AssumeRole
+            Condition: {}
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/IAMReadOnlyAccess
+        - arn:aws:iam::aws:policy/PowerUserAccess
+      RoleName: us-ecommerce-dev-power
