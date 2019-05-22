@@ -1,11 +1,6 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: Description
 
-Parameters:
-  AccountName:
-    Description: Name of the account this template is being deployed too
-    Type: String
-
 Resources:
   AWSGlueServiceSageMakerNotebookRole:
     Properties:
@@ -17,7 +12,7 @@ Resources:
           Principal:
             Service: sagemaker.amazonaws.com
         Version: '2012-10-17'
-      RoleName: AWSGlueServiceSageMakerNotebookRole-Default
+      RoleName: AWSGlueServiceSageMakerNotebookRole-Data
     Type: AWS::IAM::Role
 
   AWSGlueServiceSageMakerNotebookPolicy:
@@ -55,7 +50,9 @@ Resources:
             Effect: Allow
             Resource:
               - arn:aws:glue:us-east-1:572724207364:devEndpoint/datadev-devep-01*
+              - arn:aws:glue:us-east-1:572724207364:devEndpoint/datadev-endpoint-01*
           - Action: comprehend:*
             Effect: Allow
             Resource: "*"
-        Roles: AWSGlueServiceSageMakerNotebookRoleAwsCvtDevsRole
+        Roles:
+          - !Ref AWSGlueServiceSageMakerNotebookRole
