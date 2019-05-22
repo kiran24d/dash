@@ -20,7 +20,7 @@ Resources:
       RoleName: AWSGlueServiceSageMakerNotebookRole-Default
     Type: AWS::IAM::Role
 
-    AWSGlueServiceSageMakerNotebookPolicy:
+  AWSGlueServiceSageMakerNotebookPolicy:
       Type: AWS::IAM::Policy
       Properties:
         PolicyName: AWSGlueServiceSageMakerNotebook-policy
