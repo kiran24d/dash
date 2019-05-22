@@ -55,6 +55,7 @@ Resources:
             Effect: Allow
             Resource:
               - arn:aws:glue:us-east-1:572724207364:devEndpoint/datadev-devep-01*
+              - arn:aws:glue:us-east-1:572724207364:devEndpoint/datadev-endpoint-01*
           - Action: comprehend:*
             Effect: Allow
             Resource: "*"
