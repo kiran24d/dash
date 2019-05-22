@@ -1,9 +1,9 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: Create base IAM roles
+Description: Create IAM role for couchbase admins
 
 Resources:
 
-  CouchbaseAdminRole:
+  AwsCvtCouchbaseAdminRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
@@ -11,7 +11,7 @@ Resources:
         Statement:
           - Effect: Allow
             Principal:
-              Federated: !Sub arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso
+              Federated: !Sub arn:aws:iam::${AWS::AccountId}:saml-provider/production-okta-sso
             Action: sts:AssumeRoleWithSAML
             Condition:
               StringEquals:
@@ -24,4 +24,3 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AmazonEC2FullAccess
       RoleName: aws-cvt-couchbase-admin
-

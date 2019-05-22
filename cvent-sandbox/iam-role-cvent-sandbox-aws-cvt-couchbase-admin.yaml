@@ -3,7 +3,7 @@ Description: Create base IAM roles
 
 Resources:
 
-  CouchbaseAdminRole:
+  AwsCvtCouchbaseAdminRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
