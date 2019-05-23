@@ -52,12 +52,12 @@ pipeline {
       steps {
         withCredentials([[
             $class: 'AmazonWebServicesCredentialsBinding',
-            credentialsId: 'cvent-management-shared-jenkins',
+            credentialsId: 'aws_cvent_management_dev',
         ]]) {
           script {
             findFiles(glob: '*/*/*/*.yaml').each {
               def (account, region, vpc, filename) = it.path.tokenize('/')
-
+              //echo it
               shortRegion = region.replace("-", "")
 
               s3Bucket = 'cvent-management-iaas-automation'
