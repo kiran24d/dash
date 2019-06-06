@@ -11,7 +11,7 @@ Resources:
         - arn:aws:iam::572724207364:policy/cvent-systems-manager-policy
 
   SystemsManagerProfile: 
-    Type: "AWS::IAM::InstanceProfile"
+    Type: AWS::IAM::InstanceProfile
     Properties:
       InstanceProfileName: cvent-systems-manager-profile
       Path: "/"
