@@ -209,7 +209,7 @@ pipeline {
                   This is a TEST RUN, Please Ignore
                   Hi ${user_fullname},
 
-                  Automatic updation cloudformation stacks in AWS account(s) failed for changes made by you to IAM roles.
+                  Automatic updation cloudformation stacks in AWS account(s) failed for changes made by you to ${service_name}.
                   Failed to update following files:
                   <ul>
                   ${list_failures}
@@ -221,15 +221,15 @@ pipeline {
                   Cloud Automation
                   """
                   email_to = "${user_email}"
-                  email_cc = "itautomation@cvent.com"
-                  email_subject = "Failed updating stacks for changes made to IAM roles"
+                  email_cc = 'itautomation@cvent.com'
+                  email_subject = "Failed updating stacks for changes made to ${service_name}"
                   try {
                       node('!master') {
                           emailext to: email_to, cc: email_cc, mimeType: 'text/html', subject: email_subject, body: email_message
                       }
                   }
                   catch (Exception ex) {
-                      log.error "Failed sending email notifications", [ 'cause': ex.message]
+                      log.error 'Failed sending email notifications', [ 'cause': ex.message]
                   }
               }
           }
