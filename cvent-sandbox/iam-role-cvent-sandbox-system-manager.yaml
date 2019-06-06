@@ -13,8 +13,7 @@ Resources:
   SystemsManagerProfile: 
     Type: "AWS::IAM::InstanceProfile"
     Properties:
-      InstanceProfileName: cvent-systems-manager-role
+      InstanceProfileName: cvent-systems-manager-profile
       Path: "/"
       Roles: 
-        - 
-          !Ref "cvent-systems-manager-role"
+        - !Ref SystemsManagerRole
