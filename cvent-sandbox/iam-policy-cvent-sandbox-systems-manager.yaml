@@ -3,7 +3,7 @@ AWSTemplateFormatVersion: 2010-09-09
 Description: Create a custom managed policy for systems manager. A custom policy is required to further restrict S3 permissions found in the default policy.
 
 Resources:
-    CventNocPolicy:
+    CventSystemsManagerPolicy:
       Type: AWS::IAM::ManagedPolicy
       Properties:
         PolicyName: cvent-systems-manager-policy
