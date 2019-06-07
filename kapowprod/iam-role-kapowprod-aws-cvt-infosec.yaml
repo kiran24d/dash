@@ -141,7 +141,7 @@ Resources:
           Resource: "*"
           Condition:
             StringLike:
-                iam:AWSServiceName: securityhub.amazonaws.com
+                iam:AWSServiceName: securityhub.amazonaws.com 
         - Effect: Allow
           Action:
             - s3:GetObjectVersionTorrent
