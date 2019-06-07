@@ -33,7 +33,9 @@ pipeline {
                 // def changeAuthors = currentBuild.changeSets.collect { set ->
                 //       set.collect { entry -> entry.author}//.fullName }
                 //     }.flatten()
-                log.info 'Build info', ['user_email': user_email, 'fullName': user_fullname]
+                jenkinsCops.whenDev {
+                    log.info 'Build info', ['user_email': user_email, 'fullName': user_fullname]
+                }
             }
         }
     }
@@ -104,7 +106,7 @@ pipeline {
         script {
             def s3Bucket = 'cvent-management-iaas-automation'
             def deploymentFolder = 'development'
-            if ("${env.JENKINS_URL}".toLowerCase().indexOf('-dev.') < 1) {
+            jenkinsCops.whenProd {
                 deploymentFolder = 'production'
             }
             def s3Path = "${deploymentFolder}/cloudformation/iam"
