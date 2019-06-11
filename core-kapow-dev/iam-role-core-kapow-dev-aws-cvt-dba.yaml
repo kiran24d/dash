@@ -5,7 +5,7 @@ Parameters:
     Description: The name of the AWS account this template is launched in.
     Type: String
 Resources:
-  Dba:
+  AwsCvtDba:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
@@ -34,6 +34,4 @@ Resources:
         - arn:aws:iam::aws:policy/AmazonRDSFullAccess
         - arn:aws:iam::aws:policy/AmazonRedshiftFullAccess
         - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
-      RoleName: !Sub
-        - "${Account}-dba"
-        - Account: !Ref AccountName
+      RoleName: aws-cvt-dba
