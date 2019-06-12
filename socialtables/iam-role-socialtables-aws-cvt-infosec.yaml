@@ -7,7 +7,7 @@ Parameters:
         Type: String
         Description: Name of the account this has been deployed on
 
-Resources: 
+Resources:
 
   AwsCvtInfosec:
     Type: AWS::IAM::Role
@@ -34,19 +34,19 @@ Resources:
 
   AwsCvtInfosecPolicy:
     Type: AWS::IAM::Policy
-    Properties: 
+    Properties:
       PolicyName:
         Fn::Join:
           - "-"
           -
             - !Ref AccountName
             - infosec
-      Roles: 
+      Roles:
         - !Ref AwsCvtInfosec
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
-        - 
+        -
           Effect: Allow
           Action:
             - apigateway:Get*
@@ -84,6 +84,7 @@ Resources:
             - es:*
             - firehose:*
             - fms:*
+            - glue:*
             - guardduty:*
             - iam:Generate*
             - iam:Get*
@@ -140,7 +141,7 @@ Resources:
           Resource: "*"
           Condition:
             StringLike:
-                iam:AWSServiceName: securityhub.amazonaws.com 
+                iam:AWSServiceName: securityhub.amazonaws.com
         - Effect: Allow
           Action:
             - s3:GetObjectVersionTorrent
@@ -154,4 +155,3 @@ Resources:
             - s3:GetObjectVersion
             - s3:ListMultipartUploadParts
           Resource: arn:aws:s3:::*/*
-          

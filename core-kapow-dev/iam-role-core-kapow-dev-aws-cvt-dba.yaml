@@ -5,7 +5,7 @@ Parameters:
     Description: The name of the AWS account this template is launched in.
     Type: String
 Resources:
-  Dba:
+  AwsCvtDba:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
@@ -34,6 +34,34 @@ Resources:
         - arn:aws:iam::aws:policy/AmazonRDSFullAccess
         - arn:aws:iam::aws:policy/AmazonRedshiftFullAccess
         - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
-      RoleName: !Sub
-        - "${Account}-dba"
-        - Account: !Ref AccountName
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/AWSLambdaReadOnlyAccess
+      RoleName: aws-cvt-dba
+
+  AwsCvtDbaPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: aws-cvt-dba-policy
+      Roles: 
+        - !Ref AwsCvtDba
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Sid: AllowCfnPermissions
+          Action:
+          - cloudformation:*
+          Effect: Allow
+          Resource: "*"
+        - Sid: AllowElasticSearchPermissions
+          Action:
+          - es:*
+          Effect: Allow
+          Resource: "*"
+        - Sid: AllowParameterStoreAccess
+          Action:
+          - ssm:Describe*
+          - ssm:Get*
+          - ssm:List*
+          - ssm:PutParameter
+          Effect: Allow
+          Resource: "*"
