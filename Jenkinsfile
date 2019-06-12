@@ -219,12 +219,12 @@ pipeline {
               update_failed_stacks = []
               supported_files.findAll { file -> file.endsWith('.yaml')}.each {
                   wf_requester = user_email.split('@')[0].toLowerCase()
-                  wf_ticket_number = 'ICR-2475'
+                  wf_ticket_number = ''
                   wf_created_for = 'Cloud Automation'
                   wf_business_service = 'Management Services'
                   wf_technical_service = 'cloudops jenkins'
                   wf_icr_branch_name = 'master'
-                  wf_repository_name = 'iam-dev'
+                  wf_repository_name = 'iam'
                   wf_branch_name = 'test'
                   wf_build_file_name = ''
                   wf_parameters_file_names = ''
