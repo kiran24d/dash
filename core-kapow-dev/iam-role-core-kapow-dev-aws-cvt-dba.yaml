@@ -35,6 +35,7 @@ Resources:
         - arn:aws:iam::aws:policy/AmazonRedshiftFullAccess
         - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
         - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/AWSLambdaReadOnlyAccess
       RoleName: aws-cvt-dba
 
   AwsCvtDbaPolicy:
@@ -49,5 +50,18 @@ Resources:
         - Sid: AllowCfnPermissions
           Action:
           - cloudformation:*
+          Effect: Allow
+          Resource: "*"
+        - Sid: AllowElasticSearchPermissions
+          Action:
+          - es:*
+          Effect: Allow
+          Resource: "*"
+        - Sid: AllowParameterStoreAccess
+          Action:
+          - ssm:Describe*
+          - ssm:Get*
+          - ssm:List*
+          - ssm:PutParameter
           Effect: Allow
           Resource: "*"
