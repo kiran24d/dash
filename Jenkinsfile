@@ -119,7 +119,7 @@ pipeline {
                           log.error "Encountered exception linting cloudformation stack ${it}"//, ['errors': errors_log]
                           def errors_log = readFile file: 'lint_error.log'
                           print(errors_log)
-                          sh 'rm -f lint_error.log || true'
+                          sh 'rm -f lint_error.log 2> /dev/null || true'
                       }
                   }
               }
@@ -169,7 +169,7 @@ pipeline {
                             log.error "Encountered exception yaml linting cloudformation stack ${it}"//, ['errors': errors_log]
                             def errors_log = readFile file: 'lint_error.log'
                             print(errors_log)
-                            sh 'rm -f lint_error.log || true'
+                            sh 'rm -f lint_error.log 2> /dev/null || true'
                         }
                     }
                 }
