@@ -30,14 +30,11 @@ pipeline {
           script {
                 user_email = sh script:'echo $(git show -s --pretty=%ae)', returnStdout: true
                 user_fullname = sh script:'echo $(git show -s --pretty=%an)', returnStdout: true
-                // def changeAuthors = currentBuild.changeSets.collect { set ->
-                //       set.collect { entry -> entry.author}//.fullName }
-                //     }.flatten()
+
+                config = readYaml file: 'ci-config.yaml'
                 jenkinsCops.whenDev {
                     log.info 'Build info', ['user_email': user_email, 'fullName': user_fullname]
                 }
-                // BaseUtils.set_id()
-                config = readYaml file: 'ci-config.yaml'
                 ignored_files = []
                 filesChanged = []
                 supported_files = []
@@ -90,7 +87,6 @@ pipeline {
           }
           steps {
             script {
-              // findFiles(glob: '**/*.yaml')
               def cfn_lint_errors = [:]
               def errored_out = false
               supported_files.findAll { file -> file.endsWith('.yaml') }.each {
@@ -220,19 +216,6 @@ pipeline {
         when { branch 'master' }
         steps {
           script {
-              // method: 1
-              // wf_someValue = 'sukh'
-              // _wf_args = [:]
-              // def response = BaseUtils.call_publish_wf()
-
-              // method: 2
-              // def base
-              // node ('master') {
-              //     base = load '/jenkins/scripts_cvent/common/base_methods.groovy'
-              // }
-              // base.call_publish_wf()
-
-              // method: 3
               update_failed_stacks = []
               supported_files.findAll { file -> file.endsWith('.yaml')}.each {
                   wf_requester = user_email.split('@')[0].toLowerCase()
@@ -328,7 +311,7 @@ pipeline {
                   email_subject = "Files that were ignored by CI/CD automation for changes made to ${service_name}"
                   try {
                       node('!master') {
-                          emailext to: email_to, mimeType: 'text/html', subject: email_subject, body: email_message //, cc: email_cc
+                          emailext to: email_to, mimeType: 'text/html', subject: email_subject, body: email_message, cc: email_cc
                       }
                   }
                   catch (Exception ex) {
@@ -358,7 +341,7 @@ pipeline {
                   email_subject = "Failed updating stacks for changes made to IAM roles"
                   try {
                       node('!master') {
-                          emailext to: email_to, mimeType: 'text/html', subject: email_subject, body: email_message //, cc: email_cc
+                          emailext to: email_to, mimeType: 'text/html', subject: email_subject, body: email_message, cc: email_cc
                       }
                   }
                   catch (Exception ex) {
@@ -381,13 +364,13 @@ pipeline {
           if (ignored_files.size() > 0) {
               errors += "*Ignored Files (requires manual updates):*"
               errors += ignored_files.collect {
-                  "* <https://stash/projects/OPS-AWS/repos/iam-dev/browse/${it}?at=refs%2Fheads%2F${env.BRANCH_NAME}|${it}> \n"
+                  "* <https://stash/projects/OPS-AWS/repos/iam/browse/${it}?at=refs%2Fheads%2F${env.BRANCH_NAME}|${it}> \n"
               }
           }
           if (update_failed_stacks.size() > 0) {
               errors += "*Failed updates:*"
               errors += update_failed_stacks.collect {
-                  "* <https://stash/projects/OPS-AWS/repos/iam-dev/browse/${it}?at=refs%2Fheads%2F${env.BRANCH_NAME}|${it}> \n"
+                  "* <https://stash/projects/OPS-AWS/repos/iam/browse/${it}?at=refs%2Fheads%2F${env.BRANCH_NAME}|${it}> \n"
               }
           }
           def slackMsg = "*OPS AWS - IAM Role*\n:interrobang::interrobang::interrobang:\n\n"
