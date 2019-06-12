@@ -34,4 +34,20 @@ Resources:
         - arn:aws:iam::aws:policy/AmazonRDSFullAccess
         - arn:aws:iam::aws:policy/AmazonRedshiftFullAccess
         - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
       RoleName: aws-cvt-dba
+
+  AwsCvtDbaPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: aws-cvt-dba-policy
+      Roles: 
+        - !Ref AwsCvtDba
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Sid: AllowCfnPermissions
+          Action:
+          - cloudformation:*
+          Effect: Allow
+          Resource: "*"
