@@ -5,10 +5,54 @@ IgnoreAccounts:
     # folder name in repo
     - aws-cc
     - cc-dev
+    - conference-development
+    - conference-production
+    - core-app-prod
+    - core-bt-dev
+    - core-cb-prod
+    - core-cdt-prod
+    - core-els-prod
+    - core-fnd-prod
+    - core-kapow-dev
+    - core-reinforce-dev
+    - core-reinforce-prod
+    - core-rmq-prod
+    - core-sec-prod
+    - core-tst-prod
+    - corp-datasys-dev
+    - corp-entsrv-dev
+    - corp-entsrv-prod
+    - cvent-development
+    - cvent-ebsprod
+    - cvent-integration
+    - cvent-management
+    - cvent-production
+    - cvent-production-legacy
+    - cvent-sandbox
+    - decision-street
+    - emi-development
+    - emi-production
+    - eu-ecommerce-prod
+    - kapowdev
+    - kapowprod
+    - lanyon-corporateit
+    - lanyon-ebspreprod
+    - lanyon-infracore
+    - lanyon-mobile
+    - lanyon-passkey
+    - lanyon-passkeydr
+    - lanyon-rolpreprod
+    - lanyon-rolprod
+    - lanyon-servicesprod
+    - quickmobile
+    - quickmobile-dev
+    - socialtables
+    - us-ecommerce-dev
+    - us-ecommerce-prod
+    - wedding-spot
 
 FilesToIgnore:
-    - 
+    
 
 IgnoreLintingErrors:
     # Only list accounts that are not already in "IgnoreAccounts"
-    - us-ecommerce-prod
