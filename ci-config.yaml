@@ -1,0 +1,14 @@
+# Configurations for CI automation
+---
+
+IgnoreAccounts:
+    # folder name in repo
+    - aws-cc
+    - cc-dev
+
+FilesToIgnore:
+    - us-ecommerce-dev/iam-role-us-ecommerce-dev-aws-cvt-test-admins.yaml
+
+IgnoreLintingErrors:
+    # Only list accounts that are not already in "IgnoreAccounts"
+    - us-ecommerce-prod
