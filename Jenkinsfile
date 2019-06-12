@@ -36,6 +36,12 @@ pipeline {
                 jenkinsCops.whenDev {
                     log.info 'Build info', ['user_email': user_email, 'fullName': user_fullname]
                 }
+                // BaseUtils.set_id()
+                config = readYaml file: 'ci-config.yaml'
+                ignored_files = []
+                filesChanged = []
+                supported_files = []
+                update_failed_stacks = []
             }
         }
     }
@@ -49,13 +55,29 @@ pipeline {
           script {
               filesChanged = BuildUtils.getFilesChanged(env.BRANCH_NAME)
               log.info "Changed files", ['files': filesChanged]
-              if (filesChanged.size() == 0) {
-                  error message: "No files were changed"
+              // filter files as per configurations
+              supported_files = []
+              ignored_files = []
+              filesChanged.findAll { file -> file.endsWith('.yaml') || file.endsWith('.json') }.each {
+                  def fileparts = it.split('/')
+                  if (fileparts.size() > 1) {
+                      if (config.IgnoreAccounts.contains(fileparts[0]) || config.FilesToIgnore.contains(it)) {
+                          ignored_files += it
+                      }
+                      else {
+                          supported_files += it
+                      }
+                  }
               }
+
+              log.info "Filtered files", ['ci_supported_files': supported_files, 'ignoredFiles': ignored_files]
           }
         }
     }
     stage ('Lint') {
+      when {
+          expression { return supported_files.size() > 0 }
+      }
       parallel {
         stage ('CF Lint templates') {
           agent {
@@ -69,8 +91,46 @@ pipeline {
           steps {
             script {
               // findFiles(glob: '**/*.yaml')
-              filesChanged.findAll { file -> file.endsWith('.yaml') }.each {
-                sh "cfn-lint-cvent ${it}"
+              def cfn_lint_errors = [:]
+              def errored_out = false
+              supported_files.findAll { file -> file.endsWith('.yaml') }.each {
+                  def lint_command = "cfn-lint-cvent ${it} 2>&1 > lint_error.log"
+                  def fileparts = it.split('/')
+                  if (fileparts.size() > 1) {
+                      // account name is inside skip linting errors
+                      if (config.IgnoreLintingErrors.contains(fileparts[0])) {
+                          lint_command += " || true"
+                      }
+                      try {
+                          def status = sh script: lint_command, returnStatus: true
+                          if (status != 0) {
+                              def output = readFile file: 'lint_error.log'
+                              print(output)
+                              cfn_lint_errors[it] = output
+                              if (output.startsWith('error')) {
+                                  log.error 'Cfn linting', ['out': output]
+                                  errored_out = true
+                              }
+                              else if (output.contains('warning')) {
+                                  log.warning 'Cfn linting', ['out': output]
+                              }
+                              else if (output.size() > 0) {
+                                  log.info 'Cfn linting', ['out': output]
+                              }
+                          }
+                      }
+                      catch (Exception ex) {
+                          log.error "Encountered exception linting cloudformation stack ${it}"//, ['errors': errors_log]
+                          def errors_log = readFile file: 'lint_error.log'
+                          print(errors_log)
+                          sh 'rm -f lint_error.log || true'
+                      }
+                  }
+              }
+              if (cfn_lint_errors.size() > 0) {
+                  if(errored_out) {
+                      currentBuild.result = 'FAILED'
+                  }
               }
             }
           }
@@ -86,9 +146,41 @@ pipeline {
           }
           steps {
             script {
+                def yaml_lint_errors = [:]
+                def errored_out = false
                 rules = "{extends: relaxed, rules: {line-length: {max: 120}, new-line-at-end-of-file: disable}}"
-                filesChanged.findAll { file -> file.endsWith('.yaml') }.each {
-                  sh "yamllint -d \"${rules}\" ${it}"
+                supported_files.findAll { file -> file.endsWith('.yaml') }.each {
+                    def lint_command = "yamllint -d \"${rules}\" ${it} 2>&1"
+                    def fileparts = it.split('/')
+                    if (fileparts.size() > 1) {
+                        // account name is inside skip linting errors
+                        if (config.IgnoreLintingErrors.contains(fileparts[0])) {
+                            lint_command += " || true"
+                        }
+                        try {
+                            def output = sh script: lint_command, returnStdout: true
+                            print(output)
+                            yaml_lint_errors[it] += output
+                            if (output.contains('error')) {
+                                log.error 'Yaml linting', ['out': output.split('\n')]
+                                errored_out = true
+                            }
+                            else if (output.contains('warning')) {
+                                log.warning 'Yaml linting', ['out': output.split('\n')]
+                            }
+                        }
+                        catch (Exception ex) {
+                            log.error "Encountered exception yaml linting cloudformation stack ${it}"//, ['errors': errors_log]
+                            def errors_log = readFile file: 'lint_error.log'
+                            print(errors_log)
+                            sh 'rm -f lint_error.log || true'
+                        }
+                    }
+                }
+                if (yaml_lint_errors.size() > 0) {
+                    if (errored_out) {
+                        currentBuild.result = 'FAILED'
+                    }
                 }
             }
           }
@@ -110,7 +202,7 @@ pipeline {
                 deploymentFolder = 'production'
             }
             def s3Path = "${deploymentFolder}/cloudformation/iam"
-            filesChanged.findAll { file -> file.endsWith('.yaml') || file.endsWith('.json') }.each {
+            supported_files.findAll { file -> file.endsWith('.yaml') || file.endsWith('.json') }.each {
                 awsCmd description: "Copy files to s3 bucket",
                     command: "aws s3 cp \"${it}\" \"s3://${s3Bucket}/${s3Path}/${it}\"",
                     account: 'cvent-management',
@@ -128,16 +220,29 @@ pipeline {
         when { branch 'master' }
         steps {
           script {
+              // method: 1
+              // wf_someValue = 'sukh'
+              // _wf_args = [:]
+              // def response = BaseUtils.call_publish_wf()
+
+              // method: 2
+              // def base
+              // node ('master') {
+              //     base = load '/jenkins/scripts_cvent/common/base_methods.groovy'
+              // }
+              // base.call_publish_wf()
+
+              // method: 3
               update_failed_stacks = []
-              filesChanged.findAll { file -> file.endsWith('.yaml')}.each {
-                  def wf_requester = user_email.split('@')[0].toLowerCase()
-                  wf_ticket_number = ''
+              supported_files.findAll { file -> file.endsWith('.yaml')}.each {
+                  wf_requester = user_email.split('@')[0].toLowerCase()
+                  wf_ticket_number = 'ICR-2475'
                   wf_created_for = 'Cloud Automation'
                   wf_business_service = 'Management Services'
                   wf_technical_service = 'cloudops jenkins'
                   wf_icr_branch_name = 'master'
-                  wf_repository_name = 'iam'
-                  wf_branch_name = 'master'
+                  wf_repository_name = 'iam-dev'
+                  wf_branch_name = 'test'
                   wf_build_file_name = ''
                   wf_parameters_file_names = ''
                   wf_nested_parameters = ''
@@ -198,41 +303,69 @@ pipeline {
         when { branch 'master' }
         steps {
           script {
-              // filesChanged
-              // errors = BuildUtils.errorStepUrls.collect {
-              //   "<${it.url}|${it.display}>"
-              // }
-              if (update_failed_stacks.size() != 0) {
-                  service_name = 'IAM roles'
-                  list_failures = update_failed_stacks.each{
-                      return "<li>${it.file} : <a href=\"${it.BUILD_URL}\">${it.job}#${it.Build_Number}</a></li>"
-                  }
-                  email_message = """
-                  This is a TEST RUN, Please Ignore
-                  Hi ${user_fullname},
+              def service_name = 'IAM roles'
+              def email_to = "${user_email}"
+              def email_cc = 'itautomation@cvent.com'
+              def email_subject = "Encountered an issue during CI/CD automation for ${service_name}"
+              if (ignored_files != null && ignored_files.size() > 0) {
+                  def list_ignored = ignored_files.each {
+                          return "<li>${it}</li>"
+                      }.join(' ')
+                  def email_message = """
+                  Hi ${user_fullname.trim()},<br><br>
 
-                  Automatic updation cloudformation stacks in AWS account(s) failed for changes made by you to ${service_name}.
-                  Failed to update following files:
+                  <p>Automatic updation of cloudformation stacks in AWS account(s) not supported for changes made by you to ${service_name}.
+                  Files/stacks that were ignored by CI/CD automation are as listed below:</p>
                   <ul>
-                  ${list_failures}
-                  </ul>
+                  ${list_ignored}
+                  </ul><br>
 
-                  Changes made will have to be manually pushed. Please bear with us while one of our engineer makes time to rectify and implement the change.
+                  <p>Changes made will have to be manually pushed. Please bear with us while one of our engineers makes time to implement the change.</p><br><br>
 
-                  Thanks,
-                  Cloud Automation
+                  <p>Thanks,<br>
+                  Cloud Automation</p>
                   """
-                  email_to = "${user_email}"
-                  email_cc = 'itautomation@cvent.com'
-                  email_subject = "Failed updating stacks for changes made to ${service_name}"
+                  email_subject = "Files that were ignored by CI/CD automation for changes made to ${service_name}"
                   try {
                       node('!master') {
-                          emailext to: email_to, cc: email_cc, mimeType: 'text/html', subject: email_subject, body: email_message
+                          emailext to: email_to, mimeType: 'text/html', subject: email_subject, body: email_message //, cc: email_cc
                       }
                   }
                   catch (Exception ex) {
-                      log.error 'Failed sending email notifications', [ 'cause': ex.message]
+                      log.error "Failed sending email notifications for ignored files", [ 'cause': ex.message]
                   }
+                  log.error 'This build contains files/stacks that were ignored by CI/CD', ['ignoredFiles': ignored_files]
+                  currentBuild.result = 'FAILURE'
+              }
+              if (update_failed_stacks != null && update_failed_stacks.size() != 0) {
+                  def list_failures = update_failed_stacks.each{
+                          return "<li>${it.file} : <a href=\"${it.BUILD_URL}\">${it.job}#${it.Build_Number}</a></li>"
+                      }.join(' ')
+                  def email_message = """
+                  Hi ${user_fullname.trim()},<br><br>
+
+                  <p>Automatic updation of cloudformation stacks in AWS account(s) failed for changes made by you to ${service_name}.
+                  Failed to update following files:</p>
+                  <ul>
+                  ${list_failures}
+                  </ul><br>
+
+                  <p>Changes made will have to be manually pushed. Please bear with us while one of our engineers makes time to rectify and implement the change.</p><br><br>
+
+                  <p>Thanks,<br>
+                  Cloud Automation</p>
+                  """
+                  email_subject = "Failed updating stacks for changes made to IAM roles"
+                  try {
+                      node('!master') {
+                          emailext to: email_to, mimeType: 'text/html', subject: email_subject, body: email_message //, cc: email_cc
+                      }
+                  }
+                  catch (Exception ex) {
+                      log.error "Failed sending email notifications for failed updates", [ 'cause': ex.message]
+                  }
+                  log.error 'This build contains files/stacks that failed updation on AWS end by CI/CD', ['update_failed': update_failed_stacks]
+                  currentBuild.result = 'FAILURE'
               }
           }
       }
@@ -242,22 +375,35 @@ pipeline {
     failure {
       script {
         if (env.BRANCH_NAME == 'master') {
-          errors = BuildUtils.errorStepUrls.collect {
-            "<${it.url}|${it.display}>"
+          def errors = BuildUtils.errorStepUrls.collect {
+            "* <${it.url}|${it.display}>"
           }
-
-          slackSend message: "OPS AWS - IAM role update <${env.BUILD_URL}|build> failed in the following steps:\n${errors.join('\n')}",
+          if (ignored_files.size() > 0) {
+              errors += "*Ignored Files (requires manual updates):*"
+              errors += ignored_files.collect {
+                  "* <https://stash/projects/OPS-AWS/repos/iam-dev/browse/${it}?at=refs%2Fheads%2F${env.BRANCH_NAME}|${it}> \n"
+              }
+          }
+          if (update_failed_stacks.size() > 0) {
+              errors += "*Failed updates:*"
+              errors += update_failed_stacks.collect {
+                  "* <https://stash/projects/OPS-AWS/repos/iam-dev/browse/${it}?at=refs%2Fheads%2F${env.BRANCH_NAME}|${it}> \n"
+              }
+          }
+          def slackMsg = "*OPS AWS - IAM Role*\n:interrobang::interrobang::interrobang:\n\n"
+          slackMsg += "<${env.BUILD_URL}|Build> to update cloudformation stacks for IAM roles failed in the following steps:\n${errors.join('\n')}"
+          slackSend message: slackMsg,
                     color: 'danger',
-                    channel: '#test-cloud-auto-iam'
+                    channel: '#cloud-auto-testing'
         }
       }
     }
     fixed {
       script {
         if (env.BRANCH_NAME == 'master') {
-          slackSend message: "Ops AWS - IAM role update  <${env.BUILD_URL}|build> succeeded",
-                    color: 'good',
-                    channel: '#test-cloud-auto-iam'
+            def slackMsg = "*OPS AWS - IAM Role*\n:white_check_mark::white_check_mark::white_check_mark:\n\n"
+            slackMsg += "<${env.BUILD_URL}|Build> to update cloudformation stacks for IAM roles succeeded"
+            slackSend message: slackMsg,color: 'good',channel: '#test-cloud-auto-iam'
         }
       }
     }
