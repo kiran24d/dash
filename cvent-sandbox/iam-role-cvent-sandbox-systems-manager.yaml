@@ -6,6 +6,15 @@ Resources:
   SystemsManagerRole:
     Type: AWS::IAM::Role
     Properties:
+      AssumeRolePolicyDocument: 
+        Version: "2012-10-17"
+        Statement: 
+          - Effect: Allow
+            Action: 
+              - "sts:AssumeRole"
+            Principal: 
+              Service: 
+                - ec2.amazonaws.com
       RoleName: cvent-systems-manager-role
       ManagedPolicyArns:
         - arn:aws:iam::572724207364:policy/cvent-systems-manager-policy
