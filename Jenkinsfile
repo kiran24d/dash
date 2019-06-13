@@ -58,7 +58,7 @@ pipeline {
               filesChanged.findAll { file -> file.endsWith('.yaml') || file.endsWith('.json') }.each {
                   def fileparts = it.split('/')
                   if (fileparts.size() > 1) {
-                      if (((config.IgnoreAccounts != null && config.IgnoreAccounts.contains(fileparts[0])) || (config.FilesToIgnore != null && config.FilesToIgnore.contains(it))) {
+                      if ((config.IgnoreAccounts != null && config.IgnoreAccounts.contains(fileparts[0])) || (config.FilesToIgnore != null && config.FilesToIgnore.contains(it))) {
                           ignored_files += it
                       }
                       else {
@@ -197,7 +197,7 @@ pipeline {
             jenkinsCops.whenProd {
                 deploymentFolder = 'production'
             }
-            def s3Path = "${deploymentFolder}/cloudformation/security-group"
+            def s3Path = "${deploymentFolder}/cloudformation/iam"
             supported_files.findAll { file -> file.endsWith('.yaml') || file.endsWith('.json') }.each {
                 awsCmd description: "Copy files to s3 bucket",
                     command: "aws s3 cp \"${it}\" \"s3://${s3Bucket}/${s3Path}/${it}\"",
@@ -224,7 +224,7 @@ pipeline {
                   wf_business_service = 'Management Services'
                   wf_technical_service = 'cloudops jenkins'
                   wf_icr_branch_name = 'master'
-                  wf_repository_name = 'security-groups'
+                  wf_repository_name = 'iam'
                   wf_branch_name = 'test'
                   wf_build_file_name = ''
                   wf_parameters_file_names = ''
@@ -286,7 +286,7 @@ pipeline {
         when { branch 'master' }
         steps {
           script {
-              def service_name = 'Security Groups'
+              def service_name = 'IAM roles'
               def email_to = "${user_email}"
               def email_cc = 'itautomation@cvent.com'
               def email_subject = "Encountered an issue during CI/CD automation for ${service_name}"
@@ -364,17 +364,17 @@ pipeline {
           if (ignored_files.size() > 0) {
               errors += "*Ignored Files (requires manual updates):*"
               errors += ignored_files.collect {
-                  "* <https://stash/projects/OPS-AWS/repos/security-groups/browse/${it}?at=refs%2Fheads%2F${env.BRANCH_NAME}|${it}> \n"
+                  "* <https://stash/projects/OPS-AWS/repos/iam/browse/${it}?at=refs%2Fheads%2F${env.BRANCH_NAME}|${it}> \n"
               }
           }
           if (update_failed_stacks.size() > 0) {
               errors += "*Failed updates:*"
               errors += update_failed_stacks.collect {
-                  "* <https://stash/projects/OPS-AWS/repos/security-groups/browse/${it}?at=refs%2Fheads%2F${env.BRANCH_NAME}|${it}> \n"
+                  "* <https://stash/projects/OPS-AWS/repos/iam/browse/${it}?at=refs%2Fheads%2F${env.BRANCH_NAME}|${it}> \n"
               }
           }
-          def slackMsg = "*OPS AWS - Security Groups*\n:interrobang::interrobang::interrobang:\n\n"
-          slackMsg += "<${env.BUILD_URL}|Build> to update cloudformation stacks for Security Groups failed in the following steps:\n${errors.join('\n')}"
+          def slackMsg = "*OPS AWS - IAM Role*\n:interrobang::interrobang::interrobang:\n\n"
+          slackMsg += "<${env.BUILD_URL}|Build> to update cloudformation stacks for IAM roles failed in the following steps:\n${errors.join('\n')}"
           slackSend message: slackMsg,
                     color: 'danger',
                     channel: '#cloud-auto-testing'
@@ -384,9 +384,9 @@ pipeline {
     fixed {
       script {
         if (env.BRANCH_NAME == 'master') {
-            def slackMsg = "*OPS AWS - Security Groups*\n:white_check_mark::white_check_mark::white_check_mark:\n\n"
-            slackMsg += "<${env.BUILD_URL}|Build> to update cloudformation stacks for Security Groups succeeded"
-            slackSend message: slackMsg,color: 'good',channel: '#test-cloud-auto-iam'
+            def slackMsg = "*OPS AWS - IAM Role*\n:white_check_mark::white_check_mark::white_check_mark:\n\n"
+            slackMsg += "<${env.BUILD_URL}|Build> to update cloudformation stacks for IAM roles succeeded"
+            slackSend message: slackMsg,color: 'good',channel: '#cloud-auto-testing'
         }
       }
     }
