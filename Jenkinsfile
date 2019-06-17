@@ -55,7 +55,7 @@ pipeline {
               // filter files as per configurations
               supported_files = []
               ignored_files = []
-              filesChanged.findAll { file -> file.endsWith('.yaml') || file.endsWith('.json') }.each {
+              filesChanged.findAll { file -> fileExists(file) && (file.endsWith('.yaml') || file.endsWith('.json')) }.each {
                   def fileparts = it.split('/')
                   if (fileparts.size() > 1) {
                       if ((config.IgnoreAccounts != null && config.IgnoreAccounts.contains(fileparts[0])) || (config.FilesToIgnore != null && config.FilesToIgnore.contains(it))) {
@@ -89,7 +89,7 @@ pipeline {
             script {
               def cfn_lint_errors = [:]
               def errored_out = false
-              supported_files.findAll { file -> file.endsWith('.yaml') }.each {
+              supported_files.findAll { file -> fileExists(file) && file.endsWith('.yaml') }.each {
                   def lint_command = "cfn-lint-cvent ${it} 2>&1 > lint_error.log"
                   def fileparts = it.split('/')
                   if (fileparts.size() > 1) {
@@ -145,7 +145,7 @@ pipeline {
                 def yaml_lint_errors = [:]
                 def errored_out = false
                 rules = "{extends: relaxed, rules: {line-length: {max: 120}, new-line-at-end-of-file: disable}}"
-                supported_files.findAll { file -> file.endsWith('.yaml') }.each {
+                supported_files.findAll { file -> fileExists(file) && file.endsWith('.yaml') }.each {
                     def lint_command = "yamllint -d \"${rules}\" ${it} 2>&1"
                     def fileparts = it.split('/')
                     if (fileparts.size() > 1) {
@@ -198,7 +198,7 @@ pipeline {
                 deploymentFolder = 'production'
             }
             def s3Path = "${deploymentFolder}/cloudformation/iam"
-            supported_files.findAll { file -> file.endsWith('.yaml') || file.endsWith('.json') }.each {
+            supported_files.findAll { file -> fileExists(file) && (file.endsWith('.yaml') || file.endsWith('.json')) }.each {
                 awsCmd description: "Copy files to s3 bucket",
                     command: "aws s3 cp \"${it}\" \"s3://${s3Bucket}/${s3Path}/${it}\"",
                     account: 'cvent-management',
@@ -217,7 +217,7 @@ pipeline {
         steps {
           script {
               update_failed_stacks = []
-              supported_files.findAll { file -> file.endsWith('.yaml')}.each {
+              supported_files.findAll { file -> fileExists(file) && file.endsWith('.yaml')}.each {
                   wf_requester = user_email.split('@')[0].toLowerCase()
                   wf_ticket_number = ''
                   wf_created_for = 'Cloud Automation'
