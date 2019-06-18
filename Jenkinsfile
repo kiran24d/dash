@@ -225,7 +225,7 @@ pipeline {
                   wf_technical_service = 'cloudops jenkins'
                   wf_icr_branch_name = 'master'
                   wf_repository_name = 'iam'
-                  wf_branch_name = 'test'
+                  wf_branch_name = 'master'
                   wf_build_file_name = ''
                   wf_parameters_file_names = ''
                   wf_nested_parameters = ''
