@@ -65,3 +65,10 @@ Resources:
           - ssm:PutParameter
           Effect: Allow
           Resource: "*"
+        - Sid: AwsCvtDbaKmsPolicy
+          Action:
+          - kms:GenerateDataKey
+          - kms:Decrypt
+          Effect: Allow
+          Resource: "*"
+
