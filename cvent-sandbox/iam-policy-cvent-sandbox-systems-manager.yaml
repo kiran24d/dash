@@ -6,7 +6,7 @@ Resources:
     CventSystemsManagerPolicy:
       Type: AWS::IAM::ManagedPolicy
       Properties:
-        PolicyName: cvent-systems-manager-policy
+        ManagedPolicyName: cvent-systems-manager-policy
         PolicyDocument:
           Version: '2012-10-17'
           Statement:
@@ -27,6 +27,7 @@ Resources:
                 - ssm:UpdateInstanceAssociationStatus
                 - ssm:UpdateInstanceInformation
               Resource: "*"
+
             - Effect: Allow
               Action:
                 - ssmmessages:CreateControlChannel
@@ -34,6 +35,7 @@ Resources:
                 - ssmmessages:OpenControlChannel
                 - ssmmessages:OpenDataChannel
               Resource: "*"
+
             - Effect: Allow
               Action:
                 - ec2messages:AcknowledgeMessage
@@ -43,19 +45,23 @@ Resources:
                 - ec2messages:GetMessages
                 - ec2messages:SendReply
               Resource: "*"
+
             - Effect: Allow
               Action:
                 - cloudwatch:PutMetricData
               Resource: "*"
+
             - Effect: Allow
               Action:
                 - ec2:DescribeInstanceStatus
               Resource: "*"
+
             - Effect: Allow
               Action:
                 - ds:CreateComputer
                 - ds:DescribeDirectories
               Resource: "*"
+
             - Effect: Allow
               Action:
                 - logs:CreateLogGroup
@@ -64,9 +70,10 @@ Resources:
                 - logs:DescribeLogStreams
                 - logs:PutLogEvents
               Resource: "*"
+
             - Effect: Allow
-              Principal: "*"
-              Action: s3:GetObject
+              Action: 
+                - s3:GetObject
               Resource:
                 - arn:aws:s3:::aws-ssm-us-east-1/*
                 - arn:aws:s3:::aws-windows-downloads-us-east-1/*
