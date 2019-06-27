@@ -1,0 +1,32 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Description
+Parameters:
+  AccountName:
+    Description: Name of the account this template is being deployed too
+    Type: String
+Resources:
+  AwsCvtInfosecRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action: sts:AssumeRoleWithSAML
+          Condition:
+            StringEquals:
+              SAML:aud: https://signin.aws.amazon.com/saml
+          Effect: Allow
+          Principal:
+            Federated: arn:aws:iam::504055967630:saml-provider/development-okta-sso
+        - Action: sts:AssumeRole
+          Condition: {}
+          Effect: Allow
+          Principal:
+            AWS: arn:aws:iam::667621734181:root
+        Version: '2012-10-17'
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/AWSLambdaFullAccess
+      - arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
+      - arn:aws:iam::504055967630:policy/cvent-infosec-policy
+      MaxSessionDuration: 3600
+      Path: /
+      RoleName: aws-cvt-infosec
+    Type: AWS::IAM::Role

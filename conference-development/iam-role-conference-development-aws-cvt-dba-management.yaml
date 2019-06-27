@@ -1,0 +1,24 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Description
+Parameters:
+  AccountName:
+    Description: Name of the account this template is being deployed too
+    Type: String
+Resources:
+  AwsCvtDbaManagementRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action: sts:AssumeRole
+          Effect: Allow
+          Principal:
+            AWS: arn:aws:iam::667621734181:user/cvent-management-dba-utility
+        Version: '2012-10-17'
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/AmazonRDSFullAccess
+      - arn:aws:iam::aws:policy/CloudWatchFullAccess
+      - arn:aws:iam::118122180901:policy/cvent-dba-management-policy
+      MaxSessionDuration: 3600
+      Path: /
+      RoleName: aws-cvt-dba-management
+    Type: AWS::IAM::Role

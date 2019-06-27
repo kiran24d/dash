@@ -1,0 +1,53 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Description
+Parameters:
+  AccountName:
+    Description: Name of the account this template is being deployed too
+    Type: String
+Resources:
+  AwsCvtDbaAwsCvtDbaPolicy:
+    Properties:
+      PolicyDocument:
+        Statement:
+        - Action:
+          - es:DescribeReservedElasticsearchInstances
+          - rds:ModifyDBInstance
+          Effect: Allow
+          Resource: '*'
+        Version: '2012-10-17'
+      PolicyName: conference-development-aws-cvt-dba
+      Roles:
+      - Ref: AwsCvtDbaRole
+    Type: AWS::IAM::Policy
+  AwsCvtDbaRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action: sts:AssumeRoleWithSAML
+          Condition:
+            StringEquals:
+              SAML:aud: https://signin.aws.amazon.com/saml
+          Effect: Allow
+          Principal:
+            Federated: arn:aws:iam::118122180901:saml-provider/okta-sso
+        - Action: sts:AssumeRole
+          Condition: {}
+          Effect: Allow
+          Principal:
+            AWS: arn:aws:iam::667621734181:root
+        Version: '2012-10-17'
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/AmazonRDSFullAccess
+      - arn:aws:iam::118122180901:policy/cvent-cloudformation-write
+      - arn:aws:iam::aws:policy/job-function/SupportUser
+      - arn:aws:iam::aws:policy/AmazonEC2FullAccess
+      - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
+      - arn:aws:iam::aws:policy/AmazonS3FullAccess
+      - arn:aws:iam::118122180901:policy/cvent-powerusers-policy
+      - arn:aws:iam::118122180901:policy/aws-assume-iamrole
+      - arn:aws:iam::aws:policy/AWSSupportAccess
+      - arn:aws:iam::aws:policy/AWSCloudFormationReadOnlyAccess
+      MaxSessionDuration: 3600
+      Path: /
+      RoleName: aws-cvt-dba
+    Type: AWS::IAM::Role

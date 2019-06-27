@@ -1,0 +1,45 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Description
+Parameters:
+  AccountName:
+    Description: Name of the account this template is being deployed too
+    Type: String
+Resources:
+  AwsCvtAppsupportAwsCvtAppsupportPolicyPolicy:
+    Properties:
+      PolicyDocument:
+        Statement:
+        - Action:
+          - elasticloadbalancing:*
+          Effect: Allow
+          Resource: '*'
+          Sid: Stmt1553198600742
+        Version: '2012-10-17'
+      PolicyName: cvent-development-aws-cvt-appsupport-policy
+      Roles:
+      - Ref: AwsCvtAppsupportRole
+    Type: AWS::IAM::Policy
+  AwsCvtAppsupportRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action: sts:AssumeRoleWithSAML
+          Condition:
+            StringEquals:
+              SAML:aud: https://signin.aws.amazon.com/saml
+          Effect: Allow
+          Principal:
+            Federated: arn:aws:iam::504055967630:saml-provider/development-okta-sso
+        - Action: sts:AssumeRole
+          Condition: {}
+          Effect: Allow
+          Principal:
+            AWS: arn:aws:iam::667621734181:root
+        Version: '2012-10-17'
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
+      - arn:aws:iam::aws:policy/ReadOnlyAccess
+      MaxSessionDuration: 43200
+      Path: /
+      RoleName: aws-cvt-appsupport
+    Type: AWS::IAM::Role
