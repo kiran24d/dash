@@ -1,0 +1,20 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: Create base IAM roles
+
+Resources:
+
+  KpwNonprodS3CopyRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              - AWS: arn:aws:iam::791439489411:user/xb-s3-user
+              - AWS: arn:aws:iam::791439489411:user/cp-s3-user
+              - AWS: arn:aws:iam::791439489411:user/charon-s3-user
+              - AWS: arn:aws:iam::791439489411:user/gemini-s3-user
+            Action: sts:AssumeRole
+      RoleName: kpw-nonprod-s3-copy
