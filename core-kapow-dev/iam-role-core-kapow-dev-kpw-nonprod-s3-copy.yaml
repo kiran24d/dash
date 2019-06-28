@@ -1,0 +1,54 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: Create base IAM roles
+
+Resources:
+
+  KpwNonprodS3CopyRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              - AWS: arn:aws:iam::791439489411:user/s3-copy-user
+            Action: sts:AssumeRole
+      Policies:
+        -
+          PolicyName: KpwNonprodS3CopyPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Effect: "Allow"
+                Action:
+                  - s3:Get*
+                  - s3:List*
+                  - s3:PutObject
+                Resource:
+                  - "arn:aws:s3:::xb-assets-nonprod-us-east-1/*"
+                  - "arn:aws:s3:::xb-assets-nonprod-us-east-1"
+                  - "arn:aws:s3:::xb-assets-qa-us-east-1/*"
+                  - "arn:aws:s3:::xb-assets-qa-us-east-1"
+                  - "arn:aws:s3:::xb-assets-staging-us-east-1/*"
+                  - "arn:aws:s3:::xb-assets-staging-us-east-1"
+                  - "arn:aws:s3:::gemini-assets-nonprod-us-east-1/*"
+                  - "arn:aws:s3:::gemini-assets-nonprod-us-east-1"
+                  - "arn:aws:s3:::gemini-assets-qa-us-east-1/*"
+                  - "arn:aws:s3:::gemini-assets-qa-us-east-1"
+                  - "arn:aws:s3:::gemini-assets-staging-us-east-1/*"
+                  - "arn:aws:s3:::gemini-assets-staging-us-east-1"
+                  - "arn:aws:s3:::charon-assets-nonprod-us-east-1/*"
+                  - "arn:aws:s3:::charon-assets-nonprod-us-east-1"
+                  - "arn:aws:s3:::charon-assets-qa-us-east-1/*"
+                  - "arn:aws:s3:::charon-assets-qa-us-east-1"
+                  - "arn:aws:s3:::charon-assets-staging-us-east-1/*"
+                  - "arn:aws:s3:::charon-assets-staging-us-east-1"
+                  - "arn:aws:s3:::cp-assets-nonprod-us-east-1/*"
+                  - "arn:aws:s3:::cp-assets-nonprod-us-east-1"
+                  - "arn:aws:s3:::cp-assets-qa-us-east-1/*"
+                  - "arn:aws:s3:::cp-assets-qa-us-east-1"
+                  - "arn:aws:s3:::cp-assets-staging-us-east-1/*"
+                  - "arn:aws:s3:::cp-assets-staging-us-east-1"
+      RoleName: kpw-nonprod-s3-copy
