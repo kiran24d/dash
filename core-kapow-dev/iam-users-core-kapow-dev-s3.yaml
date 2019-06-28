@@ -53,6 +53,25 @@ Resources:
           - "-"
           - - !FindInMap [AccountMap, !Ref "AWS::AccountId", AccountName]
             - kpw-s3-cp
+      Policies:
+        -
+          PolicyName: CoreKapowDevS3Cp
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Effect: "Allow"
+                Action:
+                  - s3:Get*
+                  - s3:List*
+                  - s3:PutObject
+                Resource:
+                  - "arn:aws:s3:::cp-assets-nonprod-us-east-1/*"
+                  - "arn:aws:s3:::cp-assets-nonprod-us-east-1"
+                  - "arn:aws:s3:::cp-assets-qa-us-east-1/*"
+                  - "arn:aws:s3:::cp-assets-qa-us-east-1"
+                  - "arn:aws:s3:::cp-assets-staging-us-east-1/*"
+                  - "arn:aws:s3:::cp-assets-staging-us-east-1"
 
   CoreKapowDevS3Charon:
     Type: AWS::IAM::User
@@ -63,6 +82,25 @@ Resources:
           - "-"
           - - !FindInMap [AccountMap, !Ref "AWS::AccountId", AccountName]
             - kpw-s3-charon
+      Policies:
+        -
+          PolicyName: CoreKapowDevS3Charon
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Effect: "Allow"
+                Action:
+                  - s3:Get*
+                  - s3:List*
+                  - s3:PutObject
+                Resource:
+                  - "arn:aws:s3:::charon-assets-nonprod-us-east-1/*"
+                  - "arn:aws:s3:::charon-assets-nonprod-us-east-1"
+                  - "arn:aws:s3:::charon-assets-qa-us-east-1/*"
+                  - "arn:aws:s3:::charon-assets-qa-us-east-1"
+                  - "arn:aws:s3:::charon-assets-staging-us-east-1/*"
+                  - "arn:aws:s3:::charon-assets-staging-us-east-1"
 
   CoreKapowDevS3Gemini:
     Type: AWS::IAM::User
@@ -73,6 +111,25 @@ Resources:
           - "-"
           - - !FindInMap [AccountMap, !Ref "AWS::AccountId", AccountName]
             - kpw-s3-gemini
+      Policies:
+        -
+          PolicyName: CoreKapowDevS3Gemini
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Effect: "Allow"
+                Action:
+                  - s3:Get*
+                  - s3:List*
+                  - s3:PutObject
+                Resource:
+                  - "arn:aws:s3:::gemini-assets-nonprod-us-east-1/*"
+                  - "arn:aws:s3:::gemini-assets-nonprod-us-east-1"
+                  - "arn:aws:s3:::gemini-assets-qa-us-east-1/*"
+                  - "arn:aws:s3:::gemini-assets-qa-us-east-1"
+                  - "arn:aws:s3:::gemini-assets-staging-us-east-1/*"
+                  - "arn:aws:s3:::gemini-assets-staging-us-east-1"
 
   CoreKapowDevS3Xb:
     Type: AWS::IAM::User
@@ -83,3 +140,22 @@ Resources:
           - "-"
           - - !FindInMap [AccountMap, !Ref "AWS::AccountId", AccountName]
             - kpw-s3-xb
+      Policies:
+        -
+          PolicyName: CoreKapowDevS3Xb 
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Effect: "Allow"
+                Action:
+                  - s3:Get*
+                  - s3:List*
+                  - s3:PutObject
+                Resource:
+                  - "arn:aws:s3:::xb-assets-nonprod-us-east-1/*"
+                  - "arn:aws:s3:::xb-assets-nonprod-us-east-1"
+                  - "arn:aws:s3:::xb-assets-qa-us-east-1/*"
+                  - "arn:aws:s3:::xb-assets-qa-us-east-1"
+                  - "arn:aws:s3:::xb-assets-staging-us-east-1/*"
+                  - "arn:aws:s3:::xb-assets-staging-us-east-1"
