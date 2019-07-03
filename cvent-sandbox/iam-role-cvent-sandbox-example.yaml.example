@@ -1,0 +1,44 @@
+---
+# ResourceNames are CamelCase
+# Directions on how to configure here:
+# https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-iam-role.html
+# Directions for inline policies:
+# https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-iam-policy.html
+# role_name = <account>-<technical_service>-<role_name>
+
+AWSTemplateFormatVersion: 2010-09-09
+Description: IAM role for this example
+Metadata: {}
+
+
+Resources:
+
+  ExampleRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement: 
+          - Effect: Allow
+            Action: 
+              - "sts:AssumeRole"
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+      RoleName: cvent-sandbox-shared-services-example
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
+
+  ExamplePolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: cvent-sandbox-shared-services-example-policy
+      Roles:
+        - !Ref ExampleRole
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Resource: "*"
+            Action:
+              - ec2:DescribeTags
