@@ -43,3 +43,12 @@ Resources:
                 Resource:
                   - arn:aws:logs:*:*:log-group:/aws/elasticbeanstalk*
       RoleName: aws-elasticbeanstalk-ec2-role
+
+  ElasticbeanstalkEC2InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      InstanceProfileName: aws-elasticbeanstalk-ec2-role
+      Roles:
+        - !Ref ElasticbeanstalkEC2Role
+    DependsOn:
+      - ElasticbeanstalkEC2Role
