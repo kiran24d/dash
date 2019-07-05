@@ -7,7 +7,7 @@ Parameters:
   AccountName:
     Type: String
     Description: Name of the account this has been deployed on
-    Default: kapowprod
+    Default: kapowdev
 
 Resources:
 
