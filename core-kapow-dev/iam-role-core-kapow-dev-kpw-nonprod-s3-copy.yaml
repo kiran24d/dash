@@ -12,7 +12,8 @@ Resources:
         Statement:
           - Effect: Allow
             Principal:
-              - AWS: arn:aws:iam::791439489411:user/s3-copy-user
+              AWS: 
+                - arn:aws:iam::791439489411:root
             Action: sts:AssumeRole
       Policies:
         -
