@@ -1,6 +1,6 @@
 ---
 AWSTemplateFormatVersion: 2010-09-09
-Description: Create Kapow Eb Deploy IAM role
+Description: ICR-2743, Create Kapow Eb Deploy IAM role
 
 Resources:
 
@@ -14,15 +14,18 @@ Resources:
             Principal:
               Service: ecs-tasks.amazonaws.com
             Action: sts:AssumeRole
-      Policies:
-        -
-          PolicyName: CventManagementKpwEbDeployPolicy
-          PolicyDocument:
-            Version: "2012-10-17"
-            Statement:
-              -
-                Effect: Allow
-                Action: sts:AssumeRole
-                Resource:
-                  - arn:aws:iam::449196748993:role/kpw-eb-jenkins-deploy
       RoleName: cvent-management-kpw-eb-deploy
+
+  CventManagementKpwEbDeployPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: cvent-management-kpw-eb-deploy-policy
+      Roles:
+        - !Ref CventManagementKpwEbDeployRole
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action: sts:AssumeRole
+            Resource:
+              - arn:aws:iam::449196748993:role/core-kapow-dev-kpw-eb-jenkins-deploy
