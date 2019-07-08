@@ -1,6 +1,6 @@
 ---
 AWSTemplateFormatVersion: 2010-09-09
-Description: Create base IAM roles
+Description: Create IAM role for Kapow EB jenkins deployments
 
 Resources:
 
@@ -12,7 +12,7 @@ Resources:
         Statement:
           - Effect: Allow
             Principal:
-              AWS: arn:aws:iam::667621734181:root
+              AWS: arn:aws:iam::667621734181:role/cvent-management-kpw-eb-deploy
             Action: sts:AssumeRole
       Policies:
         -
@@ -27,11 +27,12 @@ Resources:
                   - s3:List*
                   - s3:PutObject
                 Resource:
-                  - "arn:aws:s3:::kpw-eb-nonprod-us-east-1/*"
-                  - "arn:aws:s3:::kpw-eb-nonprod-us-east-1"
+                  - "arn:aws:s3:::core-kapow-dev-kpw-eb-us-east-1/*"
+                  - "arn:aws:s3:::core-kapow-dev-kpw-eb-us-east-1"
               -
                 Effect: "Allow"
                 Action:
+                  - ec2:Describe*
                   - elasticbeanstalk:Describe*
                   - elasticbeanstalk:CreateApplicationVersion
                   - elasticbeanstalk:UpdateApplicationVersion

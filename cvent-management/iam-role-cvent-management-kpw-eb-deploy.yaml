@@ -1,0 +1,28 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: Create Kapow Eb Deploy IAM role
+
+Resources:
+
+  CventManagementKpwEbDeployRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        -
+          PolicyName: CventManagementKpwEbDeployPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Effect: Allow
+                Action: sts:AssumeRole
+                Resource:
+                  - arn:aws:iam::449196748993:role/kpw-eb-jenkins-deploy
+      RoleName: cvent-management-kpw-eb-deploy
