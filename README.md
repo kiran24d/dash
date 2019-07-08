@@ -14,10 +14,10 @@ Once the PR has been submitted a build will kick off with basic linting and rule
 
 If the build fails you can click on the build link (highlighted in red above) to drill down into the Jenkins job to see why it failed.
 
-Once the build has passed and the PR has been approved, it can be merged into master. Upon merging into master the aws-update-cloudformation-stack will be kicked off. You can check the status of the job through the [Cloudops Jenkins](https://cloudops-jenkins.core.cvent.org/) server. If the job failed please check the aws-update-cloudformation-stack console output and the AWS CloudFormation stack(s) to see why and submit another PR with the fix.
+Once the build has passed and the PR has been approved, it can be merged into master. Upon merging into master the aws-update-cloudformation-stack will be kicked off. You can check the status of the job through the [Cloudops Jenkins](https://cloudops-jenkins.core.cvent.org/job/aws-update-cloudformation-stack/) server. If the job failed please check the aws-update-cloudformation-stack console output and the AWS CloudFormation stack(s) to see why and submit another PR with the fix.
 
 ## Workflow Summary
-![picture](images/iam_automation.jpg)
+![picture](images/iam_automation.png)
 
 ## Owners
 
