@@ -1,0 +1,41 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Create IAM Role and MasterPolicy list for MISP
+
+Resources:
+
+  MISP:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              AWS:
+                # Security (core-sec-prod) account
+                - "arn:aws:iam::980043037575:root"
+            Action:
+              - "sts:AssumeRole"
+      ManagedPolicyArns:
+          - arn:aws:iam::aws:policy/AmazonRDSDataFullAccess
+      RoleName: MISP
+
+  MISP:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      PolicyName: "MISP"
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Sid: MISP
+          Action:
+          - s3:DeleteObject*
+          - s3:GetObject*
+          - s3:PutObject*
+          - lambda:InvokeFuntion
+          Effect: "Allow"
+          Resource: "*"
+      Roles:
+          -
+            Ref: "MISP"
