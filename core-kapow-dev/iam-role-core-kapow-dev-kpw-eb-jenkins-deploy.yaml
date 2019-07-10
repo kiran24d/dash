@@ -30,6 +30,7 @@ Resources:
               - s3:Get*
               - s3:List*
               - s3:PutObject
+              - s3:CreateMultipartUpload
             Resource:
               - "arn:aws:s3:::core-kapow-dev-kpw-eb-us-east-1/*"
               - "arn:aws:s3:::core-kapow-dev-kpw-eb-us-east-1"
@@ -37,9 +38,23 @@ Resources:
             Action:
               - ec2:Describe*
               - elasticloadbalancing:Describe*
-              - elasticbeanstalk:Check*
+              - autoscaling:Describe*
+              - cloudwatch:Describe*
+              - cloudwatch:List*
+              - cloudwatch:Get*
+              - s3:Get* 
+              - s3:List*
+              - sns:Get*
+              - sns:List*
+              - rds:Describe*
+              - cloudformation:Describe*
+              - cloudformation:Get*
+              - cloudformation:List*
+              - cloudformation:Validate*
+              - cloudformation:Estimate*
               - elasticbeanstalk:Describe*
               - elasticbeanstalk:List*
+              - elasticbeanstalk:Check*
               - elasticbeanstalk:CreateApplicationVersion
               - elasticbeanstalk:UpdateApplicationVersion
               - elasticbeanstalk:UpdateEnvironment
