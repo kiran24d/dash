@@ -1,0 +1,40 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: Creates informatica redshift user
+
+Parameters:
+
+  AccountName:
+    Type: String
+    Description: Name of the account this has been deployed on
+    Default: kapowprod
+
+Resources:
+
+  IamUserInformaticaRedshift:
+    Type: AWS::IAM::User
+    Properties:
+      UserName:
+        Fn::Join:
+          - '-'
+          - - !Ref AccountName
+            - informatica-redshift
+      Policies: 
+        - PolicyName:
+            Fn::Join:
+              - '-'
+              - - !Ref AccountName
+                - informatica-redshift
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:PutObject
+                  - s3:GetObject
+                  - s3:DeleteObject
+                  - s3:ListBucket
+                  - s3:GetBucketPolicy
+                Resource:
+                  - arn:aws:s3:::redshift-prod/*
+                  - arn:aws:s3:::redshift-prod
