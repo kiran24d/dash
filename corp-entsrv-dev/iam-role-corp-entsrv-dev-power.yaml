@@ -32,7 +32,8 @@ Resources:
           Version: '2012-10-17'
           Statement:
             Action:
-              - iam:GetRole
+              - iam:Get*
+              - iam:List*
             Effect: Allow
             Resource: "*"
         Roles:
