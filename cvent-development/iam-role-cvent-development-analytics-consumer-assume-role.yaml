@@ -48,6 +48,3 @@ Resources:
               - "arn:aws:s3:::cvent-development-analytics-raw-data-us-east-1/*"
             Action:
               - s3:*Object
-
-   
-
