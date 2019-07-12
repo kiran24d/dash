@@ -2,11 +2,11 @@ AWSTemplateFormatVersion: 2010-09-09
 Description: IAM role for analytics service
 
 Resources:
-  
-  AnalyticsConsumerAssumeRole:
+
+  AnalyticsConsumerEcs:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: cvent-development-analytics-consumer-assume-role
+      RoleName: cvent-development-analytics-consumer-ecs
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -22,7 +22,7 @@ Resources:
     Properties:
       PolicyName: cvent-development-analytics-consumer-bucket-policy
       Roles:
-        - !Ref AnalyticsConsumerAssumeRole
+        - !Ref AnalyticsConsumerEcs
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -32,16 +32,6 @@ Resources:
               - "arn:aws:s3:::cvent-development-analytics-raw-data-us-east-1"
             Action:
               - s3:ListBucket
-  
-  AnalyticsConsumerAssumeBucketObjectPolicy:
-    Type: AWS::IAM::Policy
-    Properties:
-      PolicyName: cvent-development-analytics-consumer-bucket-object-policy
-      Roles:
-        - !Ref AnalyticsConsumerAssumeRole
-      PolicyDocument:
-        Version: '2012-10-17'
-        Statement:
           - Effect: Allow
             Resource: 
               - "arn:aws:s3:::cvent-development-analytics-reference-data-us-east-1/*"
