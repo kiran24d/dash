@@ -47,4 +47,6 @@ Resources:
               - "arn:aws:s3:::cvent-development-analytics-reference-data-us-east-1/*"
               - "arn:aws:s3:::cvent-development-analytics-raw-data-us-east-1/*"
             Action:
-              - s3:*Object
+              - s3:PutObject
+              - s3:GetObject
+              - s3:RestoreObject
