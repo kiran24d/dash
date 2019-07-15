@@ -26,15 +26,15 @@ Resources:
 
   PolicyCorpEntsrvDevPower:
     Type: AWS::IAM::Policy
-      Properties:
-        PolicyName: corp-entsrv-dev-power
-        PolicyDocument:
-          Version: '2012-10-17'
-          Statement:
-            Action:
-              - iam:Get*
-              - iam:List*
-            Effect: Allow
-            Resource: "*"
-        Roles:
-            - Ref: RoleCorpEntsrvProdPower
+    Properties:
+      PolicyName: corp-entsrv-dev-power
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          Action:
+            - iam:Get*
+            - iam:List*
+          Effect: Allow
+          Resource: "*"
+      Roles:
+          - Ref: RoleCorpEntsrvProdPower
