@@ -1,3 +1,4 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: Description
 Parameters:
@@ -28,3 +29,5 @@ Resources:
       Path: /
       RoleName: aws-cvt-summerinterns
     Type: AWS::IAM::Role
+
+
