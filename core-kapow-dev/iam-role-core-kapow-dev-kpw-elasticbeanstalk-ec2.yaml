@@ -27,8 +27,8 @@ Resources:
                   - s3:List*
                   - s3:PutObject
                 Resource:
-                  - "arn:aws:s3:::kpw-eb-nonprod-us-east-1/*"
-                  - "arn:aws:s3:::kpw-eb-nonprod-us-east-1"
+                  - "arn:aws:s3:::core-kapow-dev-kpw-eb-us-east-1/*"
+                  - "arn:aws:s3:::core-kapow-dev-kpw-eb-us-east-1"
                   - "arn:aws:s3:::elasticbeanstalk-/*"
                   - "arn:aws:s3:::elasticbeanstalk-*/*"
                   - "arn:aws:s3:::kpw-sumo-config-files/*"
