@@ -41,6 +41,7 @@ Resources:
           }
       ManagedPolicyArns:
           - arn:aws:iam::aws:policy/PowerUserAccess
+          - arn:aws:iam::aws:policy/IAMReadOnlyAccess
       RoleName: !Sub
           - "${Account}-sre"
           - Account: !Ref AccountName
@@ -49,7 +50,7 @@ Resources:
     Type: AWS::IAM::Policy
     Properties:
       PolicyName: core-kapow-dev-sre-policy
-      Roles: 
+      Roles:
       - !Ref Sre
       PolicyDocument:
           Version: '2012-10-17'
