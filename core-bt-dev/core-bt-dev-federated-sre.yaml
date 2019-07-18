@@ -41,6 +41,7 @@ Resources:
                 }
             ManagedPolicyArns:
                 - arn:aws:iam::aws:policy/PowerUserAccess
+                - arn:aws:iam::aws:policy/IAMReadOnlyAccess
             RoleName: !Sub
                 - "${Account}-sre"
                 - Account: !Ref AccountName
