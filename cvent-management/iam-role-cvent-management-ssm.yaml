@@ -1,0 +1,23 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: IAM roles for deploy-query-service - per account
+
+Resources:
+
+  CventManagementSsmRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: cvent-management-ssm
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ssm.amazonaws.com
+            Action: sts:AssumeRole
+      Path: /service-role/
+      MaxSessionDuration: 3600
+      ManagedPolicyArns: 
+        - arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM
+
+ 
