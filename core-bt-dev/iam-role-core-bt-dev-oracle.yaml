@@ -16,7 +16,7 @@ Resources:
         ManagedPolicyArns:
             - arn:aws:iam::aws:policy/AmazonEC2FullAccess
             - arn:aws:iam::aws:policy/AmazonS3FullAccess
-        RoleName: core-bt-dev-oracle
+        RoleName: core-bt-dev-business-transient-oracle
 
     InstanceProfileCoreBtDevOracle:
       Type: AWS::IAM::InstanceProfile
@@ -24,4 +24,4 @@ Resources:
         Path: /
         Roles:
           - !Ref  RoleCoreBtDevOracle
-        InstanceProfileName: core-bt-dev-oracle
+        InstanceProfileName: core-bt-dev-business-transient-oracle
