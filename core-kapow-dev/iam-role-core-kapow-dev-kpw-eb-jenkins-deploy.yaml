@@ -30,10 +30,14 @@ Resources:
               - s3:Get*
               - s3:List*
               - s3:PutObject
+              - s3:PutObjectAcl
               - s3:CreateMultipartUpload
+              - s3:DeleteObject
             Resource:
               - "arn:aws:s3:::core-kapow-dev-kpw-eb-us-east-1/*"
               - "arn:aws:s3:::core-kapow-dev-kpw-eb-us-east-1"
+              - "arn:aws:s3:::elasticbeanstalk-/*"
+              - "arn:aws:s3:::elasticbeanstalk-*/*"
           - Effect: "Allow"
             Action:
               - ec2:Describe*
