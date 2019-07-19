@@ -32,9 +32,24 @@ Resources:
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
+        - Effect: Allow
           Action:
             - datapipeline:*
-          Effect: Allow
           Resource: "*"
+        - Effect: Allow
+          Action:
+            - ses:*
+            - s3:CreateBucket
+            - s3:DeleteObject
+            - s3:Get*
+            - s3:List*
+            - s3:Put*
+            - rds:DescribeDBInstances
+            - rds:DescribeDBSecurityGroups
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvent
+          Resource: 
+          - arn:aws:s3:::wedding-spot-datadev/*
       Roles:
           - Ref: WeddingSpotDataDevsRole
