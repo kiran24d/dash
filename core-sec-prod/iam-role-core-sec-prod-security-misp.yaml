@@ -3,7 +3,7 @@ Description: Create IAM Role and MasterPolicy list for MISP
 
 Resources:
 
-  MispAccess:
+  MispRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
