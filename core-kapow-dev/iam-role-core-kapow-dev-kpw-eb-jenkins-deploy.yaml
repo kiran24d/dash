@@ -43,6 +43,8 @@ Resources:
               - ec2:Describe*
               - elasticloadbalancing:Describe*
               - autoscaling:Describe*
+              - autoscaling:SuspendProcesses
+              - autoscaling:ResumeProcesses
               - cloudwatch:Describe*
               - cloudwatch:List*
               - cloudwatch:Get*
