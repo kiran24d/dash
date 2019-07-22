@@ -54,6 +54,7 @@ Resources:
         - Effect: Allow
           Action:
             - lambda:*
+            - ses:*
           Resource: "*"
       Roles:
           - Ref: WeddingSpotDataDevsRole
