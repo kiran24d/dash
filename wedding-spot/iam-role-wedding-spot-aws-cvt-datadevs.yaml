@@ -51,5 +51,9 @@ Resources:
             - logs:PutLogEvent
           Resource: 
           - arn:aws:s3:::wedding-spot-datadev/*
+        - Effect: Allow
+          Action:
+            - lambda:*
+          Resource: "*"
       Roles:
           - Ref: WeddingSpotDataDevsRole
