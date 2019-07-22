@@ -55,6 +55,13 @@ Resources:
           Action:
             - lambda:*
             - ses:*
+            - iam:GetInstanceProfile
+            - iam:GetRole
+            - iam:GetRolePolicy
+            - iam:ListAttachedRolePolicies
+            - iam:ListRolePolicies
+            - iam:ListInstanceProfiles
+            - iam:PassRole
           Resource: "*"
       Roles:
           - Ref: WeddingSpotDataDevsRole
