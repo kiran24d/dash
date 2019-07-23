@@ -51,5 +51,17 @@ Resources:
             - logs:PutLogEvent
           Resource: 
           - arn:aws:s3:::wedding-spot-datadev/*
+        - Effect: Allow
+          Action:
+            - lambda:*
+            - ses:*
+            - iam:GetInstanceProfile
+            - iam:GetRole
+            - iam:GetRolePolicy
+            - iam:ListAttachedRolePolicies
+            - iam:ListRolePolicies
+            - iam:ListInstanceProfiles
+            - iam:PassRole
+          Resource: "*"
       Roles:
           - Ref: WeddingSpotDataDevsRole
