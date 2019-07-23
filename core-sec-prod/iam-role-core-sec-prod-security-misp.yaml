@@ -1,3 +1,4 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: Create IAM Role and MasterPolicy list for MISP
 
@@ -6,13 +7,12 @@ Resources:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: 'Allow'
-            Principal:
-              SERVICE: 'ec2.amazonaws.com'
-            Action:
-              - 'sts:AssumeRole'
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service: ec2.amazonaws.com
+              Action: sts:AssumeRole
       RoleName: core-sec-prod-security-misp
 
   PolicyCoreSecProdMisp:
@@ -32,7 +32,7 @@ Resources:
             Effect: 'Allow'
             Resource: '*'
       Roles:
-        - Ref: 'MispRole'
+        - Ref: 'RoleCoreSecProdMisp'
 
   InstanceProfileCoreSecProdMisp:
     Type: AWS::IAM::InstanceProfile
