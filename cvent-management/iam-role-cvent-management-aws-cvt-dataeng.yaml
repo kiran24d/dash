@@ -12,7 +12,7 @@ Resources:
         Statement:
           - Effect: Allow
             Principal:
-              Federated: !Sub arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso
+              Federated: !Sub arn:aws:iam::${AWS::AccountId}:saml-provider/management-okta-sso
             Action: sts:AssumeRoleWithSAML
             Condition:
               StringEquals:
