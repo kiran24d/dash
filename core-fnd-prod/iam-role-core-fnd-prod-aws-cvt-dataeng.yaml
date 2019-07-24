@@ -17,18 +17,28 @@ Resources:
             Condition:
               StringEquals:
                 SAML:aud: https://signin.aws.amazon.com/saml
+          - Effect: Allow
+            Principal:
+              AWS: arn:aws:iam::667621734181:root
+            Action: sts:AssumeRole
+            Condition: {}
       RoleName: aws-cvt-dataeng
+      ManagedPolicyArns: 
+      - arn:aws:iam::aws:policy/AWSGlueConsoleFullAccess
 
-  DataEngRoleAssumptionPolicy:
+  DataEngPolicy:
     Type: AWS::IAM::Policy
     Properties:
-      PolicyName: aws-cvt-dataeng-assumption
+      PolicyName: aws-cvt-dataeng-policy
       Roles: 
         - !Ref DataEngRole
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
-          - Effect: Allow
-            Action:
-              - sts:AssumeRole
-            Resource: arn:aws:iam::*:role/aws-cvt-dataeng
+        - Sid: IamActions
+          Action:
+          - iam:Get*
+          - iam:List*
+          - iam:PassRole
+          Effect: Allow
+          Resource: "*"
