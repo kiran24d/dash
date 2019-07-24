@@ -1,0 +1,32 @@
+--
+AWSTemplateFormatVersion: 2010-09-09
+Description: ICR-2906: IAM S3 role for cvent-datawarehouse bucket
+ 
+Resources:
+ 
+  S3DatadevRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - "sts:AssumeRole"
+            Principal:
+              AWS: arn:aws:iam::504055967630:root
+      RoleName: cvent-datawarehouse-datadev
+       
+  S3DatadevPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: cvent-datawarehouse-datadev-policy
+      Roles:
+        - !Ref S3DatadevRole
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Resource: "arn:aws:s3:::cvent-datawarehouse-dev/*"
+            Action:
+				 - s3:*
