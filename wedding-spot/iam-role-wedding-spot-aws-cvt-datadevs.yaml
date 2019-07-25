@@ -50,7 +50,7 @@ Resources:
             - logs:CreateLogStream
             - logs:PutLogEvent
           Resource: 
-          - arn:aws:s3:::wedding-spot-datadev/*
+          - arn:aws:s3:::wedding-spot-wedding-spot-datadev-us-east-1/*
         - Effect: Allow
           Action:
             - lambda:*
