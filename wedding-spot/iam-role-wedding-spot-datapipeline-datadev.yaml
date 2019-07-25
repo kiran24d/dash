@@ -12,7 +12,7 @@ Resources:
         Statement:
           - Effect: Allow
             Action:
-              - "sts:AssumeRole"
+              - sts:AssumeRole
             Principal:
               Service:
                 - datapipeline.amazonaws.com
