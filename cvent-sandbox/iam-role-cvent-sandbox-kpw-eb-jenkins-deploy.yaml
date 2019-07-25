@@ -14,12 +14,12 @@ Resources:
             Principal:
               AWS: arn:aws:iam::667621734181:role/cvent-management-kpw-eb-deploy
             Action: sts:AssumeRole
-      RoleName: core-kapow-dev-kpw-eb-jenkins-deploy
+      RoleName: cvent-sandbox-kpw-eb-jenkins-deploy
 
   KpwEbJenkinsDeployPolicy:
     Type: AWS::IAM::Policy
     Properties:
-      PolicyName: core-kapow-dev-kpw-eb-jenkins-deploy-policy
+      PolicyName: cvent-sandbox-kpw-eb-jenkins-deploy-policy
       Roles:
         - !Ref KpwEbJenkinsDeployRole
       PolicyDocument:
@@ -34,8 +34,8 @@ Resources:
               - s3:CreateMultipartUpload
               - s3:DeleteObject
             Resource:
-              - "arn:aws:s3:::core-kapow-dev-kpw-eb-us-east-1/*"
-              - "arn:aws:s3:::core-kapow-dev-kpw-eb-us-east-1"
+              - "arn:aws:s3:::cvent-sandbox-kpw-eb-us-east-1/*"
+              - "arn:aws:s3:::cvent-sandbox-kpw-eb-us-east-1"
               - "arn:aws:s3:::elasticbeanstalk-/*"
               - "arn:aws:s3:::elasticbeanstalk-*/*"
           - Effect: "Allow"
