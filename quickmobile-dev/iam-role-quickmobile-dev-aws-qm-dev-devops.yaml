@@ -25,3 +25,20 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/PowerUserAccess
       RoleName: aws-qm-dev-devops
+
+  AwsQmDevDevopsPolicy:
+    Type: AWS::IAM::Policy
+    Properties: 
+      PolicyName: aws-qm-dev-devops-policy
+      Roles: 
+        - !Ref AwsQmDevDevopsRole
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - 
+          Effect: Allow
+          Action:
+            - iam:ListInstanceProfiles
+            - iam:ListPolicies
+            - iam:ListRolePolicies
+          Resource: "*"

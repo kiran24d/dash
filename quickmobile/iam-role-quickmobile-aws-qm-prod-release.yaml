@@ -4,7 +4,7 @@ Description: TIA-1736, Adding aws-qm-dev-qa role for quickmobile
 
 Resources:
 
-  AwsQmDevQaRole:
+  AwsQmProdReleaseRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument: 
@@ -12,7 +12,7 @@ Resources:
         Statement:
           - Effect: Allow
             Principal:
-              Federated: !Sub arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso
+              Federated: !Sub arn:aws:iam::${AWS::AccountId}:saml-provider/Okta-SSO
             Action: sts:AssumeRoleWithSAML
             Condition:
               StringEquals:
@@ -22,14 +22,14 @@ Resources:
               AWS: arn:aws:iam::667621734181:root
             Action: sts:AssumeRole
             Condition: {}
-      RoleName: aws-qm-dev-qa
+      RoleName: aws-qm-prod-release
 
-  AwsQmDevQaPolicy:
+  AwsQmProdReleasePolicy:
     Type: AWS::IAM::Policy
     Properties: 
-      PolicyName: aws-qm-dev-qa-policy
+      PolicyName: aws-qm-prod-release-policy
       Roles: 
-        - !Ref AwsQmDevQaRole
+        - !Ref AwsQmProdReleaseRole
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
