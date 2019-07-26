@@ -26,10 +26,6 @@ Parameters:
   UISrcKey:
     Description: UI Source Key
     Type: String
-    ConstraintDescription: Prefix must contains letters, numbers, or dashes and end
-      with a forward slash (/); it cannot start with a forward slash or contain a
-      forward slash -- for example 'serverless-image-handler-ui/'
-    AllowedPattern: ^(?!/)[a-zA-Z][a-zA-Z0-9-]+/$
     Default: serverless-image-handler/latest/serverless-image-handler-ui.zip
 Resources:
   CustomResourceRole:
