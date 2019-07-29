@@ -1,0 +1,21 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: ICR-2925, RDS enhanced monitoring role
+
+Resources:
+
+  CventManagementRdsEnhancedMonitoring:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: monitoring.rds.amazonaws.com
+          Action: sts:AssumeRole
+      RoleName: cvent-management-rds-enhanced-monitoring
+      ManagedPolicyArns: 
+      - arn:aws:iam::aws:policy/service-role/AmazonRDSEnhancedMonitoringRole
+
+
