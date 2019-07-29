@@ -51,8 +51,7 @@ IgnoreAccounts:
     - us-ecommerce-prod
     - wedding-spot
 
-FilesToIgnore:
-    
+FilesToIgnore: []
 
-IgnoreLintingErrors:
+IgnoreLintingErrors: []
     # Only list accounts that are not already in "IgnoreAccounts"
