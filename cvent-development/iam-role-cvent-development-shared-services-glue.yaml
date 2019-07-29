@@ -1,10 +1,10 @@
---
+---
 AWSTemplateFormatVersion: 2010-09-09
-Description: ICR-2906: IAM S3 role for cvent-datawarehouse bucket
+Description: ICR-2906, IAM S3 role for cvent-datawarehouse bucket
  
 Resources:
- 
-  S3DatadevRole:
+
+  CventDevelopmentSharedServicesGlueRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
@@ -14,19 +14,19 @@ Resources:
             Action:
               - "sts:AssumeRole"
             Principal:
-              AWS: arn:aws:iam::504055967630:root
-      RoleName: cvent-datawarehouse-datadev
+              Service: glue.amazonaws.com
+      RoleName: cvent-development-shared-services-glue
        
-  S3DatadevPolicy:
+  CventDevelopmentSharedServicesGluePolicy:
     Type: AWS::IAM::Policy
     Properties:
-      PolicyName: cvent-datawarehouse-datadev-policy
+      PolicyName: cvent-development-shared-services-glue-policy
       Roles:
-        - !Ref S3DatadevRole
+        - !Ref CventDevelopmentSharedServicesGlueRole
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
           - Effect: Allow
-            Resource: "arn:aws:s3:::cvent-datawarehouse-dev/*"
+            Resource: "arn:aws:s3:::cvent-datawarehouse/*"
             Action:
-				 - s3:*
+              - s3:*
