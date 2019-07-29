@@ -1,0 +1,10 @@
+[
+    {
+        "ParameterValue": "DatadogAWSIntegrationRole",
+        "ParameterKey": "RoleName"
+    },
+    {
+        "ParameterValue": "7f1022a6dbdc4c3da9cd7c37042c0cd5",
+        "ParameterKey": "ExternalId"
+    }
+]
