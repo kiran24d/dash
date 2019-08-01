@@ -114,8 +114,8 @@ pipeline {
 
                               for (def message in output.split('\n')) {
 
-                                def error_match = error_pattern.matcher(output)
-                                def warning_match = warning_pattern.matcher(output)
+                                def error_match = error_pattern.matcher(message)
+                                def warning_match = warning_pattern.matcher(message)
 
                                   if (error_match.find()) {
                                       log.error 'Yaml linting', ['out': message]
