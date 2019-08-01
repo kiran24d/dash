@@ -1,0 +1,54 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: Create aws-elasticbeanstalk-ec2-role IAM role
+
+Resources:
+
+  ElasticbeanstalkEC2Role:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        -
+          PolicyName: ElasticbeanstalkEC2Policy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Effect: "Allow"
+                Action:
+                  - s3:Get*
+                  - s3:List*
+                  - s3:PutObject
+                Resource:
+                  - "arn:aws:s3:::core-kapow-dev-kpw-eb-us-east-1/*"
+                  - "arn:aws:s3:::core-kapow-dev-kpw-eb-us-east-1"
+                  - "arn:aws:s3:::elasticbeanstalk-/*"
+                  - "arn:aws:s3:::elasticbeanstalk-*/*"
+                  - "arn:aws:s3:::kpw-sumo-config-files/*"
+                  - "arn:aws:s3:::kpw-sumo-config-files"
+              -
+                Effect: "Allow"
+                Action:
+                  - logs:PutLogEvents
+                  - logs:CreateLogStream
+                  - logs:DescribeLogStreams
+                  - logs:DescribeLogGroups
+                Resource:
+                  - arn:aws:logs:*:*:log-group:/aws/elasticbeanstalk*
+      RoleName: aws-elasticbeanstalk-ec2-role
+
+  ElasticbeanstalkEC2InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      InstanceProfileName: aws-elasticbeanstalk-ec2-role
+      Roles:
+        - !Ref ElasticbeanstalkEC2Role
+    DependsOn:
+      - ElasticbeanstalkEC2Role

@@ -154,4 +154,3 @@ Resources:
             - s3:GetObjectVersion
             - s3:ListMultipartUploadParts
           Resource: arn:aws:s3:::*/*
-          

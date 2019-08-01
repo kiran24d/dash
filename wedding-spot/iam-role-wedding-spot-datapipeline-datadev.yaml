@@ -1,0 +1,21 @@
+--
+AWSTemplateFormatVersion: 2010-09-09
+Description: DataPipeline Default Role
+ 
+Resources:
+ 
+  DataPipelineDefaultRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action: sts:AssumeRole
+            Principal:
+              Service:
+                - datapipeline.amazonaws.com
+                - elasticmapreduce.amazonaws.com
+      RoleName: wedding-spot-datapipeline-datadev
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AWSDataPipelineRole

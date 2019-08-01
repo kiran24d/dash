@@ -1,0 +1,67 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: Create base IAM roles
+Resources:
+
+  WeddingSpotDataDevsRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Federated: !Sub arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso
+          Action: sts:AssumeRoleWithSAML
+          Condition:
+            StringEquals:
+              SAML:aud: https://signin.aws.amazon.com/saml
+        - Effect: Allow
+          Principal:
+            AWS: arn:aws:iam::667621734181:root
+          Action: sts:AssumeRole
+          Condition: {}
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/ReadOnlyAccess
+      RoleName: aws-cvt-datadevs
+
+  WeddingSpotDataDevsPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: aws-cvt-datadevs-policy
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+            - datapipeline:*
+          Resource: "*"
+        - Effect: Allow
+          Action:
+            - ses:*
+            - s3:CreateBucket
+            - s3:DeleteObject
+            - s3:Get*
+            - s3:List*
+            - s3:Put*
+            - rds:DescribeDBInstances
+            - rds:DescribeDBSecurityGroups
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvent
+          Resource: 
+          - arn:aws:s3:::wedding-spot-wedding-spot-datadev-us-east-1/*
+        - Effect: Allow
+          Action:
+            - lambda:*
+            - ses:*
+            - iam:GetInstanceProfile
+            - iam:GetRole
+            - iam:GetRolePolicy
+            - iam:ListAttachedRolePolicies
+            - iam:ListRolePolicies
+            - iam:ListInstanceProfiles
+            - iam:PassRole
+          Resource: "*"
+      Roles:
+          - Ref: WeddingSpotDataDevsRole

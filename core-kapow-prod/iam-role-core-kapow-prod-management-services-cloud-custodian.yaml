@@ -1,0 +1,55 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: Create base custodian role
+
+Parameters:
+  AccountName:
+    Description: The name of the AWS account this template is launched in.
+    Type: String
+
+Resources:
+
+  ManagementServicesCloudCustodianRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: arn:aws:iam::210884572417:root
+            Action: sts:AssumeRole
+            Condition: {}
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+            Condition: {}
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/PowerUserAccess
+        - arn:aws:iam::aws:policy/AmazonSQSFullAccess
+      RoleName: !Sub
+        - "${Account}-management-services-cloud-custodian"
+        - Account: !Ref AccountName
+
+  ManagementServicesCloudCustodianPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: !Sub
+        - "${Account}-management-services-cloud-custodian"
+        - Account: !Ref AccountName
+      Roles:
+        - !Ref ManagementServicesCloudCustodianRole
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - "iam:PassRole"
+            Resource: !Sub
+              - "arn:aws:iam::${AWS::AccountId}:role/${Account}-management-services-cloud-custodian"
+              - Account: !Ref AccountName
+          - Effect: Allow
+            Action:
+              - "iam:ListAccountAliases"
+            Resource: "*"
