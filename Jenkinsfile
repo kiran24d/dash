@@ -132,7 +132,7 @@ pipeline {
                       catch (Exception ex) {
                           log.error "Encountered exception linting cloudformation stack ${it}"//, ['errors': errors_log]
                           def errors_log = readFile file: 'lint_error.log'
-                          print(errors_log)
+                          log.info 'Error Log', ['out': errors_log]
                           sh 'rm -f lint_error.log 2> /dev/null || true'
                       }
                   }
