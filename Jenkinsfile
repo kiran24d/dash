@@ -105,8 +105,6 @@ pipeline {
                           def status = sh script: lint_command, returnStatus: true
                           if (status != 0) {
                               def output = readFile file: 'lint_error.log'
-                              print(output)
-
                               cfn_lint_errors[it] = output
 
                               def error_pattern = ~/^(E)\d{4}/
@@ -124,7 +122,7 @@ pipeline {
                                   else if (warning_match.find()) {
                                       log.warning 'Yaml linting', ['out': message]
                                   }
-                                  else if (message.size() > 0) {
+                                  else if (message != '') {
                                       log.info 'Cfn linting', ['out': message]
                                   }
                               }
