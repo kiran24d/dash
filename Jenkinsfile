@@ -113,7 +113,9 @@ pipeline {
                               def warning_pattern = ~/^(W)\d{4}/
 
                               for (def message in output.split('\n\n')) {
-                                // log.info 'Jake Testing', ['out': message ]
+
+                                log.info 'Jake Testing', ['out': message]
+                                
                                 def error_match = error_pattern.matcher(message)
                                 def warning_match = warning_pattern.matcher(message)
 
