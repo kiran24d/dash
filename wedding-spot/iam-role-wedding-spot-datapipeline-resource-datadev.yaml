@@ -18,3 +18,15 @@ Resources:
       RoleName: wedding-spot-datapipeline-resource-datadev
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AmazonEC2RoleforDataPipelineRole
+  
+  WeddingSpotDataDevsPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: wedding-spot-datapipeline-resource-datadev-policy
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+            - lambda:*
+          Resource: "*"
