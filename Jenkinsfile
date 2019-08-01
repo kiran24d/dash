@@ -112,20 +112,20 @@ pipeline {
                               def error_pattern = ~/^(E)\d{4}/
                               def warning_pattern = ~/^(W)\d{4}/
 
-                              for (error in output.split('\n')) {
+                              for (def message in output.split('\n')) {
 
                                 def error_match = error_pattern.matcher(output)
                                 def warning_match = warning_pattern.matcher(output)
 
                                   if (error_match.find()) {
-                                      log.error 'Yaml linting', ['out': output.split('\n')]
+                                      log.error 'Yaml linting', ['out': message]
                                       errored_out = true
                                   }
                                   else if (warning_match.find()) {
-                                      log.warning 'Yaml linting', ['out': output.split('\n')]
+                                      log.warning 'Yaml linting', ['out': message]
                                   }
-                                  else if (output.size() > 0) {
-                                      log.info 'Cfn linting', ['out': output]
+                                  else if (message.size() > 0) {
+                                      log.info 'Cfn linting', ['out': message]
                                   }
                               }
                               
