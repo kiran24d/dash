@@ -89,37 +89,46 @@ pipeline {
             script {
               def cfn_lint_errors = [:]
               def errored_out = false
+              
               supported_files.findAll { file -> fileExists(file) && file.endsWith('.yaml') }.each {
+                  
                   def lint_command = "cfn-lint-cvent ${it} 2>&1 > lint_error.log"
                   def fileparts = it.split('/')
                   if (fileparts.size() > 1) {
+                      
                       // account name is inside skip linting errors
                       if (config.IgnoreLintingErrors != null && config.IgnoreLintingErrors.contains(fileparts[0])) {
                           lint_command += " || true"
                       }
+                      
                       try {
                           def status = sh script: lint_command, returnStatus: true
                           if (status != 0) {
                               def output = readFile file: 'lint_error.log'
                               print(output)
+
                               cfn_lint_errors[it] = output
 
                               def error_pattern = ~/^(E)\d{4}/
                               def warning_pattern = ~/^(W)\d{4}/
 
-                              def error_match = error_pattern.matcher(output)
-                              def warning_match = warning_pattern.matcher(output)
+                              for (error in output.split('\n')) {
 
-                              if (error_match.find()) {
-                                  log.error 'Yaml linting', ['out': output.split('\n')]
-                                  errored_out = true
+                                def error_match = error_pattern.matcher(output)
+                                def warning_match = warning_pattern.matcher(output)
+
+                                  if (error_match.find()) {
+                                      log.error 'Yaml linting', ['out': output.split('\n')]
+                                      errored_out = true
+                                  }
+                                  else if (warning_match.find()) {
+                                      log.warning 'Yaml linting', ['out': output.split('\n')]
+                                  }
+                                  else if (output.size() > 0) {
+                                      log.info 'Cfn linting', ['out': output]
+                                  }
                               }
-                              else if (warning_match.find()) {
-                                  log.warning 'Yaml linting', ['out': output.split('\n')]
-                              }
-                              else if (output.size() > 0) {
-                                  log.info 'Cfn linting', ['out': output]
-                              }
+                              
                           }
                       }
                       catch (Exception ex) {
