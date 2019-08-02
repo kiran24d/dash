@@ -30,3 +30,4 @@ Resources:
           Action:
             - lambda:*
           Resource: "*"
+      Roles: !Ref DataPipelineDefaultResourceRole
