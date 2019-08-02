@@ -212,33 +212,6 @@ Resources:
                 - arn:aws:iam::aws:policy/AdministratorAccess
             RoleName: aws-cvt-networking
 
-
-     # Define Custom Policies
-
-     WorkspacesAdminRole:
-         Type: AWS::IAM::Policy
-         Properties:
-             PolicyDocument: !Sub
-                 |
-                 {
-                   "Version": "2012-10-17",
-                   "Statement": [
-                     {
-                       "Effect": "Allow",
-                       "Action": [
-                          "workspaces:*",
-                          "ds:*",
-                          "workdocs:AddUserToGroup",
-                          "workdocs:RemoveUserFromGroup",
-                          "kms:ListAliases",
-                          "kms:ListKeys"
-                       ],
-                       "Resource": "*"
-                     }
-                   ]
-                 }
-             PolicyName: cvent-workspaces
-
     # # Define Custom Policies
     #
     # NetworkPolicy:

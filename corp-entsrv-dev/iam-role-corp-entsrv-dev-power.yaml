@@ -22,6 +22,7 @@ Resources:
           Condition: {}
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/PowerUserAccess
+        - arn:aws:iam::aws:policy/IAMReadOnlyAccess
       RoleName: corp-entsrv-dev-power
 
   PolicyCorpEntsrvDevPower:
