@@ -212,7 +212,6 @@ Resources:
                 - arn:aws:iam::aws:policy/AdministratorAccess
             RoleName: aws-cvt-networking
 
-
     # # Define Custom Policies
     #
     # NetworkPolicy:
@@ -324,7 +323,7 @@ Resources:
       Type: AWS::IAM::Policy
       Properties:
         PolicyName: cvent-infosec-policy
-        Roles: 
+        Roles:
           - !Ref InfosecRole
         PolicyDocument:
           Version: '2012-10-17'
