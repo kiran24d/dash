@@ -32,3 +32,10 @@ Resources:
           Resource: "*"
       Roles: 
         - !Ref DataPipelineDefaultResourceRole
+
+  WeddingSpotDataDevs:
+    Type: AWS::IAM::InstanceProfile
+    Properties: 
+      InstanceProfileName: wedding-spot-datapipeline-resource-datadev
+      Roles: 
+        - !Ref DataPipelineDefaultResourceRole
