@@ -22,9 +22,7 @@ pipeline {
   stages {
     stage('Build-Initiator') {
         agent {
-            node {
-                label 'domain:core.cvent.org && os:linux'
-            }
+            label 'domain:core.cvent.org && os:linux'
         }
         steps {
           script {
@@ -44,9 +42,7 @@ pipeline {
     }
     stage ('Find changed files') {
         agent {
-            node {
-                label 'domain:core.cvent.org && os:linux'
-            }
+            label 'domain:core.cvent.org && os:linux'
         }
         steps {
           script {
@@ -89,18 +85,18 @@ pipeline {
             script {
               def cfn_lint_errors = [:]
               def errored_out = false
-              
+
               supported_files.findAll { file -> fileExists(file) && file.endsWith('.yaml') }.each {
-                  
+
                   def lint_command = "cfn-lint-cvent ${it} 2>&1 > lint_error.log"
                   def fileparts = it.split('/')
                   if (fileparts.size() > 1) {
-                      
+
                       // account name is inside skip linting errors
                       if (config.IgnoreLintingErrors != null && config.IgnoreLintingErrors.contains(fileparts[0])) {
                           lint_command += " || true"
                       }
-                      
+
                       try {
                           def status = sh script: lint_command, returnStatus: true
                           if (status != 0) {
@@ -116,31 +112,37 @@ pipeline {
                                 def warning_match = warning_pattern.matcher(message)
 
                                   if (error_match.find()) {
-                                      log.error 'Yaml linting', ['out': message]
+                                      log.error 'Cfn linting', ['out': message]
                                       errored_out = true
                                   }
                                   else if (warning_match.find()) {
-                                      log.warning 'Yaml linting', ['out': message]
+                                      log.warning 'Cfn linting', ['out': message]
                                   }
                                   else if (message != '') {
                                       log.info 'Cfn linting', ['out': message]
                                   }
                               }
-                              
+
                           }
                       }
                       catch (Exception ex) {
-                          log.error "Encountered exception linting cloudformation stack ${it}"//, ['errors': errors_log]
-                          def errors_log = readFile file: 'lint_error.log'
-                          log.info 'Error Log', ['out': errors_log]
-                          sh 'rm -f lint_error.log 2> /dev/null || true'
+                          log.error "Encountered exception linting cloudformation stack ${it}: ${ex.message}"
+                          if (fileExists('lint_error.log')) {
+                              try {
+                                  def errors_log = readFile file: 'lint_error.log'
+                                  log.error 'Error Log', ['out': errors_log]
+                                  sh 'rm -f lint_error.log 2> /dev/null || true'
+                              }
+                              catch (Exception fex) {
+                                  log.error "Error reading file: ${fex.message}"
+                              }
+                          }
+                          errored_out = true
                       }
                   }
               }
-              if (cfn_lint_errors.size() > 0) {
-                  if(errored_out) {
-                      currentBuild.result = 'FAILED'
-                  }
+              if (cfn_lint_errors.size() > 0 && errored_out) {
+                  currentBuild.result = 'FAILED'
               }
             }
           }
@@ -180,17 +182,23 @@ pipeline {
                             }
                         }
                         catch (Exception ex) {
-                            log.error "Encountered exception yaml linting cloudformation stack ${it}"//, ['errors': errors_log]
-                            def errors_log = readFile file: 'lint_error.log'
-                            print(errors_log)
-                            sh 'rm -f lint_error.log 2> /dev/null || true'
+                            log.error "Encountered exception yaml linting cloudformation stack ${it}: ${ex.message}"
+                            if (fileExists('lint_error.log')) {
+                                try {
+                                    def errors_log = readFile file: 'lint_error.log'
+                                    log.error 'Error Log', ['out': errors_log]
+                                    sh 'rm -f lint_error.log 2> /dev/null || true'
+                                }
+                                catch (Exception fex) {
+                                    log.error "Error reading file: ${fex.message}"
+                                }
+                            }
+                            errored_out = true
                         }
                     }
                 }
-                if (yaml_lint_errors.size() > 0) {
-                    if (errored_out) {
-                        currentBuild.result = 'FAILED'
-                    }
+                if (yaml_lint_errors.size() > 0 && errored_out) {
+                    currentBuild.result = 'FAILED'
                 }
             }
           }
@@ -199,9 +207,7 @@ pipeline {
     }
     stage ('Upload templates to s3') {
       agent {
-        node {
-            label 'domain:core.cvent.org && os:linux'
-        }
+        label 'domain:core.cvent.org && os:linux'
       }
       when { branch 'master' }
       steps {
@@ -223,54 +229,35 @@ pipeline {
     }
     stage ('Publish'){
         agent {
-            node {
-                label 'master'
-            }
+            label 'master'
         }
         when { branch 'master' }
         steps {
           script {
               update_failed_stacks = []
               supported_files.findAll { file -> fileExists(file) && file.endsWith('.yaml')}.each {
-                  wf_requester = user_email.split('@')[0].toLowerCase()
-                  wf_ticket_number = ''
-                  wf_created_for = 'Cloud Automation'
-                  wf_business_service = 'Management Services'
-                  wf_technical_service = 'cloudops jenkins'
-                  wf_icr_branch_name = 'master'
-                  wf_repository_name = 'iam'
-                  wf_branch_name = 'master'
-                  wf_build_file_name = ''
-                  wf_parameters_file_names = ''
-                  wf_nested_parameters = ''
-                  wf_click_to_proceed = false
-                  wf_notify_chat = false
-                  wf_max_update_query_count = '60'
-                  wf_repository_project = 'OPS-AWS'
-                  wf_disable_rollback = false
-                  wf_cloudformation_template = "${it}"
                   def result = build(job: "aws-update-cloudformation-stack",
-                    parameters: [
-                        string(name: 'wf_requester', value: wf_requester),
-                        string(name: 'wf_ticket_number', value: wf_ticket_number),
-                        string(name: 'wf_created_for', value: wf_created_for),
-                        string(name: 'wf_business_service', value: wf_business_service),
-                        string(name: 'wf_technical_service', value: wf_technical_service),
-                        string(name: 'wf_icr_branch_name', value: wf_icr_branch_name),
-                        string(name: 'wf_repository_name', value: wf_repository_name),
-                        string(name: 'wf_branch_name', value: wf_branch_name),
-                        string(name: 'wf_build_file_name', value: wf_build_file_name),
-                        string(name: 'wf_parameters_file_names', value: wf_parameters_file_names),
-                        string(name: 'wf_nested_parameters', value: wf_nested_parameters),
-                        string(name: 'wf_max_update_query_count', value: wf_max_update_query_count),
-                        string(name: 'wf_repository_project', value: wf_repository_project),
-                        string(name: 'wf_cloudformation_template', value: wf_cloudformation_template),
-                        booleanParam(name: 'wf_notify_chat', value: wf_notify_chat),
-                        booleanParam(name: 'wf_click_to_proceed', value: wf_click_to_proceed),
-                        booleanParam(name: 'wf_disable_rollback', value: wf_disable_rollback)
-                    ],
-                    propagate: false,
-                    wait: true)
+                        parameters: [
+                            string(name: 'wf_requester', value: user_email.split('@')[0].toLowerCase()),
+                            string(name: 'wf_ticket_number', value: ''),
+                            string(name: 'wf_created_for', value: 'Cloud Automation'),
+                            string(name: 'wf_business_service', value: 'Management Services'),
+                            string(name: 'wf_technical_service', value: 'IAM'),
+                            string(name: 'wf_icr_branch_name', value: 'master'),
+                            string(name: 'wf_repository_name', value: 'iam'),
+                            string(name: 'wf_branch_name', value: 'master'),
+                            string(name: 'wf_build_file_name', value: ''),
+                            string(name: 'wf_parameters_file_names', value: ''),
+                            string(name: 'wf_nested_parameters', value: ''),
+                            string(name: 'wf_max_update_query_count', value: '60'),
+                            string(name: 'wf_repository_project', value: 'OPS-AWS'),
+                            string(name: 'wf_cloudformation_template', value: "${it}"),
+                            booleanParam(name: 'wf_notify_chat', value: false),
+                            booleanParam(name: 'wf_click_to_proceed', value: false),
+                            booleanParam(name: 'wf_disable_rollback', value: false)
+                        ],
+                        propagate: false,
+                        wait: true)
                  def update_info = ['file': "${it}",
                         'job': result.getDisplayName(),
                         'Build_Number': result.getNumber(),
@@ -293,14 +280,12 @@ pipeline {
     }
     stage ('Notification'){
         agent {
-            node {
-                label '!master && os:linux'
-            }
+            label '!master && os:linux'
         }
         when { branch 'master' }
         steps {
           script {
-              def service_name = 'IAM roles'
+              def service_name = 'IAM roles, policies, or users'
               def email_to = "${user_email}"
               def email_cc = 'itautomation@cvent.com'
               def email_subject = "Encountered an issue during CI/CD automation for ${service_name}"
@@ -311,7 +296,7 @@ pipeline {
                   def email_message = """
                   Hi ${user_fullname.trim()},<br><br>
 
-                  <p>Automatic updation of cloudformation stacks in AWS account(s) not supported for changes made by you to ${service_name}.
+                  <p>Automatic update of cloudformation stacks in AWS account(s) not supported for changes made by you to ${service_name}.
                   Files/stacks that were ignored by CI/CD automation are as listed below:</p>
                   <ul>
                   ${list_ignored}
@@ -341,7 +326,7 @@ pipeline {
                   def email_message = """
                   Hi ${user_fullname.trim()},<br><br>
 
-                  <p>Automatic updation of cloudformation stacks in AWS account(s) failed for changes made by you to ${service_name}.
+                  <p>Automatic update of cloudformation stacks in AWS account(s) failed for changes made by you to ${service_name}.
                   Failed to update following files:</p>
                   <ul>
                   ${list_failures}
@@ -352,7 +337,7 @@ pipeline {
                   <p>Thanks,<br>
                   Cloud Automation</p>
                   """
-                  email_subject = "Failed updating stacks for changes made to IAM roles"
+                  email_subject = "Failed updating stacks for changes made to ${service_name}"
                   try {
                       node('!master') {
                           emailext to: email_to, mimeType: 'text/html', subject: email_subject, body: email_message, cc: email_cc
@@ -361,7 +346,7 @@ pipeline {
                   catch (Exception ex) {
                       log.error "Failed sending email notifications for failed updates", [ 'cause': ex.message]
                   }
-                  log.error 'This build contains files/stacks that failed updation on AWS end by CI/CD', ['update_failed': update_failed_stacks]
+                  log.error 'This build contains files/stacks that failed to update on AWS end by CI/CD', ['update_failed': update_failed_stacks]
                   currentBuild.result = 'FAILURE'
               }
           }
@@ -387,22 +372,23 @@ pipeline {
                   "* <https://stash/projects/OPS-AWS/repos/iam/browse/${it}?at=refs%2Fheads%2F${env.BRANCH_NAME}|${it}> \n"
               }
           }
-          def slackMsg = "*OPS AWS - IAM Role*\n:interrobang::interrobang::interrobang:\n\n"
-          slackMsg += "<${env.BUILD_URL}|Build> to update cloudformation stacks for IAM roles failed in the following steps:\n${errors.join('\n')}"
+          def slackMsg = "*OPS AWS - IAM Resources*\n:interrobang::interrobang::interrobang:\n\n"
+          slackMsg += "<${env.BUILD_URL}|Build> to update cloudformation stacks for IAM resources failed in the following steps:\n${errors.join('\n')}"
           slackSend message: slackMsg,
                     color: 'danger',
-                    channel: '#cloud-auto-testing'
+                    channel: '#cloud-auto-internal'
         }
       }
     }
-    fixed {
-      script {
-        if (env.BRANCH_NAME == 'master') {
-            def slackMsg = "*OPS AWS - IAM Role*\n:white_check_mark::white_check_mark::white_check_mark:\n\n"
-            slackMsg += "<${env.BUILD_URL}|Build> to update cloudformation stacks for IAM roles succeeded"
-            slackSend message: slackMsg,color: 'good',channel: '#cloud-auto-testing'
-        }
-      }
-    }
+    // Commenting this section to avoid too much noise on slack channel
+    // fixed {
+    //   script {
+    //     if (env.BRANCH_NAME == 'master') {
+    //         def slackMsg = "*OPS AWS - IAM Role*\n:white_check_mark::white_check_mark::white_check_mark:\n\n"
+    //         slackMsg += "<${env.BUILD_URL}|Build> to update cloudformation stacks for IAM roles succeeded"
+    //         slackSend message: slackMsg,color: 'good',channel: '#cloud-auto-testing'
+    //     }
+    //   }
+    // }
   }
 }
