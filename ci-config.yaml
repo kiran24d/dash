@@ -11,6 +11,7 @@ IgnoreAccounts:
     - core-bt-dev
     - core-cb-prod
     - core-cdt-prod
+    - core-conference-dev
     - core-els-prod
     - core-fnd-prod
     - core-kapow-dev
