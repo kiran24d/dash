@@ -1,54 +1,54 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: Create base IAM roles
 
 Resources:
-
-    NocRole:
-        Type: AWS::IAM::Role
-        Properties:
-            AssumeRolePolicyDocument: !Sub
-                |
-                {
-                  "Version": "2012-10-17",
-                  "Statement": [
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
-                      },
-                      "Action": "sts:AssumeRoleWithSAML",
-                      "Condition": {
-                        "StringEquals": {
-                          "SAML:aud": "https://signin.aws.amazon.com/saml"
-                        }
-                      }
-                    },
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "AWS": "arn:aws:iam::667621734181:root"
-                      },
-                      "Action": "sts:AssumeRole",
-                      "Condition": {}
-                    }
-                  ]
+  NocRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument: !Sub
+        |
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+              },
+              "Action": "sts:AssumeRoleWithSAML",
+              "Condition": {
+                "StringEquals": {
+                  "SAML:aud": "https://signin.aws.amazon.com/saml"
                 }
-            ManagedPolicyArns:
-                - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
-                - arn:aws:iam::aws:policy/AWSSupportAccess
-                - arn:aws:iam::aws:policy/IAMReadOnlyAccess
-                - arn:aws:iam::aws:policy/AWSCloudFormationReadOnlyAccess
-            RoleName: aws-cvt-noc
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "arn:aws:iam::667621734181:root"
+              },
+              "Action": "sts:AssumeRole",
+              "Condition": {}
+            }
+          ]
+        }
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
+        - arn:aws:iam::aws:policy/AWSSupportAccess
+        - arn:aws:iam::aws:policy/IAMReadOnlyAccess
+        - arn:aws:iam::aws:policy/AWSCloudFormationReadOnlyAccess
+      RoleName: aws-cvt-noc
 
-    CventNocPolicy:
-        Type: AWS::IAM::Policy
-        Properties:
-          PolicyName: cvent-noc-policy
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-            - Sid: CventNocPolicy
-              Action:
+  CventNocPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: cvent-noc-policy
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: CventNocPolicy
+            Action:
               - ec2:ModifyVolume
               - ec2:RebootInstances
               - ec2:StartInstances
@@ -73,8 +73,7 @@ Resources:
               - elasticloadbalancing:RegisterTargets",
               - rds:DescribeDBInstances
               - rds:ModifyDBInstance
-              Effect: Allow
-              Resource: "*"
-          Roles:
-              - 
-                Ref: "NocRole"
+            Effect: Allow
+            Resource: "*"
+      Roles:
+        - Ref: "NocRole"

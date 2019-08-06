@@ -1,10 +1,13 @@
+---
 # See arn:aws:iam::504055967630:role/aws-cvt-networkingleads for reference
 AWSTemplateFormatVersion: 2010-09-09
 Description: Create base IAM roles
+
 Parameters:
   AccountName:
     Description: The name of the AWS account this template is launched in.
     Type: String
+
 Resources:
   NetworkingLeads:
     Type: AWS::IAM::Role
@@ -12,20 +15,18 @@ Resources:
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
-        -
-          Effect: Allow
-          Principal:
-            Federated: !Sub arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso
-          Action: sts:AssumeRoleWithSAML
-          Condition:
-            StringEquals:
-              SAML:aud: https://signin.aws.amazon.com/saml
-        -
-          Effect: Allow
-          Principal:
-            AWS: arn:aws:iam::667621734181:root
-          Action: sts:AssumeRole
-          Condition: {}
+          - Effect: Allow
+            Principal:
+              Federated: !Sub arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso
+            Action: sts:AssumeRoleWithSAML
+            Condition:
+              StringEquals:
+                SAML:aud: https://signin.aws.amazon.com/saml
+          - Effect: Allow
+            Principal:
+              AWS: arn:aws:iam::667621734181:root
+            Action: sts:AssumeRole
+            Condition: {}
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
         - arn:aws:iam::aws:policy/AWSSupportAccess
@@ -34,65 +35,66 @@ Resources:
       RoleName: !Sub
         - "${Account}-networkingleads"
         - Account: !Ref AccountName
+
   NetworkingLeadsPolicy:
     Type: AWS::IAM::Policy
     Properties:
       PolicyName: networking-leads-policy
-      Roles: 
-      - !Ref NetworkingLeads
+      Roles:
+        - !Ref NetworkingLeads
       PolicyDocument:
-          Version: '2012-10-17'
-          Statement:
+        Version: '2012-10-17'
+        Statement:
           - Effect: Deny
             Resource: "*"
             Action:
-            - iam:AddUserToGroup
-            - iam:AttachGroupPolicy
-            - iam:AttachRolePolicy
-            - iam:AttachUserPolicy
-            - iam:CreateAccessKey
-            - iam:CreateGroup
-            - iam:CreatePolicy
-            - iam:CreatePolicyVersion
-            - iam:CreateRole
-            - iam:CreateSAMLProvider
-            - iam:CreateUser
-            - iam:CreateVirtualMFADevice
-            - iam:DeactivateMFADevice
-            - iam:DeleteAccessKey
-            - iam:DeleteAccountAlias
-            - iam:DeleteAccountPasswordPolicy
-            - iam:DeleteGroup
-            - iam:DeleteGroupPolicy
-            - iam:DeletePolicy
-            - iam:DeletePolicyVersion
-            - iam:DeleteRole
-            - iam:DeleteRolePolicy
-            - iam:DeleteSAMLProvider
-            - iam:DeleteSSHPublicKey
-            - iam:DeleteUser
-            - iam:DeleteUserPolicy
-            - iam:DeleteVirtualMFADevice
-            - iam:DetachGroupPolicy
-            - iam:DetachRolePolicy
-            - iam:DetachUserPolicy
-            - iam:EnableMFADevice
-            - iam:PutGroupPolicy
-            - iam:PutRolePolicy
-            - iam:PutUserPolicy
-            - iam:RemoveUserFromGroup
-            - iam:UpdateAssumeRolePolicy
-            - iam:UpdateGroup
-            - iam:UpdateLoginProfile
-            - iam:UpdateOpenIDConnectProviderThumbprint
-            - iam:UpdateSAMLProvider
-            - iam:UpdateServerCertificate
-            - iam:UpdateSigningCertificate
-            - iam:UpdateSSHPublicKey
-            - iam:UpdateUser
-            - iam:UploadServerCertificate
-            - iam:UploadSigningCertificate
-            - iam:UploadSSHPublicKey
+              - iam:AddUserToGroup
+              - iam:AttachGroupPolicy
+              - iam:AttachRolePolicy
+              - iam:AttachUserPolicy
+              - iam:CreateAccessKey
+              - iam:CreateGroup
+              - iam:CreatePolicy
+              - iam:CreatePolicyVersion
+              - iam:CreateRole
+              - iam:CreateSAMLProvider
+              - iam:CreateUser
+              - iam:CreateVirtualMFADevice
+              - iam:DeactivateMFADevice
+              - iam:DeleteAccessKey
+              - iam:DeleteAccountAlias
+              - iam:DeleteAccountPasswordPolicy
+              - iam:DeleteGroup
+              - iam:DeleteGroupPolicy
+              - iam:DeletePolicy
+              - iam:DeletePolicyVersion
+              - iam:DeleteRole
+              - iam:DeleteRolePolicy
+              - iam:DeleteSAMLProvider
+              - iam:DeleteSSHPublicKey
+              - iam:DeleteUser
+              - iam:DeleteUserPolicy
+              - iam:DeleteVirtualMFADevice
+              - iam:DetachGroupPolicy
+              - iam:DetachRolePolicy
+              - iam:DetachUserPolicy
+              - iam:EnableMFADevice
+              - iam:PutGroupPolicy
+              - iam:PutRolePolicy
+              - iam:PutUserPolicy
+              - iam:RemoveUserFromGroup
+              - iam:UpdateAssumeRolePolicy
+              - iam:UpdateGroup
+              - iam:UpdateLoginProfile
+              - iam:UpdateOpenIDConnectProviderThumbprint
+              - iam:UpdateSAMLProvider
+              - iam:UpdateServerCertificate
+              - iam:UpdateSigningCertificate
+              - iam:UpdateSSHPublicKey
+              - iam:UpdateUser
+              - iam:UploadServerCertificate
+              - iam:UploadSigningCertificate
+              - iam:UploadSSHPublicKey
           - Effect: Allow
             Action: "*"
             Resource: "*"
