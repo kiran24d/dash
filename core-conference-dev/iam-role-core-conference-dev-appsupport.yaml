@@ -1,3 +1,4 @@
+---
 # See arn:aws:iam::504055967630:role/aws-cvt-appsupport for reference
 AWSTemplateFormatVersion: 2010-09-09
 Description: Create federated IAM roles
@@ -53,7 +54,7 @@ Resources:
         Type: AWS::IAM::Policy
         Properties:
             PolicyName: appsupport-policy
-            Roles: 
+            Roles:
                 - !Ref AppSupport
             PolicyDocument:
                 Version: '2012-10-17'

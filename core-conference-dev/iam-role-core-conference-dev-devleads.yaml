@@ -1,88 +1,89 @@
+---
 # See arn:aws:iam::504055967630:role/aws-cvt-devleads for reference
 AWSTemplateFormatVersion: 2010-09-09
 Description: Create federated IAM roles
 
 Parameters:
 
-    AccountName:
-        Description: The name of the AWS account this template is launched in.
-        Type: String
+  AccountName:
+    Description: The name of the AWS account this template is launched in.
+    Type: String
 
 Resources:
 
-    DevLeads:
-        Type: AWS::IAM::Role
-        Properties:
-            AssumeRolePolicyDocument: !Sub
-                |
-                {
-                  "Version": "2012-10-17",
-                  "Statement": [
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
-                      },
-                      "Action": "sts:AssumeRoleWithSAML",
-                      "Condition": {
-                        "StringEquals": {
-                          "SAML:aud": "https://signin.aws.amazon.com/saml"
-                        }
-                      }
-                    },
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "AWS": "arn:aws:iam::667621734181:root"
-                      },
-                      "Action": "sts:AssumeRole",
-                      "Condition": {}
-                    }
-                  ]
+  DevLeads:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument: !Sub
+        |
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+              },
+              "Action": "sts:AssumeRoleWithSAML",
+              "Condition": {
+                "StringEquals": {
+                  "SAML:aud": "https://signin.aws.amazon.com/saml"
                 }
-            ManagedPolicyArns:
-            - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
-            - arn:aws:iam::aws:policy/AWSSupportAccess
-            - arn:aws:iam::aws:policy/IAMReadOnlyAccess
-            - arn:aws:iam::aws:policy/AWSCloudFormationReadOnlyAccess
-            - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
-            - arn:aws:iam::aws:policy/AmazonAthenaFullAccess
-            - arn:aws:iam::aws:policy/CloudFrontFullAccess
-            - arn:aws:iam::aws:policy/AmazonRedshiftFullAccess
-            - arn:aws:iam::aws:policy/AmazonAPIGatewayAdministrator
-            RoleName: !Sub
-            - "${Account}-devleads"
-            - Account: !Ref AccountName
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "arn:aws:iam::667621734181:root"
+              },
+              "Action": "sts:AssumeRole",
+              "Condition": {}
+            }
+          ]
+        }
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
+        - arn:aws:iam::aws:policy/AWSSupportAccess
+        - arn:aws:iam::aws:policy/IAMReadOnlyAccess
+        - arn:aws:iam::aws:policy/AWSCloudFormationReadOnlyAccess
+        - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+        - arn:aws:iam::aws:policy/AmazonAthenaFullAccess
+        - arn:aws:iam::aws:policy/CloudFrontFullAccess
+        - arn:aws:iam::aws:policy/AmazonRedshiftFullAccess
+        - arn:aws:iam::aws:policy/AmazonAPIGatewayAdministrator
+      RoleName: !Sub
+        - "${Account}-devleads"
+        - Account: !Ref AccountName
 
-    TranscribeFullAccessPolicy:
-        Type: AWS::IAM::Policy
-        Properties:
-            PolicyName: transcribe-full-access-policy
-            Roles: 
-            - !Ref DevLeads
-            PolicyDocument:
-                Version: '2012-10-17'
-                Statement:
-                - Effect: Allow
-                  Action:
-                  - transcribe:GetTranscriptionJob
-                  - transcribe:ListTranscriptionJobs
-                  - transcribe:StartTranscriptionJob
-                  Resource: "*"
+  TranscribeFullAccessPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: transcribe-full-access-policy
+      Roles:
+        - !Ref DevLeads
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - transcribe:GetTranscriptionJob
+              - transcribe:ListTranscriptionJobs
+              - transcribe:StartTranscriptionJob
+            Resource: "*"
 
-    DevLeadsPolicy:
-        Type: AWS::IAM::Policy
-        Properties:
-            PolicyName: dev-leads-policy
-            Roles: 
-            - !Ref DevLeads
-            PolicyDocument:
-                Version: '2012-10-17'
-                Statement:
-                - Effect: Allow
-                  Action:
-                  - comprehend:*
-                  - dynamodb:UpdateItem
-                  - ecr:*
-                  Resource:
-                  - "*"
+  DevLeadsPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: dev-leads-policy
+      Roles:
+        - !Ref DevLeads
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - comprehend:*
+              - dynamodb:UpdateItem
+              - ecr:*
+            Resource:
+              - "*"
