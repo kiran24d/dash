@@ -170,15 +170,17 @@ pipeline {
                             lint_command += " || true"
                         }
                         try {
-                            def output = sh script: lint_command, returnStdout: true
-                            print(output)
-                            yaml_lint_errors[it] += output
-                            if (output.contains('error')) {
-                                log.error 'Yaml linting', ['out': output.split('\n')]
-                                errored_out = true
-                            }
-                            else if (output.contains('warning')) {
-                                log.warning 'Yaml linting', ['out': output.split('\n')]
+                            def status = sh script: lint_command, returnStatus: true
+                            if (status != 0) {
+                                def output = readFile file: 'lint_error.log'
+                                yaml_lint_errors[it] += output
+                                if (output.contains('error')) {
+                                    log.error 'Yaml linting', ['out': output.split('\n')]
+                                    errored_out = true
+                                }
+                                else if (output.contains('warning')) {
+                                    log.warning 'Yaml linting', ['out': output.split('\n')]
+                                }
                             }
                         }
                         catch (Exception ex) {
