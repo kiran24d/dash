@@ -1,4 +1,4 @@
---
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: DataPipeline Default Resource Role
  
@@ -17,7 +17,7 @@ Resources:
                 - ec2.amazonaws.com
       RoleName: wedding-spot-datapipeline-resource-datadev
       ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/AmazonEC2RoleforDataPipelineRole
+        - arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforDataPipelineRole
   
   WeddingSpotDataDevsPolicy:
     Type: AWS::IAM::Policy
@@ -30,4 +30,5 @@ Resources:
           Action:
             - lambda:*
           Resource: "*"
-      Roles: !Ref DataPipelineDefaultResourceRole
+      Roles: 
+        - !Ref DataPipelineDefaultResourceRole
