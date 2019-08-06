@@ -16,11 +16,6 @@ Resources:
             Condition:
               StringEquals:
                 SAML:aud: https://signin.aws.amazon.com/saml
-          - Effect: Allow
-            Principal:
-              AWS: arn:aws:iam::667621734181:root
-            Action: sts:AssumeRole
-            Condition: {}
       RoleName: aws-cvt-datadevs
 
   AwsCvtDatadevsAssumptionPolicy:
