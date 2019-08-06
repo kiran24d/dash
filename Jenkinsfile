@@ -162,7 +162,7 @@ pipeline {
                 def errored_out = false
                 rules = "{extends: relaxed, rules: {line-length: {max: 120}, new-line-at-end-of-file: disable}}"
                 supported_files.findAll { file -> fileExists(file) && (file.endsWith('.yaml') || file.endsWith('.yml')) }.each {
-                    def lint_command = "yamllint -d \"${rules}\" ${it} 2>&1"
+                    def lint_command = "yamllint -d \"${rules}\" ${it} 2>&1 > lint_error.log"
                     def fileparts = it.split('/')
                     if (fileparts.size() > 1) {
                         // account name is inside skip linting errors
