@@ -1,4 +1,4 @@
---
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: Lambda Default Role
  
@@ -21,7 +21,21 @@ Resources:
         - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
         - arn:aws:iam::aws:policy/AmazonS3FullAccess
         - arn:aws:iam::aws:policy/CloudWatchFullAccess
-        - arn:aws:iam::aws:policy/AWSGlueServiceRole
+        - arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole
         - arn:aws:iam::aws:policy/AmazonSESFullAccess
         - arn:aws:iam::aws:policy/AWSLambdaExecute
         - arn:aws:iam::aws:policy/AWSGlueConsoleFullAccess
+
+  WeddingSpotDataDevsPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: wedding-spot-lambda-datadev-policy
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+            - datapipeline:*
+          Resource: "*"
+      Roles: 
+        - !Ref LambdaDefaultRole
