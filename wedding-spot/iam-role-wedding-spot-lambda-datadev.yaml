@@ -37,5 +37,10 @@ Resources:
           Action:
             - datapipeline:*
           Resource: "*"
+        - Effect: Allow
+          Action:
+            - iam:PassRole
+          Resource:
+          - arn:aws:iam::668679206736:role/wedding-spot-datapipeline-datadev
       Roles: 
-        - !Ref LambdaDefaultRole
+          - !Ref LambdaDefaultRole
