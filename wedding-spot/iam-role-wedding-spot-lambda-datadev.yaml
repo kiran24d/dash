@@ -33,14 +33,14 @@ Resources:
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
-            - Effect: Allow
-              Action:
-                - datapipeline:*
-              Resource: "*"
-            - Effect: Allow
-              Action:
-                - iam:PassRole
-              Resource:
+          - Effect: Allow
+            Action:
+              - datapipeline:*
+            Resource: "*"
+          - Effect: Allow
+            Action:
+              - iam:PassRole
+            Resource:
               - arn:aws:iam::668679206736:role/wedding-spot-datapipeline-datadev
-          Roles: 
-              - !Ref LambdaDefaultRole
+      Roles: 
+        - !Ref LambdaDefaultRole
