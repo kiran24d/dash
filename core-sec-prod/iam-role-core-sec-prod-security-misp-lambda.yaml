@@ -10,7 +10,7 @@ Resources:
         Statement:
           - Effect: 'Allow'
             Principal:
-              AWS: arn:aws:iam::634729597623:root
+              AWS: arn:aws:iam::980043037575:root
               SERVICE: 'lambda.amazonaws.com'
             Action:
               - 'sts:AssumeRole'
