@@ -1,0 +1,8 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Creates service linked role for elasticsearch
+
+Resources: 
+  ElasticsearchServiceRole:
+    Type: AWS::IAM::ServiceLinkedRole
+    Properties:
+      AWSServiceName: 'es.amazonaws.com'
