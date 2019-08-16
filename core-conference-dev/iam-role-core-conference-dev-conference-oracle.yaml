@@ -22,7 +22,7 @@ Resources:
               - Effect: "Allow"
                 Action: "*"
                 Resource: "arn:aws:s3:::core-conference-dev-archive/*"
-        RoleName: core-conf-dev-conference-oracle   
+        RoleName: core-conference-dev-conference-oracle
 
     InstanceProfileCoreConfDevOracle:
       Type: AWS::IAM::InstanceProfile
@@ -30,4 +30,4 @@ Resources:
         Path: /
         Roles:
           - !Ref  RoleCoreConfDevOracle
-        InstanceProfileName: core-conf-dev-conference-oracle
+        InstanceProfileName: core-conference-dev-conference-oracle
