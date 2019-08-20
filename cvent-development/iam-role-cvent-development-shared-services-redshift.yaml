@@ -1,0 +1,66 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: ICR-3099, IAM Redshift role for cvent-datawarehouse bucket and glue
+ 
+Resources:
+
+  CventDevelopmentSharedServicesRedshiftRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - "sts:AssumeRole"
+            Principal:
+              Service: redshift.amazonaws.com
+      RoleName: cvent-development-shared-services-redshift
+       
+  CventDevelopmentSharedServicesRedshiftPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: cvent-development-shared-services-redshift-policy
+      Roles:
+        - !Ref CventDevelopmentSharedServicesRedshiftRole
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Resource:
+              - "arn:aws:s3:::cvent-development-cvent-datawarehouse-us-east-1/*"
+            Action:
+              - s3:GetBucketLocation
+              - s3:GetObject
+              - s3:ListMultipartUploadParts
+              - s3:ListBucket
+              - s3:ListBucketMultipartUploads
+          - Effect: Allow
+            Resource:
+              - "arn:aws:s3:::cvent-development-cvent-datawarehouse-us-east-1/*"
+            Action:
+              - athena:*
+          - Effect: Allow
+            Resource:
+              - "arn:aws:s3:::cvent-development-cvent-datawarehouse-us-east-1/*"
+            Action:
+              - glue:CreateDatabase
+              - glue:DeleteDatabase
+              - glue:GetDatabase
+              - glue:GetDatabases
+              - glue:UpdateDatabase
+              - glue:CreateTable
+              - glue:DeleteTable
+              - glue:BatchDeleteTable
+              - glue:UpdateTable
+              - glue:GetTable
+              - glue:GetTables
+              - glue:BatchCreatePartition
+              - glue:CreatePartition
+              - glue:DeletePartition
+              - glue:BatchDeletePartition
+              - glue:UpdatePartition
+              - glue:GetPartition
+              - glue:GetPartitions
+              - glue:BatchGetPartition
+              
