@@ -60,3 +60,4 @@ Resources:
             Action:
             - iam:Get*
             - iam:List*
+            - iam:PassRole
