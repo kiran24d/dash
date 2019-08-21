@@ -12,10 +12,9 @@ properties([
 ])
 
 pipeline {
-  agent {
-    label 'domain:core.cvent.org && os:linux'
-  }
+  agent none
   options {
+    timeout(time: 5, unit: 'MINUTES')
     ansiColor('xterm')
     timestamps()
   }
@@ -231,7 +230,9 @@ pipeline {
     }
     stage ('Publish'){
         agent {
-            label 'master'
+            node {
+                label 'domain:core.cvent.org && os:linux'
+            }
         }
         when { branch 'master' }
         steps {
@@ -382,15 +383,14 @@ pipeline {
         }
       }
     }
-    // Commenting this section to avoid too much noise on slack channel
-    // fixed {
-    //   script {
-    //     if (env.BRANCH_NAME == 'master') {
-    //         def slackMsg = "*OPS AWS - IAM Role*\n:white_check_mark::white_check_mark::white_check_mark:\n\n"
-    //         slackMsg += "<${env.BUILD_URL}|Build> to update cloudformation stacks for IAM roles succeeded"
-    //         slackSend message: slackMsg,color: 'good',channel: '#cloud-auto-testing'
-    //     }
-    //   }
-    // }
+    aborted {
+      script {
+        def slackMsg = "*OPS AWS - Security Groups*\n:interrobang::interrobang::interrobang:\n\n"
+        slackMsg += "<${env.BUILD_URL}|Build> for Security Groups has aborted prematurely\n"
+        slackSend message: slackMsg,
+                color: 'danger',
+                channel: '#cloud-auto-internal'
+      }
+    }
   }
 }
