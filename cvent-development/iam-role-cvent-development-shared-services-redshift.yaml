@@ -38,7 +38,9 @@ Resources:
               - s3:ListBucketMultipartUploads
           - Effect: Allow
             Resource:
-              - "arn:aws:glue:*:*:*"
+              - "arn:aws:glue:*:*:catalog"
+              - "arn:aws:glue:*:*:database/*"
+              - "arn:aws:glue:*:*:table/*"
             Action:
               - glue:CreateDatabase
               - glue:DeleteDatabase
