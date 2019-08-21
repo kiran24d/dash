@@ -245,6 +245,8 @@ pipeline {
                             string(name: 'wf_created_for', value: 'Cloud Automation'),
                             string(name: 'wf_business_service', value: 'Management Services'),
                             string(name: 'wf_technical_service', value: 'IAM'),
+                            string(name: 'wf_market', value: 'all'),
+                            string(name: 'wf_product', value: 'infrastructure'),
                             string(name: 'wf_icr_branch_name', value: 'master'),
                             string(name: 'wf_repository_name', value: 'iam'),
                             string(name: 'wf_branch_name', value: 'master'),
