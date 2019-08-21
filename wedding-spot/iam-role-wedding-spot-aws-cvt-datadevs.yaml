@@ -74,6 +74,7 @@ Resources:
         - Effect: Allow
           Action:
             - ssm:*
-          Resource: "*"
+          Resource: 
+          - arn:aws:ssm:us-east-1:668679206736:parameter/*
       Roles:
           - Ref: WeddingSpotDataDevsRole
