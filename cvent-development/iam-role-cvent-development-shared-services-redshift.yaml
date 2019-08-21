@@ -28,6 +28,7 @@ Resources:
         Statement:
           - Effect: Allow
             Resource:
+              - "arn:aws:s3:::cvent-development-cvent-datawarehouse-us-east-1"
               - "arn:aws:s3:::cvent-development-cvent-datawarehouse-us-east-1/*"
             Action:
               - s3:GetBucketLocation
@@ -37,12 +38,7 @@ Resources:
               - s3:ListBucketMultipartUploads
           - Effect: Allow
             Resource:
-              - "*"
-            Action:
-              - athena:*
-          - Effect: Allow
-            Resource:
-              - "*"
+              - "arn:aws:glue:*:*:*"
             Action:
               - glue:CreateDatabase
               - glue:DeleteDatabase
