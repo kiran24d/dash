@@ -385,8 +385,8 @@ pipeline {
     }
     aborted {
       script {
-        def slackMsg = "*OPS AWS - Security Groups*\n:interrobang::interrobang::interrobang:\n\n"
-        slackMsg += "<${env.BUILD_URL}|Build> for Security Groups has aborted prematurely\n"
+        def slackMsg = "*OPS AWS - IAM*\n:interrobang::interrobang::interrobang:\n\n"
+        slackMsg += "<${env.BUILD_URL}|Build> for IAM has aborted prematurely\n"
         slackSend message: slackMsg,
                 color: 'danger',
                 channel: '#cloud-auto-internal'
