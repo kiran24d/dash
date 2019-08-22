@@ -4,7 +4,7 @@ Description: ICR-3122, Create New IAM Role for ECS Cluster in core-socialtables-
  
 Resources:
  
-  CoreSocialtablesProdEcsInstanceRole:
+  CoreSocialtablesProdSocialtablesEcsRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
@@ -16,7 +16,7 @@ Resources:
             Principal:
               Service:
                 - ec2.amazonaws.com
-      RoleName: core-socialtables-prod-ecs-instance-role
+      RoleName: core-socialtables-prod-socialtables-ecs
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AWSLambdaFullAccess
         - arn:aws:iam::aws:policy/AmazonS3FullAccess
@@ -31,9 +31,9 @@ Resources:
   CoreSocialtablesProdEcsInstancePolicy:
     Type: AWS::IAM::Policy
     Properties:
-      PolicyName: cloudwatch-put
+      PolicyName: core-socialtables-prod-socialtables-ecs-cloudwatch-put-policy
       Roles:
-        - !Ref CoreSocialtablesProdEcsInstanceRole
+        - !Ref CoreSocialtablesProdSocialtablesEcsRole
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -45,9 +45,9 @@ Resources:
  CoreSocialtablesProdEcsInstancePolicy:
     Type: AWS::IAM::Policy
     Properties:
-      PolicyName: ecs-sqs-fullaccess
+      PolicyName: core-socialtables-prod-socialtables-ecs-ecs-sqs-fullaccess-policy
       Roles:
-        - !Ref CoreSocialtablesProdEcsInstanceRole
+        - !Ref CoreSocialtablesProdSocialtablesEcsRole
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -75,9 +75,9 @@ Resources:
   CoreSocialtablesProdEcsInstancePolicy:
     Type: AWS::IAM::Policy
     Properties:
-      PolicyName: kms-decrypt
+      PolicyName: core-socialtables-prod-socialtables-ecs-kms-decrypt-policy
       Roles:
-        - !Ref CoreSocialtablesProdEcsInstanceRole
+        - !Ref CoreSocialtablesProdSocialtablesEcsRole
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -94,9 +94,9 @@ Resources:
  CoreSocialtablesProdEcsInstancePolicy:
     Type: AWS::IAM::Policy
     Properties:
-      PolicyName: logstash-dubot-sqs-input
+      PolicyName: core-socialtables-prod-socialtables-ecs-logstash-dubot-sqs-input-policy
       Roles:
-        - !Ref CoreSocialtablesProdEcsInstanceRole
+        - !Ref CoreSocialtablesProdSocialtablesEcsRole
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -114,9 +114,9 @@ Resources:
   CoreSocialtablesProdEcsInstancePolicy:
     Type: AWS::IAM::Policy
     Properties:
-      PolicyName: oneClick_ecsInstanceRole_1428692606233
+      PolicyName: core-socialtables-prod-socialtables-ecs-oneClick_ecsInstanceRole_1428692606233-policy
       Roles:
-        - !Ref CoreSocialtablesProdEcsInstanceRole
+        - !Ref CoreSocialtablesProdSocialtablesEcsRole
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -133,9 +133,9 @@ Resources:
   CoreSocialtablesProdEcsInstancePolicy:
     Type: AWS::IAM::Policy
     Properties:
-      PolicyName: production1-ecs-route53
+      PolicyName: core-socialtables-prod-socialtables-ecs-production1-ecs-route53-policy
       Roles:
-        - !Ref CoreSocialtablesProdEcsInstanceRole
+        - !Ref CoreSocialtablesProdSocialtablesEcsRole
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -155,9 +155,9 @@ Resources:
   CoreSocialtablesProdEcsInstancePolicy:
     Type: AWS::IAM::Policy
     Properties:
-      PolicyName: traefik
+      PolicyName: core-socialtables-prod-socialtables-ecs-traefik-policy
       Roles:
-        - !Ref CoreSocialtablesProdEcsInstanceRole
+        - !Ref CoreSocialtablesProdSocialtablesEcsRole
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -177,9 +177,9 @@ Resources:
   CoreSocialtablesProdEcsInstancePolicy:
     Type: AWS::IAM::Policy
     Properties:
-      PolicyName: SSMSessionManager
+      PolicyName: core-socialtables-prod-socialtables-ecs-SSMSessionManager-policy
       Roles:
-        - !Ref CoreSocialtablesProdEcsInstanceRole
+        - !Ref CoreSocialtablesProdSocialtablesEcsRole
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
