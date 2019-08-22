@@ -196,4 +196,4 @@ Resources:
                 - !Ref CoreSocialtablesProdSocialtablesEc2InstanceRole
             InstanceProfileName: !Sub
                 - "${Account}-socialtables-ec2-instance-profile"
-                - Account: !Ref AccountNamecore
+                - Account: !Ref AccountName
