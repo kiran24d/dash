@@ -10,202 +10,213 @@ Parameters:
 
 Resources:
 
-  # Instance Profiles
-  CoreSocialtablesProdSocialtablesEcsProfile:
-    Type: AWS::IAM::InstanceProfile
-    Properties:
-      Roles:
-        - !Ref CoreSocialtablesProdSocialtablesEcsRole
-      InstanceProfileName: core-socialtables-prod-socialtables-ecs-profile
-
-  # IAM Role
-
-  CoreSocialtablesProdSocialtablesEcsRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: Allow
+    # IAM Role
+    CoreSocialtablesProdSocialtablesEcsRole:
+        Type: AWS::IAM::Role
+        Properties:
+            AssumeRolePolicyDocument:
+                Version: "2012-10-17"
+            Statement:
+                - Effect: Allow
             Action:
-              - "sts:AssumeRole"
+                - "sts:AssumeRole"
             Principal:
-              Service:
-                - ec2.amazonaws.com
-      RoleName: core-socialtables-prod-socialtables-ecs
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/AWSLambdaFullAccess
-        - arn:aws:iam::aws:policy/AmazonS3FullAccess
-        - arn:aws:iam::aws:policy/AmazonRekognitionReadOnlyAccess
-        - arn:aws:iam::aws:policy/AmazonKinesisFullAccess
-        - arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
-        - arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role
-        - arn:aws:iam::aws:policy/AmazonKinesisFirehoseFullAccess
-        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-        - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
+                Service:
+                    - ec2.amazonaws.com
+            RoleName: core-socialtables-prod-socialtables-ecs
+            ManagedPolicyArns:
+                - arn:aws:iam::aws:policy/AWSLambdaFullAccess
+                - arn:aws:iam::aws:policy/AmazonS3FullAccess
+                - arn:aws:iam::aws:policy/AmazonRekognitionReadOnlyAccess
+                - arn:aws:iam::aws:policy/AmazonKinesisFullAccess
+                - arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
+                - arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role
+                - arn:aws:iam::aws:policy/AmazonKinesisFirehoseFullAccess
+                - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+                - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
 
-  # IAM In-Line Policies
+    # IAM In-Line Policies
 
-  CoreSocialtablesProdEcsInstancePolicy:
-    Type: AWS::IAM::Policy
-    Properties:
-      PolicyName: core-socialtables-prod-socialtables-ecs-cloudwatch-put-policy
-      Roles:
-        - !Ref CoreSocialtablesProdSocialtablesEcsRole
-      PolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Resource: "*"
-            Action:
-              - cloudwatch:Put*
+    CoreSocialtablesProdEcsCloudwatchInstancePolicy:
+        Type: AWS::IAM::Policy
+        Properties:
+            PolicyName: !Sub
+                - "${Account}-socialtables-ecs-cloudwatch-put-policy"
+                - Account: !Ref AccountName
+            Roles:
+                - !Ref CoreSocialtablesProdSocialtablesEcsRole
+        PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+                - Effect: Allow
+                  Resource: "*"
+                  Action:
+                      - cloudwatch:Put*
 
- CoreSocialtablesProdEcsInstancePolicy:
-   Type: AWS::IAM::Policy
-    Properties:
-      PolicyName: core-socialtables-prod-socialtables-ecs-sqs-fullaccess-policy
-      Roles:
-        - !Ref CoreSocialtablesProdSocialtablesEcsRole
-      PolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Resource: "*"
-            Action:
-              - sqs:AddPermission
-              - sqs:ChangeMessageVisibility
-              - sqs:ChangeMessageVisibilityBatch
-              - sqs:CreateQueue
-              - sqs:DeleteMessage
-              - sqs:DeleteMessageBatch
-              - sqs:GetQueueAttributes
-              - sqs:GetQueueUrl
-              - sqs:ListDeadLetterSourceQueues
-              - sqs:ListQueues
-              - sqs:PurgeQueue
-              - sqs:ReceiveMessage
-              - sqs:RemovePermission
-              - sqs:SendMessage
-              - sqs:SendMessageBatch
-              - sqs:SetQueueAttributes
+    CoreSocialtablesProdEcsSqsInstancePolicy:
+        Type: AWS::IAM::Policy
+        Properties:
+            PolicyName: !Sub
+                - "${Account}-socialtables-ecs-sqs-fullaccess-policy"
+                - Account: !Ref AccountName
+            Roles:
+                - !Ref CoreSocialtablesProdSocialtablesEcsRole
+            PolicyDocument:
+                Version: '2012-10-17'
+            Statement:
+                - Effect: Allow
+                  Resource: "*"
+                  Action:
+                      - sqs:AddPermission
+                      - sqs:ChangeMessageVisibility
+                      - sqs:ChangeMessageVisibilityBatch
+                      - sqs:CreateQueue
+                      - sqs:DeleteMessage
+                      - sqs:DeleteMessageBatch
+                      - sqs:GetQueueAttributes
+                      - sqs:GetQueueUrl
+                      - sqs:ListDeadLetterSourceQueues
+                      - sqs:ListQueues
+                      - sqs:PurgeQueue
+                      - sqs:ReceiveMessage
+                      - sqs:RemovePermission
+                      - sqs:SendMessage
+                      - sqs:SendMessageBatch
+                      - sqs:SetQueueAttributes
 
-  CoreSocialtablesProdEcsInstancePolicy:
-    Type: AWS::IAM::Policy
-    Properties:
-      PolicyName: core-socialtables-prod-socialtables-ecs-kms-decrypt-policy
-      Roles:
-        - !Ref CoreSocialtablesProdSocialtablesEcsRole
-      PolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Resource: "*"
-            Action:
-              - kms:Decrypt
-          - Effect: Allow
-            Action:
-              - ssm:GetParameter*
-            Resource:
-              - arn:aws:ssm:*:*:parameter/*/newrelic/*
-  
- CoreSocialtablesProdEcsInstancePolicy:
-    Type: AWS::IAM::Policy
-    Properties:
-      PolicyName: core-socialtables-prod-socialtables-ecs-logstash-dubot-sqs-input-policy
-      Roles:
-        - !Ref CoreSocialtablesProdSocialtablesEcsRole
-      PolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Resource: "*"
-            - Action:
-              - ecr:GetAuthorizationToken
-              - ecr:BatchCheckLayerAvailability
-              - ecr:GetDownloadUrlForLayer
-              - ecr:BatchGetImage
-              - logs:CreateLogStream
-              - logs:PutLogEvents
-              - ecs:Start*
+    CoreSocialtablesProdEcsKmsInstancePolicy:
+        Type: AWS::IAM::Policy
+        Properties:
+            PolicyName: !Sub
+                - "${Account}-socialtables-ecs-kms-decrypt-policy"
+                - Account: !Ref AccountName
+            Roles:
+                - !Ref CoreSocialtablesProdSocialtablesEcsRole
+            PolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Effect: Allow
+                      Resource: "*"
+                      Action:
+                          - kms:Decrypt
+                    - Effect: Allow
+                      Action:
+                          - ssm:GetParameter*
+                      Resource:
+                          - arn:aws:ssm:*:*:parameter/*/newrelic/*
 
-  CoreSocialtablesProdEcsInstancePolicy:
-    Type: AWS::IAM::Policy
-    Properties:
-      PolicyName: core-socialtables-prod-socialtables-ecs-policy
-      Roles:
-        - !Ref CoreSocialtablesProdSocialtablesEcsRole
-      PolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Resource: "*"
-            -  Action:
-                - ecs:CreateCluster
-                - ecs:DeregisterContainerInstance
-                - ecs:DiscoverPollEndpoint
-                - ecs:Poll
-                - ecs:RegisterContainerInstance
-                - ecs:Submit*
-  
-  CoreSocialtablesProdEcsInstancePolicy:
-    Type: AWS::IAM::Policy
-    Properties:
-      PolicyName: core-socialtables-prod-socialtables-ecs-production1-ecs-route53-policy
-      Roles:
-        - !Ref CoreSocialtablesProdSocialtablesEcsRole
-      PolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Sid: VisualEditor0
-            Effect: Allow
-            Action:
-              - route53:List*
-            Resource: "*"
-          - Sid: VisualEditor1
-            Effect: Allow
-            Action: route53:*
-            Resource:
-              - arn:aws:route53:::hostedzone/Z2M53SDWUTCDR7
-              - arn:aws:route53:::hostedzone/Z2CK3YSDYYYI0Z
+    CoreSocialtablesProdEcsLogsInstancePolicy:
+        Type: AWS::IAM::Policy
+        Properties:
+            PolicyName: !Sub
+                - "${Account}-socialtables-ecs-logstash-dubot-sqs-input-policy"
+                - Account: !Ref AccountName
+        Roles:
+            - !Ref CoreSocialtablesProdSocialtablesEcsRole
+        PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+                - Effect: Allow
+                  Resource: "*"
+                  Action:
+                      - ecr:GetAuthorizationToken
+                      - ecr:BatchCheckLayerAvailability
+                      - ecr:GetDownloadUrlForLayer
+                      - ecr:BatchGetImage
+                      - logs:CreateLogStream
+                      - logs:PutLogEvents
+                      - ecs:Start*
+
+    CoreSocialtablesProdEcsInstancePolicy:
+        Type: AWS::IAM::Policy
+        Properties:
+            PolicyName: core-socialtables-prod-socialtables-ecs-policy
+            Roles:
+                - !Ref CoreSocialtablesProdSocialtablesEcsRole
+            PolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Effect: Allow
+                      Resource: "*"
+                      Action:
+                          - ecs:CreateCluster
+                          - ecs:DeregisterContainerInstance
+                          - ecs:DiscoverPollEndpoint
+                          - ecs:Poll
+                          - ecs:RegisterContainerInstance
+                          - ecs:Submit*
+
+    CoreSocialtablesProdEcsRoute53InstancePolicy:
+        Type: AWS::IAM::Policy
+        Properties:
+            PolicyName: !Sub
+                - "${Account}-socialtables-ecs-production1-ecs-route53-policy"
+                - Account: !Ref AccountName
+            Roles:
+                - !Ref CoreSocialtablesProdSocialtablesEcsRole
+            PolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Sid: VisualEditor0
+                      Effect: Allow
+                      Action:
+                          - route53:List*
+                      Resource: "*"
+                    - Sid: VisualEditor1
+                      Effect: Allow
+                      Action: route53:*
+                      Resource:
+                          - arn:aws:route53:::hostedzone/Z2M53SDWUTCDR7
+                          - arn:aws:route53:::hostedzone/Z2CK3YSDYYYI0Z
 
 
-  CoreSocialtablesProdEcsInstancePolicy:
-    Type: AWS::IAM::Policy
-    Properties:
-      PolicyName: core-socialtables-prod-socialtables-ecs-traefik-policy
-      Roles:
-        - !Ref CoreSocialtablesProdSocialtablesEcsRole
-      PolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-        - Sid: TraefikECSReadAccess
-          Effect: Allow
-          Action:
-          - ecs:ListClusters
-          - ecs:DescribeClusters
-          - ecs:ListTasks
-          - ecs:DescribeTasks
-          - ecs:DescribeContainerInstances
-          - ecs:DescribeTaskDefinition
-          - ec2:DescribeInstances
-          Resource:
-          - "*"
+    CoreSocialtablesProdEcsTraefikInstancePolicy:
+        Type: AWS::IAM::Policy
+        Properties:
+            PolicyName: core-socialtables-prod-socialtables-ecs-traefik-policy
+            Roles:
+                - !Ref CoreSocialtablesProdSocialtablesEcsRole
+            PolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Sid: TraefikECSReadAccess
+                      Effect: Allow
+                      Action:
+                          - ecs:ListClusters
+                          - ecs:DescribeClusters
+                          - ecs:ListTasks
+                          - ecs:DescribeTasks
+                          - ecs:DescribeContainerInstances
+                          - ecs:DescribeTaskDefinition
+                          - ec2:DescribeInstances
+                      Resource:
+                          - "*"
 
-  CoreSocialtablesProdEcsInstancePolicy:
-    Type: AWS::IAM::Policy
-    Properties:
-      PolicyName: core-socialtables-prod-socialtables-ecs-SSMSessionManager-policy
-      Roles:
-        - !Ref CoreSocialtablesProdSocialtablesEcsRole
-      PolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Action:
-            - ssm:StartSession
-            - ssm:TerminateSession
-            - ssm:ResumeSession
-            - ssm:DescribeSessions
-            - ssm:GetConnectionStatus
-            Effect: Allow
-            Resource:
-            - "*"
+    CoreSocialtablesProdEcsSsmInstancePolicy:
+        Type: AWS::IAM::Policy
+        Properties:
+            PolicyName: !Sub
+                - "${Account}-socialtables-ecs-SSMSessionManager-policy"
+                - Account: !Ref AccountName
+            Roles:
+                - !Ref CoreSocialtablesProdSocialtablesEcsRole
+            PolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Action:
+                          - ssm:StartSession
+                          - ssm:TerminateSession
+                          - ssm:ResumeSession
+                          - ssm:DescribeSessions
+                          - ssm:GetConnectionStatus
+                      Effect: Allow
+                      Resource:
+                          - "*"
+
+    # Instance Profiles
+    CoreSocialtablesProdSocialtablesEcsProfile:
+        Type: AWS::IAM::InstanceProfile
+        Properties:
+        Roles:
+            - !Ref CoreSocialtablesProdSocialtablesEcsRole
+        InstanceProfileName: core-socialtables-prod-socialtables-ecs-profile
