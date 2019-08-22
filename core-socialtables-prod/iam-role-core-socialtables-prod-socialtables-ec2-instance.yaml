@@ -20,8 +20,8 @@ Resources:
                       Action:
                           - "sts:AssumeRole"
                       Principal:
-                      Service:
-                          - ec2.amazonaws.com
+                          Service:
+                              - ec2.amazonaws.com
             RoleName: core-socialtables-prod-socialtables-ec2-instance
             ManagedPolicyArns:
                 - arn:aws:iam::aws:policy/AmazonSQSFullAccess
