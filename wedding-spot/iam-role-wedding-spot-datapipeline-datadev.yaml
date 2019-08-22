@@ -1,9 +1,9 @@
---
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: DataPipeline Default Role
- 
+
 Resources:
- 
+
   DataPipelineDefaultRole:
     Type: AWS::IAM::Role
     Properties:
