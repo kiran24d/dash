@@ -3,7 +3,17 @@ AWSTemplateFormatVersion: 2010-09-09
 Description: ICR-3122, Create New IAM Role for ECS Cluster in core-socialtables-prod acct
  
 Resources:
- 
+
+  # Instance Profiles
+  CoreSocialtablesProdSocialtablesEcsProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties: 
+      Roles:
+        - !Ref CoreSocialtablesProdSocialtablesEcsRole
+      InstanceProfileName: core-socialtables-prod-socialtables-ecs-profile
+  
+  #IAM Role
+
   CoreSocialtablesProdSocialtablesEcsRole:
     Type: AWS::IAM::Role
     Properties:
@@ -27,6 +37,8 @@ Resources:
         - arn:aws:iam::aws:policy/AmazonKinesisFirehoseFullAccess
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
         - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
+
+  #IAM In-Line Policies
  
   CoreSocialtablesProdEcsInstancePolicy:
     Type: AWS::IAM::Policy
