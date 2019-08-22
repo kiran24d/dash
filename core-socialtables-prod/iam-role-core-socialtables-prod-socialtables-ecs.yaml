@@ -1,18 +1,24 @@
 ---
 AWSTemplateFormatVersion: 2010-09-09
-Description: ICR-3122, Create New IAM Role for ECS Cluster in core-socialtables-prod acct
- 
+Description: ICR-3122, Create ECS Cluster IAM Role in core-socialtables-prod
+
+Parameters:
+
+    AccountName:
+        Description: The name of the AWS account this template is launched in.
+        Type: String
+
 Resources:
 
   # Instance Profiles
   CoreSocialtablesProdSocialtablesEcsProfile:
     Type: AWS::IAM::InstanceProfile
-    Properties: 
+    Properties:
       Roles:
         - !Ref CoreSocialtablesProdSocialtablesEcsRole
       InstanceProfileName: core-socialtables-prod-socialtables-ecs-profile
-  
-  #IAM Role
+
+  # IAM Role
 
   CoreSocialtablesProdSocialtablesEcsRole:
     Type: AWS::IAM::Role
@@ -38,8 +44,8 @@ Resources:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
         - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
 
-  #IAM In-Line Policies
- 
+  # IAM In-Line Policies
+
   CoreSocialtablesProdEcsInstancePolicy:
     Type: AWS::IAM::Policy
     Properties:
@@ -52,12 +58,12 @@ Resources:
           - Effect: Allow
             Resource: "*"
             Action:
-              -  cloudwatch:Put*
- 
+              - cloudwatch:Put*
+
  CoreSocialtablesProdEcsInstancePolicy:
-    Type: AWS::IAM::Policy
+   Type: AWS::IAM::Policy
     Properties:
-      PolicyName: core-socialtables-prod-socialtables-ecs-ecs-sqs-fullaccess-policy
+      PolicyName: core-socialtables-prod-socialtables-ecs-sqs-fullaccess-policy
       Roles:
         - !Ref CoreSocialtablesProdSocialtablesEcsRole
       PolicyDocument:
@@ -83,7 +89,6 @@ Resources:
               - sqs:SendMessageBatch
               - sqs:SetQueueAttributes
 
-  
   CoreSocialtablesProdEcsInstancePolicy:
     Type: AWS::IAM::Policy
     Properties:
@@ -98,11 +103,11 @@ Resources:
             Action:
               - kms:Decrypt
           - Effect: Allow
-            Action: 
+            Action:
               - ssm:GetParameter*
-            Resource: 
+            Resource:
               - arn:aws:ssm:*:*:parameter/*/newrelic/*
-            
+  
  CoreSocialtablesProdEcsInstancePolicy:
     Type: AWS::IAM::Policy
     Properties:
@@ -126,7 +131,7 @@ Resources:
   CoreSocialtablesProdEcsInstancePolicy:
     Type: AWS::IAM::Policy
     Properties:
-      PolicyName: core-socialtables-prod-socialtables-ecs-oneClick_ecsInstanceRole_1428692606233-policy
+      PolicyName: core-socialtables-prod-socialtables-ecs-policy
       Roles:
         - !Ref CoreSocialtablesProdSocialtablesEcsRole
       PolicyDocument:
