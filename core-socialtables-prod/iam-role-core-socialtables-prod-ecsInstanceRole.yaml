@@ -33,7 +33,7 @@ Resources:
     Properties:
       PolicyName: cloudwatch-put
       Roles:
-        - !Ref AccountRoleNameRole
+        - !Ref CoreSocialtablesProdEcsInstanceRole
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -47,7 +47,7 @@ Resources:
     Properties:
       PolicyName: ecs-sqs-fullaccess
       Roles:
-        - !Ref AccountRoleNameRole
+        - !Ref CoreSocialtablesProdEcsInstanceRole
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -77,7 +77,7 @@ Resources:
     Properties:
       PolicyName: kms-decrypt
       Roles:
-        - !Ref AccountRoleNameRole
+        - !Ref CoreSocialtablesProdEcsInstanceRole
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -96,7 +96,7 @@ Resources:
     Properties:
       PolicyName: logstash-dubot-sqs-input
       Roles:
-        - !Ref AccountRoleNameRole
+        - !Ref CoreSocialtablesProdEcsInstanceRole
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -116,7 +116,7 @@ Resources:
     Properties:
       PolicyName: oneClick_ecsInstanceRole_1428692606233
       Roles:
-        - !Ref AccountRoleNameRole
+        - !Ref CoreSocialtablesProdEcsInstanceRole
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -135,7 +135,7 @@ Resources:
     Properties:
       PolicyName: production1-ecs-route53
       Roles:
-        - !Ref AccountRoleNameRole
+        - !Ref CoreSocialtablesProdEcsInstanceRole
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -157,7 +157,7 @@ Resources:
     Properties:
       PolicyName: traefik
       Roles:
-        - !Ref AccountRoleNameRole
+        - !Ref CoreSocialtablesProdEcsInstanceRole
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -179,7 +179,7 @@ Resources:
     Properties:
       PolicyName: SSMSessionManager
       Roles:
-        - !Ref AccountRoleNameRole
+        - !Ref CoreSocialtablesProdEcsInstanceRole
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
