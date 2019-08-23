@@ -7,7 +7,7 @@ Resources:
   AwsQmDevDevopsRole:
     Type: AWS::IAM::Role
     Properties:
-      AssumeRolePolicyDocument: 
+      AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
           - Effect: Allow
@@ -28,17 +28,16 @@ Resources:
 
   AwsQmDevDevopsPolicy:
     Type: AWS::IAM::Policy
-    Properties: 
+    Properties:
       PolicyName: aws-qm-dev-devops-policy
-      Roles: 
+      Roles:
         - !Ref AwsQmDevDevopsRole
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
-        - 
-          Effect: Allow
-          Action:
-            - iam:ListInstanceProfiles
-            - iam:ListPolicies
-            - iam:ListRolePolicies
-          Resource: "*"
+          - Effect: Allow
+            Action:
+              - iam:ListInstanceProfiles
+              - iam:ListPolicies
+              - iam:ListRolePolicies
+            Resource: "*"
