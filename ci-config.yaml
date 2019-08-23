@@ -47,7 +47,6 @@ IgnoreAccounts:
     - lanyon-servicesprod
     - quickmobile
     - quickmobile-dev
-    - socialtables
 
 FilesToIgnore: []
 
