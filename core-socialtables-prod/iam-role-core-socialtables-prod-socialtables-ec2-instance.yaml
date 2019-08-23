@@ -138,7 +138,7 @@ Resources:
                     Resource:
                         - "*"
                     Action:
-                        - sqs:ListQueues
+                      - sqs:ListQueues
                         - sqs:GetQueueAttributes
                         - sqs:GetQueueUrl
                         - sqs:ListDeadLetterSourceQueues
