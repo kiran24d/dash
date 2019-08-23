@@ -48,9 +48,6 @@ IgnoreAccounts:
     - quickmobile
     - quickmobile-dev
     - socialtables
-    - us-ecommerce-dev
-    - us-ecommerce-prod
-    - wedding-spot
 
 FilesToIgnore: []
 
