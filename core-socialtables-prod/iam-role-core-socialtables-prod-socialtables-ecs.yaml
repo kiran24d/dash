@@ -195,9 +195,9 @@ Resources:
                           - "*"
 
     CoreSocialtablesProdEcsSsmInstancePolicy:
-        Type: AWS::IAM::Policy
+        Type: AWS::IAM::ManagedPolicy
         Properties:
-            PolicyName: !Sub
+            ManagedPolicyName: !Sub
                 - "${Account}-socialtables-ecs-SSMSessionManager-policy"
                 - Account: !Ref AccountName
             Roles:
