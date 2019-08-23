@@ -30,6 +30,9 @@ Resources:
     CoreSocialtablesProdSocialtablesEc2DescribeInstancesPolicy:
         Type: AWS::IAM::ManagedPolicy
         Properties:
+            ManagedPolicyName: !Sub
+                - "${Account}-socialtables-ec2-describe-instances-policy"
+                - Account: !Ref AccountName
             Roles:
                 - !Ref CoreSocialtablesProdSocialtablesEc2InstanceRole
             PolicyDocument:
@@ -46,6 +49,9 @@ Resources:
     CoreSocialtablesProdSocialtablesS3BucketReadWritePolicy:
         Type: AWS::IAM::ManagedPolicy
         Properties:
+            ManagedPolicyName: !Sub
+                - "${Account}-socialtables-s3-bucket-read-write-policy"
+                - Account: !Ref AccountName
             Roles:
                 - !Ref CoreSocialtablesProdSocialtablesEc2InstanceRole
             PolicyDocument:
