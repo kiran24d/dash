@@ -1,6 +1,6 @@
 ---
 AWSTemplateFormatVersion: 2010-09-09
-Description: ICR-3122, Create ECS Cluster IAM Role in core-socialtables-prod
+Description: ICR-3122 Create ECS Cluster IAM Role in core-socialtables-prod
 
 Parameters:
 
@@ -16,13 +16,13 @@ Resources:
         Properties:
             AssumeRolePolicyDocument:
                 Version: "2012-10-17"
-            Statement:
-                - Effect: Allow
-            Action:
-                - "sts:AssumeRole"
-            Principal:
-                Service:
-                    - ec2.amazonaws.com
+                Statement:
+                    - Effect: Allow
+                      Action:
+                          - "sts:AssumeRole"
+                      Principal:
+                          Service:
+                              - ec2.amazonaws.com
             RoleName: core-socialtables-prod-socialtables-ecs
             ManagedPolicyArns:
                 - arn:aws:iam::aws:policy/AWSLambdaFullAccess
@@ -45,13 +45,13 @@ Resources:
                 - Account: !Ref AccountName
             Roles:
                 - !Ref CoreSocialtablesProdSocialtablesEcsRole
-        PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-                - Effect: Allow
-                  Resource: "*"
-                  Action:
-                      - cloudwatch:Put*
+            PolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Effect: Allow
+                      Resource: "*"
+                      Action:
+                          - cloudwatch:Put*
 
     CoreSocialtablesProdEcsSqsInstancePolicy:
         Type: AWS::IAM::Policy
@@ -63,26 +63,26 @@ Resources:
                 - !Ref CoreSocialtablesProdSocialtablesEcsRole
             PolicyDocument:
                 Version: '2012-10-17'
-            Statement:
-                - Effect: Allow
-                  Resource: "*"
-                  Action:
-                      - sqs:AddPermission
-                      - sqs:ChangeMessageVisibility
-                      - sqs:ChangeMessageVisibilityBatch
-                      - sqs:CreateQueue
-                      - sqs:DeleteMessage
-                      - sqs:DeleteMessageBatch
-                      - sqs:GetQueueAttributes
-                      - sqs:GetQueueUrl
-                      - sqs:ListDeadLetterSourceQueues
-                      - sqs:ListQueues
-                      - sqs:PurgeQueue
-                      - sqs:ReceiveMessage
-                      - sqs:RemovePermission
-                      - sqs:SendMessage
-                      - sqs:SendMessageBatch
-                      - sqs:SetQueueAttributes
+                Statement:
+                    - Effect: Allow
+                      Resource: "*"
+                      Action:
+                          - sqs:AddPermission
+                          - sqs:ChangeMessageVisibility
+                          - sqs:ChangeMessageVisibilityBatch
+                          - sqs:CreateQueue
+                          - sqs:DeleteMessage
+                          - sqs:DeleteMessageBatch
+                          - sqs:GetQueueAttributes
+                          - sqs:GetQueueUrl
+                          - sqs:ListDeadLetterSourceQueues
+                          - sqs:ListQueues
+                          - sqs:PurgeQueue
+                          - sqs:ReceiveMessage
+                          - sqs:RemovePermission
+                          - sqs:SendMessage
+                          - sqs:SendMessageBatch
+                          - sqs:SetQueueAttributes
 
     CoreSocialtablesProdEcsKmsInstancePolicy:
         Type: AWS::IAM::Policy
@@ -111,21 +111,21 @@ Resources:
             PolicyName: !Sub
                 - "${Account}-socialtables-ecs-logstash-dubot-sqs-input-policy"
                 - Account: !Ref AccountName
-        Roles:
-            - !Ref CoreSocialtablesProdSocialtablesEcsRole
-        PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-                - Effect: Allow
-                  Resource: "*"
-                  Action:
-                      - ecr:GetAuthorizationToken
-                      - ecr:BatchCheckLayerAvailability
-                      - ecr:GetDownloadUrlForLayer
-                      - ecr:BatchGetImage
-                      - logs:CreateLogStream
-                      - logs:PutLogEvents
-                      - ecs:Start*
+            Roles:
+                - !Ref CoreSocialtablesProdSocialtablesEcsRole
+            PolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Effect: Allow
+                      Resource: "*"
+                      Action:
+                          - ecr:GetAuthorizationToken
+                          - ecr:BatchCheckLayerAvailability
+                          - ecr:GetDownloadUrlForLayer
+                          - ecr:BatchGetImage
+                          - logs:CreateLogStream
+                          - logs:PutLogEvents
+                          - ecs:Start*
 
     CoreSocialtablesProdEcsInstancePolicy:
         Type: AWS::IAM::Policy
@@ -173,7 +173,9 @@ Resources:
     CoreSocialtablesProdEcsTraefikInstancePolicy:
         Type: AWS::IAM::Policy
         Properties:
-            PolicyName: core-socialtables-prod-socialtables-ecs-traefik-policy
+            PolicyName: !Sub
+                - "${Account}-socialtables-socialtables-ecs-traefik-policy"
+                - Account: !Ref AccountName
             Roles:
                 - !Ref CoreSocialtablesProdSocialtablesEcsRole
             PolicyDocument:
@@ -217,6 +219,6 @@ Resources:
     CoreSocialtablesProdSocialtablesEcsProfile:
         Type: AWS::IAM::InstanceProfile
         Properties:
-        Roles:
-            - !Ref CoreSocialtablesProdSocialtablesEcsRole
-        InstanceProfileName: core-socialtables-prod-socialtables-ecs-profile
+            Roles:
+                - !Ref CoreSocialtablesProdSocialtablesEcsRole
+            InstanceProfileName: core-socialtables-prod-socialtables-ecs-profile
