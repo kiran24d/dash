@@ -25,10 +25,7 @@ Resources:
                               - ec2.amazonaws.com
             RoleName: core-socialtables-prod-socialtables-ecs
             ManagedPolicyArns:
-                - arn:aws:iam::aws:policy/AWSLambdaFullAccess
-                - arn:aws:iam::aws:policy/AmazonS3FullAccess
                 - arn:aws:iam::aws:policy/AmazonRekognitionReadOnlyAccess
-                - arn:aws:iam::aws:policy/AmazonKinesisFullAccess
                 - arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
                 - arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role
                 - arn:aws:iam::aws:policy/AmazonKinesisFirehoseFullAccess
@@ -36,6 +33,97 @@ Resources:
                 - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
 
     # IAM In-Line Policies
+    CoreSocialtablesProdEcsLambdaPolicy:
+        Type: AWS::IAM::Policy
+        Properties:
+            PolicyName: !Sub
+                - "${Account}-socialtables-ecs-cloudwatch-put-policy"
+                - Account: !Ref AccountName
+            Roles:
+                - !Ref CoreSocialtablesProdSocialtablesEcsRole
+            PolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Sid: Stmt1566591720166
+                      Action: lambda:*
+                      Effect: Allow
+                      Resource: "*"
+                    - Sid: Stmt1566592207317
+                      Action:
+                          - lambda:AddLayerVersionPermission
+                          - lambda:AddPermission
+                          - lambda:DeleteAlias
+                          - lambda:DeleteEventSourceMapping
+                          - lambda:DeleteFunction
+                          - lambda:DeleteFunctionConcurrency
+                          - lambda:DeleteLayerVersion
+                          - lambda:EnableReplication
+                          - lambda:RemoveLayerVersionPermission
+                          - lambda:RemovePermission
+                      Effect: Deny
+                      Resource: "*"
+
+
+    CoreSocialtablesProdEcsS3Policy:
+        Type: AWS::IAM::Policy
+        Properties:
+            PolicyName: !Sub
+                - "${Account}-socialtables-ecs-cloudwatch-put-policy"
+                - Account: !Ref AccountName
+            Roles:
+                - !Ref CoreSocialtablesProdSocialtablesEcsRole
+            PolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Sid: Stmt1566589020200
+                      Action:
+                          - s3:DeleteBucket
+                          - s3:DeleteBucketPolicy
+                          - s3:DeleteBucketWebsite
+                          - s3:DeleteObject
+                          - s3:DeleteObjectTagging
+                          - s3:DeleteObjectVersion
+                          - s3:DeleteObjectVersionTagging
+                          - s3:ObjectOwnerOverrideToBucketOwner
+                          - s3:PutAccountPublicAccessBlock
+                          - s3:PutBucketAcl
+                          - s3:PutBucketPolicy
+                          - s3:PutBucketPublicAccessBlock
+                          - s3:PutObjectAcl
+                          - s3:PutObjectVersionAcl
+                      Effect: Deny
+                      Resource: "*"
+                    - Sid: Stmt1566590333142
+                      Action: s3:*
+                      Effect: Allow
+                      Resource: "*"
+
+
+    CoreSocialtablesProdEcsKinesisInstancePolicy:
+        Type: AWS::IAM::Policy
+        Properties:
+            PolicyName: !Sub
+                - "${Account}-socialtables-ecs-cloudwatch-put-policy"
+                - Account: !Ref AccountName
+            Roles:
+                - !Ref CoreSocialtablesProdSocialtablesEcsRole
+            PolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Sid: Stmt1566591017838
+                      Action:
+                          - kinesis:DecreaseStreamRetentionPeriod
+                          - kinesis:DeleteStream
+                          - kinesis:DeregisterStreamConsumer
+                          - kinesis:DisableEnhancedMonitoring
+                          - kinesis:RemoveTagsFromStream
+                      Effect: Deny
+                      Resource: "*"
+                    - Sid: Stmt1566591025473
+                      Action: kinesis:*
+                      Effect: Allow
+                      Resource: "*"
+
 
     CoreSocialtablesProdEcsCloudwatchInstancePolicy:
         Type: AWS::IAM::Policy
