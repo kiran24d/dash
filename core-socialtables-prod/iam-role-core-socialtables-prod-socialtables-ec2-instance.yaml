@@ -22,9 +22,7 @@ Resources:
                       Principal:
                           Service:
                               - ec2.amazonaws.com
-            RoleName: core-socialtables-prod-socialtables-ec2-instance
             ManagedPolicyArns:
-                - arn:aws:iam::aws:policy/AmazonSQSFullAccess
                 - arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM
                 - arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
                 - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
@@ -32,9 +30,6 @@ Resources:
     CoreSocialtablesProdSocialtablesEc2DescribeInstancesPolicy:
         Type: AWS::IAM::ManagedPolicy
         Properties:
-            ManagedPolicyName: !Sub
-                - "${Account}-socialtables-ec2-describe-instances-policy"
-                - Account: !Ref AccountName
             Roles:
                 - !Ref CoreSocialtablesProdSocialtablesEc2InstanceRole
             PolicyDocument:
@@ -51,9 +46,6 @@ Resources:
     CoreSocialtablesProdSocialtablesS3BucketReadWritePolicy:
         Type: AWS::IAM::ManagedPolicy
         Properties:
-            ManagedPolicyName: !Sub
-                - "${Account}-socialtables-s3-bucket-read-write-policy"
-                - Account: !Ref AccountName
             Roles:
                 - !Ref CoreSocialtablesProdSocialtablesEc2InstanceRole
             PolicyDocument:
@@ -133,6 +125,31 @@ Resources:
                           - arn:aws:sqs:us-west-2:128086499455:offline-screenshotter-production
                       Action:
                           - sqs:*
+
+    CoreSocialtablesProdSocialtablesEc2InstanceSqsPolicy:
+        Type: AWS::IAM::ManagedPolicy
+        Properties:
+            Roles:
+                - !Ref CoreSocialtablesProdSocialtablesEc2InstanceRole
+            PolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    Effect: Allow
+                    Resource:
+                        - "*"
+                    Action:
+                        - sqs:ListQueues
+                        - sqs:GetQueueAttributes
+                        - sqs:GetQueueUrl
+                        - sqs:ListDeadLetterSourceQueues
+                        - sqs:ListQueueTags
+                        - sqs:ReceiveMessage
+                        - sqs:ChangeMessageVisibility
+                        - sqs:ChangeMessageVisibilityBatch
+                        - sqs:DeleteMessage
+                        - sqs:DeleteMessageBatch
+                        - sqs:SendMessage
+                        - sqs:SendMessageBatch
 
     CoreSocialtablesProdSocialtablesEc2InstanceOnsiteFullAccessPolicy:
         Type: AWS::IAM::Policy
