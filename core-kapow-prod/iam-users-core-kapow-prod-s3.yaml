@@ -1,5 +1,6 @@
+---
 AWSTemplateFormatVersion: '2010-09-09'
-Description: create IAM users for Kapow applications to read/write to S3
+Description: ICR-3139, create IAM users for Kapow applications to read/write to S3
 Metadata: {}
 
 Mappings:

@@ -1,6 +1,6 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
-Description: ICR-3119, Add roles and policies for kapow image handler
+Description: ICR-3139, Add roles and policies for kapow image handler
 
 Parameters:
   OriginS3Bucket:
