@@ -18,13 +18,6 @@ Resources:
                   "Version": "2012-10-17",
                   "Statement": [
                     {
-                      "Action": [
-                        "iam:PassRole"
-                      ],
-                      "Effect": "Allow",
-                      "Resource": "*"
-                    }
-                    {
                       "Effect": "Allow",
                       "Principal": {
                         "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
@@ -52,3 +45,20 @@ Resources:
             RoleName: !Sub
                 - "${Account}-sre"
                 - Account: !Ref AccountName
+
+    CoreSocialtablesProdPassRolePolicy:
+        Type: AWS::IAM::Policy
+        Properties:
+            PolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Sid: Stmt1566851350326
+                      Action:
+                          - iam:PassRole
+                      Effect: Allow
+                      Resource: "*"
+            PolicyName: !Sub
+                - "${Account}-socialtables-pass-role-policy"
+                - Account: !Ref AccountName
+            Roles:
+                - !Ref Sre
