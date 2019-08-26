@@ -45,4 +45,4 @@ Resources:
             Effect: Allow
             Resource: "*"
       Roles:
-        - saws-cvt-noc
+        - aws-cvt-noc
