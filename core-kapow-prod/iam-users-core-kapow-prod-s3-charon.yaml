@@ -1,0 +1,42 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: ICR-3139, IAM users for Kapow charon to read/write to S3
+Metadata: {}
+
+Parameters:
+
+  AccountName:
+    Type: String
+    Description: Name of the account this has been deployed on
+    Default: core-kapow-prod
+
+Resources:
+
+  CoreKapowProdS3CharonUser:
+    Type: AWS::IAM::User
+    Properties:
+      Path: /
+      UserName:
+        Fn::Join:
+          - "-"
+          - - !Ref AccountName
+            - kpw-s3-charon
+
+  CoreKapowProdS3CharonPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: CoreKapowProdS3CharonPolicy
+      Users:
+        - !Ref CoreKapowProdS3CharonUser
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Action:
+              - s3:Get*
+              - s3:List*
+              - s3:PutObject
+            Resource:
+              - "arn:aws:s3:::core-kapow-prod-charon-assets-us-east-1/*"
+              - "arn:aws:s3:::core-kapow-prod-charon-assets-us-east-1"
