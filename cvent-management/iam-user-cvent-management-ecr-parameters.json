@@ -1,0 +1,10 @@
+[
+  {
+    "ParameterKey": "Name",
+    "ParameterValue": "socialtables-circleci"
+  },
+  {
+    "ParameterKey": "RepoPrefix",
+    "ParameterValue": "st"
+  }
+]
