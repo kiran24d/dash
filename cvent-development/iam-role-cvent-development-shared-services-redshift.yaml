@@ -1,7 +1,7 @@
 ---
 AWSTemplateFormatVersion: 2010-09-09
 Description: ICR-3099, IAM Redshift role for cvent-datawarehouse bucket and glue
- 
+
 Resources:
 
   CventDevelopmentSharedServicesRedshiftRole:
@@ -16,7 +16,7 @@ Resources:
             Principal:
               Service: redshift.amazonaws.com
       RoleName: cvent-development-shared-services-redshift
-       
+
   CventDevelopmentSharedServicesRedshiftPolicy:
     Type: AWS::IAM::Policy
     Properties:
@@ -61,4 +61,3 @@ Resources:
               - glue:GetPartition
               - glue:GetPartitions
               - glue:BatchGetPartition
-              
