@@ -28,7 +28,6 @@ Resources:
                 - arn:aws:iam::aws:policy/AmazonRekognitionReadOnlyAccess
                 - arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
                 - arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role
-                - arn:aws:iam::aws:policy/AmazonKinesisFirehoseFullAccess
                 - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
                 - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
 
@@ -37,7 +36,7 @@ Resources:
         Type: AWS::IAM::Policy
         Properties:
             PolicyName: !Sub
-                - "${Account}-socialtables-ecs-cloudwatch-put-policy"
+                - "${Account}-socialtables-ecs-lambda-policy"
                 - Account: !Ref AccountName
             Roles:
                 - !Ref CoreSocialtablesProdSocialtablesEcsRole
@@ -68,7 +67,7 @@ Resources:
         Type: AWS::IAM::Policy
         Properties:
             PolicyName: !Sub
-                - "${Account}-socialtables-ecs-cloudwatch-put-policy"
+                - "${Account}-socialtables-ecs-s3-policy"
                 - Account: !Ref AccountName
             Roles:
                 - !Ref CoreSocialtablesProdSocialtablesEcsRole
@@ -103,7 +102,7 @@ Resources:
         Type: AWS::IAM::Policy
         Properties:
             PolicyName: !Sub
-                - "${Account}-socialtables-ecs-cloudwatch-put-policy"
+                - "${Account}-socialtables-ecs-kineses-policy"
                 - Account: !Ref AccountName
             Roles:
                 - !Ref CoreSocialtablesProdSocialtablesEcsRole
@@ -124,6 +123,26 @@ Resources:
                       Effect: Allow
                       Resource: "*"
 
+    CoreSocialtablesProdEcsKinesisFirehoseInstancePolicy:
+        Type: AWS::IAM::Policy
+        Properties:
+            PolicyName: !Sub
+                - "${Account}-socialtables-ecs-kineses-firehose-policy"
+                - Account: !Ref AccountName
+            Roles:
+                - !Ref CoreSocialtablesProdSocialtablesEcsRole
+            PolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Sid: Stmt1566830466386
+                      Action:
+                          - firehose:DeleteDeliveryStream
+                      Effect: Deny
+                      Resource: "*"
+                    - Sid: Stmt1566830477973
+                      Action: firehose:*
+                      Effect: Allow
+                      Resource: "*"
 
     CoreSocialtablesProdEcsCloudwatchInstancePolicy:
         Type: AWS::IAM::Policy
@@ -145,7 +164,7 @@ Resources:
         Type: AWS::IAM::Policy
         Properties:
             PolicyName: !Sub
-                - "${Account}-socialtables-ecs-sqs-fullaccess-policy"
+                - "${Account}-socialtables-ecs-sqs-policy"
                 - Account: !Ref AccountName
             Roles:
                 - !Ref CoreSocialtablesProdSocialtablesEcsRole
