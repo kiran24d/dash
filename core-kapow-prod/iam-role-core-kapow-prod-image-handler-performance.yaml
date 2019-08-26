@@ -1,4 +1,7 @@
+---
 AWSTemplateFormatVersion: '2010-09-09'
+Description: ICR-3119, Add roles and policies for kapow image handler
+
 Parameters:
   OriginS3Bucket:
     Description: S3 bucket that will source your images.
