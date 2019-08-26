@@ -1,11 +1,12 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: IAM roles for deploy-query-service - per account
 
 Parameters:
 
   AccountName:
-      Type: String
-      Description: Name of the account this has been deployed on
+    Type: String
+    Description: Name of the account this has been deployed on
 
 Resources:
 
