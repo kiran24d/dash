@@ -1,0 +1,36 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: Create an IAM user that is mostly admin (cannot modify VPC resources and has limited IAM access)
+
+Parameters:
+  Name:
+    Description: Name of the user to create
+    Type: String
+  RepoPrefix:
+    Description: Prefix prepended to repository names
+    Type: String
+
+Resources:
+  User:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: !Ref Name
+
+  ManagedPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      Description: Policy to be attached to the ECR service user
+      Users:
+        - !Ref User
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: ECRPowerUser
+            Action:
+              - iam:AttachRolePolicy
+            Effect: Allow
+            Resource: !Sub "arn:aws:ecr:${AWS::Region}:${AWS::AccountId}:repository/${RepoPrefix}-*"
+            Condition:
+              ArnLike:
+                iam:PolicyArn:
+                  - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser
