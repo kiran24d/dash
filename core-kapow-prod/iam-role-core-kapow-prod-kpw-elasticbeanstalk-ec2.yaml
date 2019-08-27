@@ -19,7 +19,7 @@ Resources:
   ElasticbeanstalkEC2Policy:
     Type: AWS::IAM::Policy
     Properties:
-      PolicyName: ElasticbeanstalkEC2Policy
+      PolicyName: elastic-beanstalk-ec2-policy
       Roles:
         - !Ref ElasticbeanstalkEC2Role
       PolicyDocument:

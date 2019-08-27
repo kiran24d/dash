@@ -25,7 +25,7 @@ Resources:
   CoreKapowProdS3CpPolicy:
     Type: AWS::IAM::Policy
     Properties:
-      PolicyName: CoreKapowProdS3CpPolicy
+      PolicyName: core-kapow-prod-s3-cp-policy
       Users:
         - !Ref CoreKapowProdS3CpUser
       PolicyDocument:

@@ -25,7 +25,7 @@ Resources:
   CoreKapowProdS3GeminiPolicy:
     Type: AWS::IAM::Policy
     Properties:
-      PolicyName: CoreKapowProdS3GeminiPolicy
+      PolicyName: core-kapow-prod-s3-gemini-policy
       Users:
         - !Ref CoreKapowProdS3GeminiUser
       PolicyDocument:
