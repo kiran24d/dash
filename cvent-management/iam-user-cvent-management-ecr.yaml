@@ -15,11 +15,17 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser
       Policies:
+        - PolicyName:
+            Fn::Join:
+              - '-'
+              - - !Ref Name
+                - ecr-create-repo
           PolicyDocument:
-            Version: '2012-10-17'
             Statement:
-              - Effect: Allow
+              -
                 Action:
-                  - ecr:CreateRepository
+                  - "ecr:CreateRepository"
+                Effect: Allow
                 Resource:
                   - "*"
+            Version: "2012-10-17"
