@@ -23,6 +23,9 @@ pipeline {
         agent {
             label 'domain:core.cvent.org && os:linux'
         }
+        options {
+            timeout(time: 5, unit: 'MINUTES')
+        }
         steps {
           script {
                 user_email = sh script:'echo $(git show -s --pretty=%ae)', returnStdout: true
@@ -42,6 +45,9 @@ pipeline {
     stage ('Find changed files') {
         agent {
             label 'domain:core.cvent.org && os:linux'
+        }
+        options {
+            timeout(time: 5, unit: 'MINUTES')
         }
         steps {
           script {
@@ -80,6 +86,9 @@ pipeline {
               args '--entrypoint ""'
             }
           }
+          options {
+            timeout(time: 5, unit: 'MINUTES')
+        }
           steps {
             script {
               def cfn_lint_errors = [:]
@@ -155,6 +164,9 @@ pipeline {
               alwaysPull true
             }
           }
+          options {
+            timeout(time: 5, unit: 'MINUTES')
+          }
           steps {
             script {
                 def yaml_lint_errors = [:]
@@ -210,6 +222,9 @@ pipeline {
       agent {
         label 'domain:core.cvent.org && os:linux'
       }
+      options {
+            timeout(time: 5, unit: 'MINUTES')
+      }
       when { branch 'master' }
       steps {
         script {
@@ -233,6 +248,9 @@ pipeline {
             node {
                 label 'domain:core.cvent.org && os:linux'
             }
+        }
+        options {
+            timeout(time: 10, unit: 'MINUTES')
         }
         when { branch 'master' }
         steps {
@@ -379,7 +397,7 @@ pipeline {
           slackMsg += "<${env.BUILD_URL}|Build> to update cloudformation stacks for IAM resources failed in the following steps:\n${errors.join('\n')}"
           slackSend message: slackMsg,
                     color: 'danger',
-                    channel: '#cloud-auto-internal'
+                    channel: '#cloud-auto-alerts'
         }
       }
     }
@@ -389,7 +407,7 @@ pipeline {
         slackMsg += "<${env.BUILD_URL}|Build> for IAM has aborted prematurely\n"
         slackSend message: slackMsg,
                 color: 'danger',
-                channel: '#cloud-auto-internal'
+                channel: '#cloud-auto-alerts'
       }
     }
   }

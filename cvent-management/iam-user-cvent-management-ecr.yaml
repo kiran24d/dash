@@ -1,6 +1,5 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
-
 Description: Create an IAM user that is mostly admin (cannot modify VPC resources and has limited IAM access)
 
 Parameters:
@@ -13,5 +12,5 @@ Resources:
     Type: AWS::IAM::User
     Properties:
       UserName: !Ref Name
-    ManagedPolicyArns:
-      - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser
