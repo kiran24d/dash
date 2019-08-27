@@ -58,7 +58,6 @@ Resources:
             {
               "Effect": "Allow",
               "Action": [
-                "iam:GetRole",
                 "iam:PassRole"
                 
               ],
