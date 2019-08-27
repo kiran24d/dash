@@ -4,9 +4,9 @@ Description: Create federated IAM roles
 
 Parameters:
 
-AccountName:
-  Description: The name of the AWS account this template is launched in.
-  Type: String
+  AccountName:
+    Description: The name of the AWS account this template is launched in.
+    Type: String
 
 Resources:
 
@@ -40,12 +40,12 @@ Resources:
             }
           ]
         }
-    ManagedPolicyArns:
-      - arn:aws:iam::aws:policy/PowerUserAccess
-      - arn:aws:iam::aws:policy/IAMReadOnlyAccess
-    RoleName: !Sub
-      - "${Account}-sre"
-      - Account: !Ref AccountName
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/PowerUserAccess
+        - arn:aws:iam::aws:policy/IAMReadOnlyAccess
+      RoleName: !Sub
+        - "${Account}-sre"
+        - Account: !Ref AccountName
 
   ECSPassthroughPolicy:
     Type: AWS::IAM::Policy
