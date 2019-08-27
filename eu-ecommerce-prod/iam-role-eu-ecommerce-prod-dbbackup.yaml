@@ -1,17 +1,17 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: Create IAM role for db backups
 
 Resources:
 
-  # Roles
   EuEcommerceProdDbbackup:
     Type: AWS::IAM::Role
     Properties:
-        AssumeRolePolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              -
-                Effect: Allow
-                Principal: { "AWS": "arn:aws:iam::380741956730:user/iam-eu-ecommerce-prod-prod-dbbackup-user" }
-                Action: sts:AssumeRole
-        RoleName: eu-ecommerce-prod-dbbackup
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: arn:aws:iam::380741956730:user/iam-eu-ecommerce-prod-prod-dbbackup-user
+            Action: sts:AssumeRole
+      RoleName: eu-ecommerce-prod-dbbackup

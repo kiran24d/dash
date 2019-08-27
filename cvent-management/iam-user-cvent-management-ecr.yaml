@@ -7,9 +7,6 @@ Parameters:
   Name:
     Description: Name of the user to create
     Type: String
-  RepoPrefix:
-    Description: Prefix prepended to repository names
-    Type: String
 
 Resources:
   User:
@@ -30,7 +27,7 @@ Resources:
             Action:
               - iam:AttachRolePolicy
             Effect: Allow
-            Resource: !Sub "arn:aws:ecr:${AWS::Region}:${AWS::AccountId}:repository/${RepoPrefix}-*"
+            Resource: !Sub "arn:aws:ecr:${AWS::Region}:${AWS::AccountId}:repository/*"
             Condition:
               ArnLike:
                 iam:PolicyArn:

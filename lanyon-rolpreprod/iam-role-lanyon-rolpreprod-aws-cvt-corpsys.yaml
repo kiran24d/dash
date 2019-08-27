@@ -1,48 +1,46 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: Description
-Parameters:
-  AccountName:
-    Description: Name of the account this template is being deployed too
-    Type: String
+
 Resources:
   AwsCvtCorpsysAwsCvtCorpsysPolicy:
     Properties:
       PolicyDocument:
         Statement:
-        - Action:
-          - s3:ListBucket
-          Effect: Allow
-          Resource: arn:aws:s3:::cvent-shared-archive
-          Sid: Stmt1497452424470
-        - Action:
-          - s3:GetObject
-          Effect: Allow
-          Resource: arn:aws:s3:::cvent-shared-archive/aws-*-marketing-websites
-          Sid: Stmt1497452516250
+          - Action:
+              - s3:ListBucket
+            Effect: Allow
+            Resource: arn:aws:s3:::cvent-shared-archive
+            Sid: Stmt1497452424470
+          - Action:
+              - s3:GetObject
+            Effect: Allow
+            Resource: arn:aws:s3:::cvent-shared-archive/aws-*-marketing-websites
+            Sid: Stmt1497452516250
         Version: '2012-10-17'
       PolicyName: lanyon-rolpreprod-aws-cvt-corpsys
       Roles:
-      - Ref: AwsCvtCorpsysRole
+        - Ref: AwsCvtCorpsysRole
     Type: AWS::IAM::Policy
   AwsCvtCorpsysRole:
     Properties:
       AssumeRolePolicyDocument:
         Statement:
-        - Action: sts:AssumeRoleWithSAML
-          Condition:
-            StringEquals:
-              SAML:aud: https://signin.aws.amazon.com/saml
-          Effect: Allow
-          Principal:
-            Federated: arn:aws:iam::853122785612:saml-provider/sso-okta
-        - Action: sts:AssumeRole
-          Condition: {}
-          Effect: Allow
-          Principal:
-            AWS: arn:aws:iam::667621734181:root
+          - Action: sts:AssumeRoleWithSAML
+            Condition:
+              StringEquals:
+                SAML:aud: https://signin.aws.amazon.com/saml
+            Effect: Allow
+            Principal:
+              Federated: arn:aws:iam::853122785612:saml-provider/sso-okta
+          - Action: sts:AssumeRole
+            Condition: {}
+            Effect: Allow
+            Principal:
+              AWS: arn:aws:iam::667621734181:root
         Version: '2012-10-17'
       ManagedPolicyArns:
-      - arn:aws:iam::aws:policy/ReadOnlyAccess
+        - arn:aws:iam::aws:policy/ReadOnlyAccess
       MaxSessionDuration: 3600
       Path: /
       RoleName: aws-cvt-corpsys

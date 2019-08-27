@@ -1,3 +1,4 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: IAM role for analytics service
 
@@ -27,13 +28,13 @@ Resources:
         Version: '2012-10-17'
         Statement:
           - Effect: Allow
-            Resource: 
+            Resource:
               - "arn:aws:s3:::cvent-development-analytics-reference-data-us-east-1"
               - "arn:aws:s3:::cvent-development-analytics-raw-data-us-east-1"
             Action:
               - s3:ListBucket
           - Effect: Allow
-            Resource: 
+            Resource:
               - "arn:aws:s3:::cvent-development-analytics-reference-data-us-east-1/*"
               - "arn:aws:s3:::cvent-development-analytics-raw-data-us-east-1/*"
             Action:
