@@ -21,11 +21,10 @@ Resources:
               - - !Ref Name
                 - ecr-create-repo
           PolicyDocument:
+            Version: "2012-10-17"
             Statement:
-              -
+              - Effect: Allow
                 Action:
-                  - "ecr:CreateRepository"
-                Effect: Allow
+                  - ecr:CreateRepository
                 Resource:
                   - "*"
-            Version: "2012-10-17"
