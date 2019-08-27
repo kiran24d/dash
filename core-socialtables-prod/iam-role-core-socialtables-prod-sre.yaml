@@ -56,7 +56,9 @@ Resources:
                       Action:
                           - iam:PassRole
                       Effect: Allow
-                      Resource: "*"
+                      Resource:
+                          - arn:aws:iam::128086499455:instance-profile/core-socialtables-prod-socialtables-ecs-profile
+                          - arn:aws:iam::128086499455:role/core-socialtables-prod-socialtables-ecs
             PolicyName: !Sub
                 - "${Account}-socialtables-iam-policy"
                 - Account: !Ref AccountName
