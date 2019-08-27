@@ -45,3 +45,22 @@ Resources:
             RoleName: !Sub
                 - "${Account}-sre"
                 - Account: !Ref AccountName
+
+    CoreSocialtablesProdIamPolicy:
+        Type: AWS::IAM::Policy
+        Properties:
+            PolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Sid: Stmt1566851350326
+                      Action:
+                          - iam:PassRole
+                      Effect: Allow
+                      Resource:
+                          - arn:aws:iam::128086499455:instance-profile/core-socialtables-prod-socialtables-ecs-profile
+                          - arn:aws:iam::128086499455:role/core-socialtables-prod-socialtables-ecs
+            PolicyName: !Sub
+                - "${Account}-socialtables-iam-policy"
+                - Account: !Ref AccountName
+            Roles:
+                - !Ref Sre
