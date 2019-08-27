@@ -46,7 +46,7 @@ Resources:
                 - "${Account}-sre"
                 - Account: !Ref AccountName
 
-    CoreSocialtablesProdPassRolePolicy:
+    CoreSocialtablesProdIamPolicy:
         Type: AWS::IAM::Policy
         Properties:
             PolicyDocument:
@@ -58,7 +58,7 @@ Resources:
                       Effect: Allow
                       Resource: "*"
             PolicyName: !Sub
-                - "${Account}-socialtables-pass-role-policy"
+                - "${Account}-socialtables-iam-policy"
                 - Account: !Ref AccountName
             Roles:
                 - !Ref Sre
