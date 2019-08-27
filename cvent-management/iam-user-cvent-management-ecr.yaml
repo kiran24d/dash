@@ -30,7 +30,7 @@ Resources:
             Action:
               - iam:AttachRolePolicy
             Effect: Allow
-            Resource: !Sub "arn:aws:ecr:${AWS::Region}:${AWS::AccountId}:repository/${RepoPrefix}-*"
+            Resource: !Sub "arn:aws:ecr:${AWS::Region}:${AWS::AccountId}:repository/*"
             Condition:
               ArnLike:
                 iam:PolicyArn:
