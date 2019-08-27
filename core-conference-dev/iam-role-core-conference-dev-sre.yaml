@@ -46,3 +46,26 @@ Resources:
     RoleName: !Sub
       - "${Account}-sre"
       - Account: !Ref AccountName
+
+  ECSPassthroughPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        |
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "iam:GetRole",
+                "iam:PassRole"
+                
+              ],
+              "Resource": "arn:aws:iam::684904355706:role/reinvent-ECSServiceRole-us-east-1"
+            }
+          ]
+        }
+      PolicyName: cvent-ecs-passthrough
+      Roles:
+        - !Ref Sre
