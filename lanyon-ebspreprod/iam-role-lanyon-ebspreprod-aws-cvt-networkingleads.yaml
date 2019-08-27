@@ -1,0 +1,23 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: Description
+
+Resources:
+  AwsCvtNetworkingleadsRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRoleWithSAML
+            Condition:
+              StringEquals:
+                SAML:aud: https://signin.aws.amazon.com/saml
+            Effect: Allow
+            Principal:
+              Federated: arn:aws:iam::310368121865:saml-provider/sso-okta
+        Version: '2012-10-17'
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/PowerUserAccess
+      MaxSessionDuration: 3600
+      Path: /
+      RoleName: aws-cvt-networkingleads
+    Type: AWS::IAM::Role

@@ -347,6 +347,7 @@ Resources:
                 }
             ManagedPolicyArns:
                 - arn:aws:iam::aws:policy/PowerUserAccess
+                - arn:aws:iam::aws:policy/IAMReadOnlyAccess
             RoleName: core-cdt-prod-sre
 
     CoreCdtAttendeeJourneyDatomicPeer:
@@ -576,7 +577,7 @@ Resources:
 
     PowerPolicy:
         Type: AWS::IAM::Policy
-        Properties: 
+        Properties:
             PolicyDocument:
               Version: 2012-10-17
               Statement:
@@ -591,7 +592,7 @@ Resources:
                 -
                   - !FindInMap [ AccountMap, !Ref "AWS::AccountId", AccountName ]
                   - power
-            Roles: 
+            Roles:
               - !Ref RoleCoreCdtProdPower
 
     ViewPolicy:
@@ -611,7 +612,7 @@ Resources:
                 -
                   - !FindInMap [ AccountMap, !Ref "AWS::AccountId", AccountName ]
                   - View
-        Roles: 
+        Roles:
           - !Ref RoleCoreCdtProdView
 
     CventDbaPolicy:

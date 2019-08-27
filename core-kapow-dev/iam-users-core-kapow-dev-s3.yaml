@@ -1,8 +1,54 @@
+<<<<<<< HEAD
 ---
+=======
+>>>>>>> d54bb49605bc7b745256b5c569c9dbc0f16ca5f5
 AWSTemplateFormatVersion: '2010-09-09'
 Description: create IAM users for Kapow applications to read/write to S3
 Metadata: {}
 
+<<<<<<< HEAD
+=======
+Mappings:
+
+  AccountMap:
+    # cvent-sandbox
+    '572724207364':
+      AccountName: cvent-sandbox
+    # cvent-development
+    '504055967630':
+      AccountName: cvent-development
+    # cvent-integration
+    '834623602341':
+      AccountName: cvent-integration
+    # cvent-production
+    '659687181524':
+      AccountName: cvent-production
+    # cvent-management
+    '667621734181':
+      AccountName: cvent-management
+    # core-app-prod
+    '924052762697':
+      AccountName: core-app-prod
+    # core-cdt-prod
+    '611736519059':
+      AccountName: core-cdt-prod
+    # core-fnd-prod
+    '752921502988':
+      AccountName: core-fnd-prod
+    # eu-ecommerce-prod
+    '380741956730':
+      AccountName: eu-ecommerce-prod
+    # core-reinforce-prod
+    '981730702137':
+      AccountName: core-reinforce-prod
+    # core-reinforce-dev
+    '219736445914':
+      AccountName: core-reinforce-dev
+    # core-kapow-dev
+    '449196748993':
+      AccountName: core-kapow-dev
+
+>>>>>>> d54bb49605bc7b745256b5c569c9dbc0f16ca5f5
 Resources:
 
   CoreKapowDevS3Cp:

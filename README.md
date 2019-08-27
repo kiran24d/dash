@@ -1,7 +1,7 @@
 # IAM
 
 This is the source repository for all of Cvent's CloudFormation IAM templates and the entry point for automation for accounts supported by ICR. Instructions on how to create and update IAM CloudFormation templates can be found 
-[here](https://wiki.cvent.com/pages/viewpage.action?pageId=133504905). 
+[here](https://wiki.cvent.com/pages/viewpage.action?pageId=176355858).
 
 
 # Workflow
@@ -9,15 +9,15 @@ A user is expected to have an approved ICR Jira ticket ([ICR Project](https://ji
 
 Once the PR has been submitted a build will kick off with basic linting and rule checking. You can check whether it passed by looking at the build status in the top right of the corner in the PR.
 
-![picture](images/build.jpg)
+![picture](images/build.png)
 
 
 If the build fails you can click on the build link (highlighted in red above) to drill down into the Jenkins job to see why it failed.
 
-Once the build has passed and the PR has been approved, it can be merged into master. Upon merging into master the aws-update-cloudformation-stack will be kicked off. You can check the status of the job through the [Cloudops Jenkins](https://cloudops-jenkins.core.cvent.org/) server. If the job failed please check the aws-update-cloudformation-stack console output and the AWS CloudFormation stack(s) to see why and submit another PR with the fix.
+Once the build has passed and the PR has been approved, it can be merged into master. Upon merging into master the aws-update-cloudformation-stack will be kicked off. You can check the status of the job through the [Cloudops Jenkins](https://cloudops-jenkins.core.cvent.org/job/aws-update-cloudformation-stack/) server. If the job failed please check the aws-update-cloudformation-stack console output and the AWS CloudFormation stack(s) to see why and submit another PR with the fix.
 
 ## Workflow Summary
-![picture](images/sg_automation.jpg)
+![picture](images/iam_automation.png)
 
 ## Owners
 

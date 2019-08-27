@@ -1,0 +1,6 @@
+[
+    {
+        "ParameterKey": "OriginS3Bucket",
+        "ParameterValue": "xb-assets-nonprod"
+    }
+]

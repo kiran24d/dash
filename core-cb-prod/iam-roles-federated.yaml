@@ -138,6 +138,7 @@ Resources:
                 }
             ManagedPolicyArns:
                 - arn:aws:iam::aws:policy/PowerUserAccess
+                - arn:aws:iam::aws:policy/IAMReadOnlyAccess
             RoleName: core-cb-prod-sre
 
 
@@ -156,4 +157,3 @@ Resources:
               Resource: "*"
           Roles:
               - Ref: "CoreCbProdDba"
-

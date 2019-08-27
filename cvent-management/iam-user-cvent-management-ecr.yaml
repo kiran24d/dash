@@ -1,0 +1,16 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create an IAM user that is mostly admin (cannot modify VPC resources and has limited IAM access)
+
+Parameters:
+  Name:
+    Description: Name of the user to create
+    Type: String
+
+Resources:
+  User:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: !Ref Name
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser

@@ -1,0 +1,41 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: DataPipeline Default Resource Role
+
+Resources:
+
+  DataPipelineDefaultResourceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action: sts:AssumeRole
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+      RoleName: wedding-spot-datapipeline-resource-datadev
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforDataPipelineRole
+
+  WeddingSpotDataDevsPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: wedding-spot-datapipeline-resource-datadev-policy
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - lambda:*
+            Resource: "*"
+      Roles:
+        - !Ref DataPipelineDefaultResourceRole
+
+  WeddingSpotDataDevs:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      InstanceProfileName: wedding-spot-datapipeline-resource-datadev
+      Roles:
+        - !Ref DataPipelineDefaultResourceRole

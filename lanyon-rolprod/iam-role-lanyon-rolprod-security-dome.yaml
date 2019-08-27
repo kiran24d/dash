@@ -1,55 +1,56 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: Create IAM ROle and Policy for Dome9 SecurityAudit
-Resources:
-    AwsRolProdSecurityDome9:
-        Type: AWS::IAM::Role
-        Properties:
-            AssumeRolePolicyDocument:
-                Version: '2012-10-17'
-                Statement:
-                - Effect: Allow
-                  Principal:
-                    AWS: arn:aws:iam::634729597623:root
-                  Action: sts:AssumeRole
-                  Condition:
-                    StringEquals:
-                      sts:ExternalId: "@rXTFJpSMSozQMSeoBMOkfJy"
-            ManagedPolicyArns:
-                - arn:aws:iam::aws:policy/AmazonInspectorReadOnlyAccess
-                - arn:aws:iam::aws:policy/SecurityAudit
-            RoleName: aws-rolprod-security-dome9
 
-    Dome9ReadOnly:
-      Type: "AWS::IAM::Policy"
-      Properties:
-        PolicyName: "Dome-readonly"
-        PolicyDocument:
-          Version: '2012-10-17'
-          Statement:
+Resources:
+  AwsRolProdSecurityDome9:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: arn:aws:iam::634729597623:root
+            Action: sts:AssumeRole
+            Condition:
+              StringEquals:
+                sts:ExternalId: "@rXTFJpSMSozQMSeoBMOkfJy"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonInspectorReadOnlyAccess
+        - arn:aws:iam::aws:policy/SecurityAudit
+      RoleName: aws-rolprod-security-dome9
+
+  Dome9ReadOnly:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      PolicyName: "Dome-readonly"
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
           - Sid: Dome9ReadOnly
             Action:
-            - cloudtrail:LookupEvents
-            - dynamodb:DescribeTable
-            - elasticfilesystem:Describe*
-            - elasticache:ListTagsForResource
-            - firehose:Describe*
-            - firehose:List*
-            - guardduty:Get*
-            - guardduty:List*
-            - kinesis:List*
-            - kinesis:Describe*
-            - kinesisvideo:Describe*
-            - kinesisvideo:List*
-            - logs:Describe*
-            - logs:Get*
-            - logs:FilterLogEvents
-            - lambda:List*
-            - s3:List*
-            - sns:ListSubscriptions
-            - sns:ListSubscriptionsByTopic
-            - waf-regional:ListResourcesForWebACL
+              - cloudtrail:LookupEvents
+              - dynamodb:DescribeTable
+              - elasticfilesystem:Describe*
+              - elasticache:ListTagsForResource
+              - firehose:Describe*
+              - firehose:List*
+              - guardduty:Get*
+              - guardduty:List*
+              - kinesis:List*
+              - kinesis:Describe*
+              - kinesisvideo:Describe*
+              - kinesisvideo:List*
+              - logs:Describe*
+              - logs:Get*
+              - logs:FilterLogEvents
+              - lambda:List*
+              - s3:List*
+              - sns:ListSubscriptions
+              - sns:ListSubscriptionsByTopic
+              - waf-regional:ListResourcesForWebACL
             Effect: Allow
             Resource: "*"
-        Roles:
-                -
-                  Ref: "AwsRolProdSecurityDome9"
+      Roles:
+        - !Ref AwsRolProdSecurityDome9

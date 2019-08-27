@@ -1,0 +1,43 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: IAM role for analytics service
+
+Resources:
+
+  AnalyticsConsumerEcs:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: cvent-development-analytics-consumer-ecs
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action: sts:AssumeRole
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+      ManagedPolicyArns:
+        - !Sub arn:aws:iam::${AWS::AccountId}:policy/CrossAccountKMSPolicy-v2-${AWS::Region}
+
+  AnalyticsConsumerAssumeBucketPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: cvent-development-analytics-consumer-bucket-policy
+      Roles:
+        - !Ref AnalyticsConsumerEcs
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Resource:
+              - "arn:aws:s3:::cvent-development-analytics-reference-data-us-east-1"
+              - "arn:aws:s3:::cvent-development-analytics-raw-data-us-east-1"
+            Action:
+              - s3:ListBucket
+          - Effect: Allow
+            Resource:
+              - "arn:aws:s3:::cvent-development-analytics-reference-data-us-east-1/*"
+              - "arn:aws:s3:::cvent-development-analytics-raw-data-us-east-1/*"
+            Action:
+              - s3:PutObject
+              - s3:GetObject
+              - s3:RestoreObject

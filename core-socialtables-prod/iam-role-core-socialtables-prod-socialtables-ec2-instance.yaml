@@ -1,0 +1,222 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: Create federated IAM roles
+
+Parameters:
+
+    AccountName:
+        Description: The name of the AWS account this template is launched in.
+        Type: String
+
+Resources:
+
+    CoreSocialtablesProdSocialtablesEc2InstanceRole:
+        Type: AWS::IAM::Role
+        Properties:
+            AssumeRolePolicyDocument:
+                Version: "2012-10-17"
+                Statement:
+                    - Effect: Allow
+                      Action:
+                          - "sts:AssumeRole"
+                      Principal:
+                          Service:
+                              - ec2.amazonaws.com
+            ManagedPolicyArns:
+                - arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM
+                - arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
+                - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
+
+    CoreSocialtablesProdSocialtablesEc2DescribeInstancesPolicy:
+        Type: AWS::IAM::ManagedPolicy
+        Properties:
+            ManagedPolicyName: !Sub
+                - "${Account}-socialtables-ec2-describe-instances-policy"
+                - Account: !Ref AccountName
+            Roles:
+                - !Ref CoreSocialtablesProdSocialtablesEc2InstanceRole
+            PolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Effect: Allow
+                      Resource: "*"
+                      Action:
+                          - ec2:DescribeInstanceAttribute
+                          - ec2:DescribeInstanceStatus
+                          - ec2:DescribeInstances
+                          - ec2:DescribeTags
+
+    CoreSocialtablesProdSocialtablesS3BucketReadWritePolicy:
+        Type: AWS::IAM::ManagedPolicy
+        Properties:
+            ManagedPolicyName: !Sub
+                - "${Account}-socialtables-s3-bucket-read-write-policy"
+                - Account: !Ref AccountName
+            Roles:
+                - !Ref CoreSocialtablesProdSocialtablesEc2InstanceRole
+            PolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Effect: Allow
+                      Resource: "arn:aws:s3:::*"
+                      Action:
+                          - s3:ListAllMyBuckets
+                          - s3:GetBucketLocation
+                    - Sid: Stmt1424544432000
+                      Effect: Allow
+                      Resource:
+                          - arn:aws:s3:::socialtables-*
+                          - arn:aws:s3:::socialtables-*/*
+                      Action:
+                          - s3:AbortMultipartUpload
+                          - s3:DeleteObject
+                          - s3:DeleteObjectVersion
+                          - s3:Get*
+                          - s3:List*
+                          - s3:PutObject*
+                          - s3:RestoreObject
+
+    CoreSocialtablesProdSocialtablesEc2InstanceFpcFullAccessPolicy:
+        Type: AWS::IAM::Policy
+        Properties:
+            PolicyName: !Sub
+                - "${Account}-socialtables-ec2-instance-fpc-full-access-policy"
+                - Account: !Ref AccountName
+            Roles:
+                - !Ref CoreSocialtablesProdSocialtablesEc2InstanceRole
+            PolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Sid: Stmt1440780128000
+                      Effect: Allow
+                      Resource:
+                          - arn:aws:s3:::socialtables-*
+                          - arn:aws:s3:::socialtables-*/*
+                      Action:
+                          - s3:*
+
+    CoreSocialtablesProdSocialtablesEc2InstanceMarketplaceFullAccessPolicy:
+        Type: AWS::IAM::Policy
+        Properties:
+            PolicyName: !Sub
+                - "${Account}-socialtables-ec2-instance-marketplace-full-access-policy"
+                - Account: !Ref AccountName
+            Roles:
+                - !Ref CoreSocialtablesProdSocialtablesEc2InstanceRole
+            PolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Sid: Stmt1437662054000
+                      Effect: Allow
+                      Resource:
+                          - arn:aws:s3:::socialtables-marketplace
+                          - arn:aws:s3:::socialtables-marketplace/*
+                      Action:
+                          - s3:*
+
+    CoreSocialtablesProdSocialtablesEc2InstanceOfflineScreenshotterPolicy:
+        Type: AWS::IAM::Policy
+        Properties:
+            PolicyName: !Sub
+                - "${Account}-socialtables-ec2-instance-offline-screenshotter-policy"
+                - Account: !Ref AccountName
+            Roles:
+                - !Ref CoreSocialtablesProdSocialtablesEc2InstanceRole
+            PolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Sid: Stmt1430797440000
+                      Effect: Allow
+                      Resource:
+                          - arn:aws:sqs:us-west-2:128086499455:offline-screenshotter-production
+                      Action:
+                          - sqs:*
+
+    CoreSocialtablesProdSocialtablesEc2InstanceSqsPolicy:
+        Type: AWS::IAM::ManagedPolicy
+        Properties:
+            Roles:
+                - !Ref CoreSocialtablesProdSocialtablesEc2InstanceRole
+            PolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    Effect: Allow
+                    Resource:
+                        - "*"
+                    Action:
+                        - sqs:ListQueues
+                        - sqs:GetQueueAttributes
+                        - sqs:GetQueueUrl
+                        - sqs:ListDeadLetterSourceQueues
+                        - sqs:ListQueueTags
+                        - sqs:ReceiveMessage
+                        - sqs:ChangeMessageVisibility
+                        - sqs:ChangeMessageVisibilityBatch
+                        - sqs:DeleteMessage
+                        - sqs:DeleteMessageBatch
+                        - sqs:SendMessage
+                        - sqs:SendMessageBatch
+
+    CoreSocialtablesProdSocialtablesEc2InstanceOnsiteFullAccessPolicy:
+        Type: AWS::IAM::Policy
+        Properties:
+            PolicyName: !Sub
+                - "${Account}-socialtables-ec2-instance-onsite-full-access-policy"
+                - Account: !Ref AccountName
+            Roles:
+                - !Ref CoreSocialtablesProdSocialtablesEc2InstanceRole
+            PolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Sid: Stmt1437662054000
+                      Effect: Allow
+                      Resource:
+                          - arn:aws:s3:::socialtables-onsite
+                          - arn:aws:s3:::socialtables-onsite/*
+                      Action:
+                          - s3:*
+
+    CoreSocialtablesProdSocialtablesEc2InstancePolicygenEc2Instance201507301131Policy:
+        Type: AWS::IAM::Policy
+        Properties:
+            PolicyName: !Sub
+                - "${Account}-socialtables-ec2-instance-policygen-ec2-instance-201507301131-policy"
+                - Account: !Ref AccountName
+            Roles:
+                - !Ref CoreSocialtablesProdSocialtablesEc2InstanceRole
+            PolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Sid: Stmt1438270294000
+                      Effect: Allow
+                      Resource:
+                          - arn:aws:sns:us-west-2:128086499455:devops-automated-notifications
+                      Action:
+                          - sns:Publish
+
+    CoreSocialtablesProdSocialtablesEc2InstancePutCloudwatchMetric:
+        Type: AWS::IAM::Policy
+        Properties:
+            PolicyName: !Sub
+                - "${Account}-socialtables-ec2-instance-put-cloudwatch-metric-policy"
+                - Account: !Ref AccountName
+            Roles:
+                - !Ref CoreSocialtablesProdSocialtablesEc2InstanceRole
+            PolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Sid: Stmt1446653608000
+                      Effect: Allow
+                      Resource:
+                          - "*"
+                      Action:
+                          - cloudwatch:PutMetricData
+
+    CoreSocialtablesProdSocialtablesEc2InstanceProfile:
+        Type: AWS::IAM::InstanceProfile
+        Properties:
+            Roles:
+                - !Ref CoreSocialtablesProdSocialtablesEc2InstanceRole
+            InstanceProfileName: !Sub
+                - "${Account}-socialtables-ec2-instance-profile"
+                - Account: !Ref AccountName

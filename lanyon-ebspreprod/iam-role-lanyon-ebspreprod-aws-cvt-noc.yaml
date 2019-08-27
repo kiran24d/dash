@@ -1,0 +1,66 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: Description
+
+Resources:
+  AwsCvtNocCventNocPolicyPolicy:
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - ec2:RebootInstances
+              - ec2:StartInstances
+              - ec2:StopInstances
+              - ec2:ModifyVolume
+              - elasticloadbalancing:RegisterTargets",
+              - elasticloadbalancing:DeregisterTargets",
+              - ecs:ListAttributes
+              - ecs:StartTask
+              - ecs:DescribeTaskDefinition
+              - ecs:DescribeClusters
+              - ecs:ListServices
+              - ecs:UpdateService
+              - ecs:RunTask
+              - ecs:ListTasks
+              - ecs:ListTaskDefinitionFamilies
+              - ecs:StopTask
+              - ecs:DescribeServices
+              - ecs:ListContainerInstances
+              - ecs:DescribeContainerInstances
+              - ecs:DescribeTasks
+              - ecs:ListTaskDefinitions
+              - ecs:ListClusters
+              - rds:DescribeDBInstances
+              - rds:ModifyDBInstance
+            Effect: Allow
+            Resource: '*'
+            Sid: CventNocPolicy
+        Version: '2012-10-17'
+      PolicyName: lanyon-ebspreprod-cvent-noc-policy
+      Roles:
+        - Ref: AwsCvtNocRole
+    Type: AWS::IAM::Policy
+  AwsCvtNocRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRoleWithSAML
+            Condition:
+              StringEquals:
+                SAML:aud: https://signin.aws.amazon.com/saml
+            Effect: Allow
+            Principal:
+              Federated: arn:aws:iam::310368121865:saml-provider/sso-okta
+          - Action: sts:AssumeRole
+            Condition: {}
+            Effect: Allow
+            Principal:
+              AWS: arn:aws:iam::667621734181:root
+        Version: '2012-10-17'
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
+        - arn:aws:iam::aws:policy/AWSSupportAccess
+      MaxSessionDuration: 3600
+      Path: /
+      RoleName: aws-cvt-noc
+    Type: AWS::IAM::Role
