@@ -62,7 +62,10 @@ Resources:
                 "iam:PassRole"
                 
               ],
-              "Resource": "arn:aws:iam::684904355706:role/reinvent-ECSServiceRole-us-east-1"
+              "Resource": [
+                "arn:aws:iam::684904355706:role/reinvent-ECSServiceRole-us-east-1",
+                "arn:aws:iam::684904355706:role/core-conference-dev-waf-lambda"
+              ]
             }
           ]
         }
