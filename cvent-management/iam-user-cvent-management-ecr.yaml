@@ -7,9 +7,6 @@ Parameters:
   Name:
     Description: Name of the user to create
     Type: String
-  RepoPrefix:
-    Description: Prefix prepended to repository names
-    Type: String
 
 Resources:
   User:
