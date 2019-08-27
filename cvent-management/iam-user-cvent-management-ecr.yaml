@@ -14,3 +14,12 @@ Resources:
       UserName: !Ref Name
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser
+      Policies:
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - ecr:CreateRepository
+                Resource:
+                  - "*"
