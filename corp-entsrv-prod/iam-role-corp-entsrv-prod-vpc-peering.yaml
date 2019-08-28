@@ -1,3 +1,4 @@
+---
 AWSTemplateFormatVersion: "2010-09-09"
 Description: IAM role assumed by other accounts to set up VPC peering connections.
 
@@ -9,8 +10,7 @@ Resources:
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
-          -
-            Effect: "Allow"
+          - Effect: "Allow"
             Principal:
               AWS:
                 - "arn:aws:iam::831388342160:root"
@@ -19,13 +19,11 @@ Resources:
               - "sts:AssumeRole"
       Path: "/"
       Policies:
-        -
-          PolicyName: corp-entsrv-prod-vpc-peering
+        - PolicyName: corp-entsrv-prod-vpc-peering
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
-              -
-                Effect: "Allow"
+              - Effect: "Allow"
                 Action: "ec2:AcceptVpcPeeringConnection"
                 Resource: "*"
       RoleName: corp-entsrv-prod-vpc-peering
