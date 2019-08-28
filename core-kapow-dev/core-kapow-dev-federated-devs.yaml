@@ -50,6 +50,7 @@ Resources:
             - arn:aws:iam::aws:policy/CloudFrontFullAccess
             - arn:aws:iam::aws:policy/AmazonRedshiftFullAccess
             - arn:aws:iam::aws:policy/AmazonAPIGatewayAdministrator
+            - arn:aws:iam::aws:policy/AWSElasticBeanstalkReadOnlyAccess
             RoleName: !Sub
             - "${Account}-devs"
             - Account: !Ref AccountName
