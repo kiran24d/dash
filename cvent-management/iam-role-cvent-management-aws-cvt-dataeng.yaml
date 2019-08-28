@@ -23,7 +23,7 @@ Resources:
     Type: AWS::IAM::Policy
     Properties:
       PolicyName: aws-cvt-dataeng-assumption
-      Roles: 
+      Roles:
         - !Ref DataEngRole
       PolicyDocument:
         Version: '2012-10-17'
