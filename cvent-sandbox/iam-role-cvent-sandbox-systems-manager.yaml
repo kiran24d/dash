@@ -1,3 +1,4 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: IAM role for systems manager.
 
@@ -6,23 +7,23 @@ Resources:
   SystemsManagerRole:
     Type: AWS::IAM::Role
     Properties:
-      AssumeRolePolicyDocument: 
+      AssumeRolePolicyDocument:
         Version: "2012-10-17"
-        Statement: 
+        Statement:
           - Effect: Allow
-            Action: 
+            Action:
               - "sts:AssumeRole"
-            Principal: 
-              Service: 
+            Principal:
+              Service:
                 - ec2.amazonaws.com
       RoleName: cvent-systems-manager-role
       ManagedPolicyArns:
         - arn:aws:iam::572724207364:policy/cvent-systems-manager-policy
 
-  SystemsManagerProfile: 
+  SystemsManagerProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
       InstanceProfileName: cvent-systems-manager-profile
       Path: "/"
-      Roles: 
+      Roles:
         - !Ref SystemsManagerRole

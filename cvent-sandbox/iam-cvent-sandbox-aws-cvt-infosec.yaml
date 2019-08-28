@@ -1,3 +1,4 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: Create base IAM roles
 
@@ -30,7 +31,7 @@ Resources:
     Type: AWS::IAM::Policy
     Properties:
       PolicyName: cvent-infosec-policy
-      Roles: 
+      Roles:
         - !Ref InfosecRole
       PolicyDocument:
         Version: '2012-10-17'
