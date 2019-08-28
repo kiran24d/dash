@@ -1,13 +1,14 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: Creates role for security hub automatic deployment
 
 Parameters:
 
-    AccountName:
-        Type: String
-        Description: Name of the account this has been deployed on
+  AccountName:
+    Type: String
+    Description: Name of the account this has been deployed on
 
-Resources: 
+Resources:
 
   SecurityHubEc2Role:
     Type: AWS::IAM::Role
@@ -22,39 +23,34 @@ Resources:
       RoleName:
         Fn::Join:
           - "-"
-          -
-            - !Ref AccountName
+          - - !Ref AccountName
             - security-hub-ec2
 
   SecurityHubEc2InstanceProfile:
     Type: AWS::IAM::InstanceProfile
-    Properties: 
+    Properties:
       Roles:
         - !Ref SecurityHubEc2Role
       InstanceProfileName:
         Fn::Join:
           - "-"
-          -
-            - !Ref AccountName
+          - - !Ref AccountName
             - security-hub-ec2
 
   SecurityHubPolicy:
     Type: AWS::IAM::Policy
-    Properties: 
+    Properties:
       PolicyName:
         Fn::Join:
           - "-"
-          -
-            - !Ref AccountName
+          - - !Ref AccountName
             - assumption
-      Roles: 
+      Roles:
         - !Ref SecurityHubEc2Role
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
           - Action: sts:AssumeRole
             Resource:
-              arn:aws:iam::*:role/security-hub-poc
+              - arn:aws:iam::*:role/security-hub-poc
             Effect: Allow
-
-
