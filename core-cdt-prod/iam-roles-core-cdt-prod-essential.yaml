@@ -104,6 +104,8 @@ Resources:
             ManagedPolicyArns:
                 - arn:aws:iam::aws:policy/AWSSupportAccess
                 - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
+                - arn:aws:iam::aws:policy/IAMReadOnlyAccess
+                - arn:aws:iam::aws:policy/AWSCloudFormationReadOnlyAccess
             RoleName: aws-cvt-noc
 
     SysengRole:
@@ -215,7 +217,7 @@ Resources:
 
     NetworkPolicy:
         Type: AWS::IAM::Policy
-        Properties: 
+        Properties:
             PolicyDocument: !Sub
                 |
                 {
@@ -257,7 +259,7 @@ Resources:
                         "cloudwatch:GetMetricStatistics",
                         "logs:DescribeLogGroups",
                         "logs:DescribeLogStreams",
-                        "logs:GetLogEvents",               
+                        "logs:GetLogEvents",
                         "directconnect:ConfirmPrivateVirtualInterface",
                         "directconnect:DescribeConnections",
                         "directconnect:ConfirmPublicVirtualInterface",
@@ -286,8 +288,8 @@ Resources:
                   ]
                 }
             PolicyName: cvent-networking
-            Roles: 
-                - 
+            Roles:
+                -
                     Ref: "NetworkRole"
 
     CventNocPolicy:
@@ -326,13 +328,13 @@ Resources:
               Effect: Allow
               Resource: "*"
           Roles:
-              - 
+              -
                 Ref: "NocRole"
     CventInfoSecPolicy:
       Type: AWS::IAM::Policy
       Properties:
         PolicyName: cvent-infosec-policy
-        Roles: 
+        Roles:
           - !Ref InfosecRole
         PolicyDocument:
           Version: '2012-10-17'

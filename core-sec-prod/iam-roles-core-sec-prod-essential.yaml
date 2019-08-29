@@ -105,6 +105,8 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AWSSupportAccess
         - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
+        - arn:aws:iam::aws:policy/IAMReadOnlyAccess
+        - arn:aws:iam::aws:policy/AWSCloudFormationReadOnlyAccess
       RoleName: aws-cvt-noc
 
   SysengRole:
