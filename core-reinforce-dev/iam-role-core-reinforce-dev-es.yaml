@@ -1,9 +1,9 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: Create service roles
 
 Resources:
 
-  # Roles
   CoreReinforceDevElasticsearch:
     Type: "AWS::IAM::ServiceLinkedRole"
     Properties:
