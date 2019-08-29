@@ -1,13 +1,14 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: Creates role for Demisto
 
 Parameters:
 
-    AccountName:
-        Type: String
-        Description: Name of the account this has been deployed on
+  AccountName:
+    Type: String
+    Description: Name of the account this has been deployed on
 
-Resources: 
+Resources:
 
   DemistoRole:
     Type: AWS::IAM::Role
@@ -27,26 +28,24 @@ Resources:
 
   DemistoInstanceProfile:
     Type: AWS::IAM::InstanceProfile
-    Properties: 
+    Properties:
       Roles:
         - !Ref DemistoRole
       InstanceProfileName:
         Fn::Join:
           - "-"
-          -
-            - !Ref AccountName
+          - - !Ref AccountName
             - security-demisto
 
   DemistoHubPolicy:
     Type: AWS::IAM::Policy
-    Properties: 
+    Properties:
       PolicyName:
         Fn::Join:
           - "-"
-          -
-            - !Ref AccountName
+          - - !Ref AccountName
             - demisto-assumption
-      Roles: 
+      Roles:
         - !Ref DemistoRole
       PolicyDocument:
         Version: '2012-10-17'

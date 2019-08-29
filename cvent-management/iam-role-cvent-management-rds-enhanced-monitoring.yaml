@@ -10,11 +10,10 @@ Resources:
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
-        - Effect: Allow
-          Principal:
-            Service: monitoring.rds.amazonaws.com
-          Action: sts:AssumeRole
+          - Effect: Allow
+            Principal:
+              Service: monitoring.rds.amazonaws.com
+            Action: sts:AssumeRole
       RoleName: cvent-management-rds-enhanced-monitoring
-      ManagedPolicyArns: 
-      - arn:aws:iam::aws:policy/service-role/AmazonRDSEnhancedMonitoringRole
-
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonRDSEnhancedMonitoringRole

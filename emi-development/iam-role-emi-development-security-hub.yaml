@@ -1,13 +1,14 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: Creates role for security hub automatic deployment
 
 Parameters:
 
-    AccountName:
-        Type: String
-        Description: Name of the account this has been deployed on
+  AccountName:
+    Type: String
+    Description: Name of the account this has been deployed on
 
-Resources: 
+Resources:
 
   SecurityHubRole:
     Type: AWS::IAM::Role
@@ -28,14 +29,13 @@ Resources:
 
   SecurityHubPolicy:
     Type: AWS::IAM::Policy
-    Properties: 
+    Properties:
       PolicyName:
         Fn::Join:
           - "-"
-          -
-            - !Ref AccountName
+          - - !Ref AccountName
             - security-hub
-      Roles: 
+      Roles:
         - !Ref SecurityHubRole
       PolicyDocument:
         Version: '2012-10-17'
@@ -71,4 +71,3 @@ Resources:
               - s3:ListBucket
             Resource: arn:aws:s3:::config-bucket-*
             Effect: Allow
-
