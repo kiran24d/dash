@@ -1,32 +1,28 @@
+---
 AWSTemplateFormatVersion: "2010-09-09"
 Description: IAM role assumed by other accounts to set up VPC peering connections.
 
-Resources: 
+Resources:
 
-  VpcPeeringRole: 
+  VpcPeeringRole:
     Type: AWS::IAM::Role
-    Properties: 
-      AssumeRolePolicyDocument: 
+    Properties:
+      AssumeRolePolicyDocument:
         Version: "2012-10-17"
-        Statement: 
-          - 
-            Effect: "Allow"
-            Principal: 
-              AWS: 
-                # Application (core-app-prod) account
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              AWS:
                 - "arn:aws:iam::924052762697:root"
-
-            Action: 
+            Action:
               - "sts:AssumeRole"
       Path: "/"
-      Policies: 
-        - 
-          PolicyName: core-els-prod-vpc-peering
-          PolicyDocument: 
+      Policies:
+        - PolicyName: core-els-prod-vpc-peering
+          PolicyDocument:
             Version: "2012-10-17"
-            Statement: 
-              - 
-                Effect: "Allow"
+            Statement:
+              - Effect: "Allow"
                 Action: "ec2:AcceptVpcPeeringConnection"
                 Resource: "*"
       RoleName: core-els-prod-vpc-peering
