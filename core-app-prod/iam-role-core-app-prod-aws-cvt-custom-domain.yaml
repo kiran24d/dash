@@ -1,73 +1,69 @@
+---
 AWSTemplateFormatVersion: "2010-09-09"
 Description: IAM role for custom domain in flex
 
-Resources: 
+Resources:
 
-  CustomDomainRole: 
+  CustomDomainRole:
     Type: AWS::IAM::Role
-    Properties: 
-      AssumeRolePolicyDocument: 
+    Properties:
+      AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
-        - Effect: Allow
-          Principal:
-            Federated: arn:aws:iam::659687181524:saml-provider/production-okta-sso
-          Action: sts:AssumeRoleWithSAML
-          Condition:
-            StringEquals:
-              SAML:aud: https://signin.aws.amazon.com/saml
-        - Effect: Allow
-          Principal:
-            AWS: arn:aws:iam::667621734181:root
-          Action: sts:AssumeRole
-          Condition: {}
+          - Effect: Allow
+            Principal:
+              Federated: arn:aws:iam::659687181524:saml-provider/production-okta-sso
+            Action: sts:AssumeRoleWithSAML
+            Condition:
+              StringEquals:
+                SAML:aud: https://signin.aws.amazon.com/saml
+          - Effect: Allow
+            Principal:
+              AWS: arn:aws:iam::667621734181:root
+            Action: sts:AssumeRole
+            Condition: {}
       Path: "/"
       Policies:
-        -
-          PolicyName: aws-cvt-custom-domain
+        - PolicyName: aws-cvt-custom-domain
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
-            -
-              Effect: Allow
-              Action:
-                - cloudfront:GetCloudFrontOriginAccessIdentityConfig
-                - cloudfront:ListCloudFrontOriginAccessIdentities
-                - cloudfront:GetStreamingDistributionConfig
-                - cloudfront:GetInvalidation
-                - acm:AddTagsToCertificate
-                - acm:ListTagsForCertificate
-                - cloudfront:GetDistribution
-                - acm:DescribeCertificate
-                - cloudfront:GetStreamingDistribution
-                - cloudfront:ListTagsForResource
-                - acm:RequestCertificate
-                - acm:RemoveTagsFromCertificate
-                - acm:GetCertificate
-                - cloudfront:ListInvalidations
-                - cloudfront:ListDistributions
-                - cloudfront:GetCloudFrontOriginAccessIdentity
-                - acm:ListCertificates
-                - cloudfront:UpdateDistribution
-                - acm:ImportCertificate
-                - cloudfront:ListStreamingDistributions
-                - cloudfront:GetDistributionConfig
-                - cloudfront:ListDistributionsByWebACLId
-              Resource: "*"
-            -
-              Effect: Allow
-              Action:
-                - apigateway:GET
-                - apigateway:POST
-              Resource: arn:aws:apigateway:*::/*
-            -
-              Effect: Allow
-              Action: apigateway:DELETE
-              Resource: arn:aws:apigateway:*::/domainnames/*
-            -
-              Effect: Allow
-              Action: apigateway:POST
-              Resource: arn:aws:apigateway:*::/domainnames
+              - Effect: Allow
+                Action:
+                  - cloudfront:GetCloudFrontOriginAccessIdentityConfig
+                  - cloudfront:ListCloudFrontOriginAccessIdentities
+                  - cloudfront:GetStreamingDistributionConfig
+                  - cloudfront:GetInvalidation
+                  - acm:AddTagsToCertificate
+                  - acm:ListTagsForCertificate
+                  - cloudfront:GetDistribution
+                  - acm:DescribeCertificate
+                  - cloudfront:GetStreamingDistribution
+                  - cloudfront:ListTagsForResource
+                  - acm:RequestCertificate
+                  - acm:RemoveTagsFromCertificate
+                  - acm:GetCertificate
+                  - cloudfront:ListInvalidations
+                  - cloudfront:ListDistributions
+                  - cloudfront:GetCloudFrontOriginAccessIdentity
+                  - acm:ListCertificates
+                  - cloudfront:UpdateDistribution
+                  - acm:ImportCertificate
+                  - cloudfront:ListStreamingDistributions
+                  - cloudfront:GetDistributionConfig
+                  - cloudfront:ListDistributionsByWebACLId
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - apigateway:GET
+                  - apigateway:POST
+                Resource: arn:aws:apigateway:*::/*
+              - Effect: Allow
+                Action: apigateway:DELETE
+                Resource: arn:aws:apigateway:*::/domainnames/*
+              - Effect: Allow
+                Action: apigateway:POST
+                Resource: arn:aws:apigateway:*::/domainnames
       RoleName: aws-cvt-custom-domain
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
