@@ -249,14 +249,12 @@ pipeline {
                 label 'domain:core.cvent.org && os:linux'
             }
         }
-        options {
-            timeout(time: 10, unit: 'MINUTES')
-        }
         when { branch 'master' }
         steps {
           script {
               update_failed_stacks = []
               supported_files.findAll { file -> fileExists(file) && (file.endsWith('.yaml') || file.endsWith('.yml'))}.each {
+                timeout(time: 10, unit: 'MINUTES'){
                   def result = build(job: "aws-update-cloudformation-stack",
                         parameters: [
                             string(name: 'wf_requester', value: user_email.split('@')[0].toLowerCase()),
@@ -285,13 +283,14 @@ pipeline {
                         'BUILD_URL': result.getAbsoluteUrl(),
                         'result': result.getResult()
                     ]
-                  if (result.getResult() != 'Success') {
+                  if (result.getResult() != 'SUCCESS') {
                       update_failed_stacks += update_info
                       log.error "Update stack job failed: ", update_info
                   }
                   else {
                       log.success "Update stack job: ", update_info
                   }
+                }
               }
               if (update_failed_stacks.size() != 0) {
                   log.error "Failed updating all stacks", ['failed_updates': update_failed_stacks]
