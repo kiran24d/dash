@@ -1,3 +1,4 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: Creates the federated networkingleads role and associated policy
 
@@ -28,62 +29,59 @@ Resources:
             Action: sts:AssumeRole
             Condition: {}
       ManagedPolicyArns:
-          - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
+        - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
       RoleName: aws-cvt-networkingleads
 
   NetworkingLeadsPolicy:
     Type: AWS::IAM::Policy
-    Properties: 
+    Properties:
       PolicyName:
         Fn::Join:
           - "-"
-          -
-            - !Ref AccountName
+          - - !Ref AccountName
             - networkingleads
-      Roles: 
+      Roles:
         - !Ref RoleCoreAppProdNetworkingLeads
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
-        - 
-          Action:
-            - iam:AddUserToGroup
-            - iam:CreateAccessKey
-            - iam:CreateGroup
-            - iam:CreateSAMLProvider
-            - iam:CreateUser
-            - iam:CreateVirtualMFADevice
-            - iam:DeactivateMFADevice
-            - iam:DeleteAccessKey
-            - iam:DeleteAccountAlias
-            - iam:DeleteAccountPasswordPolicy
-            - iam:DeleteGroup
-            - iam:DeleteGroupPolicy
-            - iam:DeletePolicy
-            - iam:DeletePolicyVersion
-            - iam:DeleteRole
-            - iam:DeleteRolePolicy
-            - iam:DeleteSAMLProvider
-            - iam:DeleteSSHPublicKey
-            - iam:DeleteUser
-            - iam:DeleteUserPolicy
-            - iam:DeleteVirtualMFADevice
-            - iam:EnableMFADevice
-            - iam:RemoveUserFromGroup
-            - iam:UpdateGroup
-            - iam:UpdateLoginProfile
-            - iam:UpdateOpenIDConnectProviderThumbprint
-            - iam:UpdateSAMLProvider
-            - iam:UpdateSSHPublicKey
-            - iam:UpdateServerCertificate
-            - iam:UpdateSigningCertificate
-            - iam:UpdateUser
-            - iam:UploadSSHPublicKey
-            - iam:UploadServerCertificate
-            - iam:UploadSigningCertificate
-          Effect: Deny
-          Resource: "*"
-        - 
-          Action: "*"
-          Effect: Allow
-          Resource: "*"
+          - Action:
+              - iam:AddUserToGroup
+              - iam:CreateAccessKey
+              - iam:CreateGroup
+              - iam:CreateSAMLProvider
+              - iam:CreateUser
+              - iam:CreateVirtualMFADevice
+              - iam:DeactivateMFADevice
+              - iam:DeleteAccessKey
+              - iam:DeleteAccountAlias
+              - iam:DeleteAccountPasswordPolicy
+              - iam:DeleteGroup
+              - iam:DeleteGroupPolicy
+              - iam:DeletePolicy
+              - iam:DeletePolicyVersion
+              - iam:DeleteRole
+              - iam:DeleteRolePolicy
+              - iam:DeleteSAMLProvider
+              - iam:DeleteSSHPublicKey
+              - iam:DeleteUser
+              - iam:DeleteUserPolicy
+              - iam:DeleteVirtualMFADevice
+              - iam:EnableMFADevice
+              - iam:RemoveUserFromGroup
+              - iam:UpdateGroup
+              - iam:UpdateLoginProfile
+              - iam:UpdateOpenIDConnectProviderThumbprint
+              - iam:UpdateSAMLProvider
+              - iam:UpdateSSHPublicKey
+              - iam:UpdateServerCertificate
+              - iam:UpdateSigningCertificate
+              - iam:UpdateUser
+              - iam:UploadSSHPublicKey
+              - iam:UploadServerCertificate
+              - iam:UploadSigningCertificate
+            Effect: Deny
+            Resource: "*"
+          - Action: "*"
+            Effect: Allow
+            Resource: "*"
