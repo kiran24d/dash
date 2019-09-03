@@ -1,0 +1,43 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: TIA-1736, Adding aws-qm-dev-devops role for quickmobile
+
+Resources:
+
+  AwsQmDevDevopsRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Federated: !Sub arn:aws:iam::${AWS::AccountId}:saml-provider/Okta-SSO
+            Action: sts:AssumeRoleWithSAML
+            Condition:
+              StringEquals:
+                SAML:aud: https://signin.aws.amazon.com/saml
+          - Effect: Allow
+            Principal:
+              AWS: arn:aws:iam::667621734181:root
+            Action: sts:AssumeRole
+            Condition: {}
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/PowerUserAccess
+      RoleName: aws-qm-dev-devops
+
+  AwsQmDevDevopsPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: aws-qm-dev-devops-policy
+      Roles:
+        - !Ref AwsQmDevDevopsRole
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - iam:ListInstanceProfiles
+              - iam:ListPolicies
+              - iam:ListRolePolicies
+            Resource: "*"

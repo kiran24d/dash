@@ -46,6 +46,7 @@ Resources:
                 - arn:aws:iam::aws:policy/IAMReadOnlyAccess
                 - arn:aws:iam::aws:policy/AWSCloudFormationReadOnlyAccess
                 - arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess
+                - arn:aws:iam::aws:policy/AWSElasticBeanstalkReadOnlyAccess
             RoleName: !Sub
                 - "${Account}-qa"
                 - Account: !Ref AccountName

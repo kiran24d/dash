@@ -1,179 +1,180 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: Description
-Parameters:
-  AccountName:
-    Description: Name of the account this template is being deployed too
-    Type: String
+
 Resources:
   AwsCvtDevsApigatewayStagesAdminPolicy:
     Properties:
       PolicyDocument:
         Statement:
-        - Action:
-          - apigateway:*
-          Effect: Allow
-          Resource:
-          - arn:aws:apigateway:us-east-1::/restapis/*/stages
-          - arn:aws:apigateway:us-east-1::/restapis/*/stages/*
+          - Action:
+              - apigateway:*
+            Effect: Allow
+            Resource:
+              - arn:aws:apigateway:us-east-1::/restapis/*/stages
+              - arn:aws:apigateway:us-east-1::/restapis/*/stages/*
         Version: '2012-10-17'
       PolicyName: cvent-development-apigateway-stages-admin
       Roles:
-      - Ref: AwsCvtDevsRole
+        - !Ref AwsCvtDevsRole
     Type: AWS::IAM::Policy
+
   AwsCvtDevsDataPipelineAccessPolicy:
     Properties:
       PolicyDocument:
         Statement:
-        - Action:
-          - iam:CreateInstanceProfile
-          - iam:AddRoleToInstanceProfile
-          Effect: Allow
-          Resource: arn:aws:iam::504055967630:instance-profile/DataPipeline*
+          - Action:
+              - iam:CreateInstanceProfile
+              - iam:AddRoleToInstanceProfile
+            Effect: Allow
+            Resource: arn:aws:iam::504055967630:instance-profile/DataPipeline*
         Version: '2012-10-17'
       PolicyName: cvent-development-data-pipeline-access
       Roles:
-      - Ref: AwsCvtDevsRole
+        - !Ref AwsCvtDevsRole
     Type: AWS::IAM::Policy
   AwsCvtDevsDataPipelinePolicy:
     Properties:
       PolicyDocument:
         Statement:
-        - Action:
-          - datapipeline:PutAccountLimits
-          - datapipeline:PutPipelineDefinition
-          - datapipeline:ListPipelines
-          - datapipeline:SetStatus
-          - datapipeline:QueryObjects
-          - datapipeline:DescribeObjects
-          - datapipeline:ReportTaskRunnerHeartbeat
-          - datapipeline:ReportTaskProgress
-          - datapipeline:ValidatePipelineDefinition
-          - datapipeline:GetPipelineDefinition
-          - datapipeline:DescribePipelines
-          - datapipeline:CreatePipeline
-          - datapipeline:GetAccountLimits
-          - datapipeline:EvaluateExpression
-          - datapipeline:SetTaskStatus
-          - datapipeline:AddTags
-          - datapipeline:PollForTask
-          - datapipeline:ActivatePipeline
-          Effect: Allow
-          Resource: '*'
-          Sid: VisualEditor0
+          - Action:
+              - datapipeline:PutAccountLimits
+              - datapipeline:PutPipelineDefinition
+              - datapipeline:ListPipelines
+              - datapipeline:SetStatus
+              - datapipeline:QueryObjects
+              - datapipeline:DescribeObjects
+              - datapipeline:ReportTaskRunnerHeartbeat
+              - datapipeline:ReportTaskProgress
+              - datapipeline:ValidatePipelineDefinition
+              - datapipeline:GetPipelineDefinition
+              - datapipeline:DescribePipelines
+              - datapipeline:CreatePipeline
+              - datapipeline:GetAccountLimits
+              - datapipeline:EvaluateExpression
+              - datapipeline:SetTaskStatus
+              - datapipeline:AddTags
+              - datapipeline:PollForTask
+              - datapipeline:ActivatePipeline
+            Effect: Allow
+            Resource: '*'
+            Sid: VisualEditor0
         Version: '2012-10-17'
       PolicyName: cvent-development-data-pipeline
       Roles:
-      - Ref: AwsCvtDevsRole
+        - !Ref AwsCvtDevsRole
     Type: AWS::IAM::Policy
+
   AwsCvtDevsGlueAndS3Policy:
     Properties:
       PolicyDocument:
         Statement:
-        - Action:
-          - glue:BatchCreatePartition
-          - glue:GetCrawler
-          - glue:GetTableVersions
-          - glue:CreateClassifier
-          - glue:GetPartitions
-          - glue:UpdateTable
-          - glue:UpdateCrawler
-          - glue:GetDevEndpoint
-          - glue:CreateScript
-          - glue:UpdateTrigger
-          - glue:GetTrigger
-          - glue:GetUserDefinedFunction
-          - glue:GetJobRun
-          - glue:StopCrawlerSchedule
-          - glue:GetUserDefinedFunctions
-          - glue:GetClassifier
-          - glue:UpdateDatabase
-          - glue:GetJobs
-          - glue:GetTables
-          - glue:CreateTable
-          - glue:GetTriggers
-          - glue:CreateConnection
-          - glue:CreateCrawler
-          - glue:GetMapping
-          - glue:GetPartition
-          - glue:GetDevEndpoints
-          - glue:StartCrawlerSchedule
-          - glue:StartJobRun
-          - glue:UpdateClassifier
-          - glue:GetJob
-          - glue:GetConnections
-          - glue:GetCrawlers
-          - glue:GetClassifiers
-          - glue:CreateTrigger
-          - glue:StopTrigger
-          - glue:CreateUserDefinedFunction
-          - glue:StopCrawler
-          - glue:StartTrigger
-          - glue:GetCatalogImportStatus
-          - glue:CreateJob
-          - glue:ImportCatalogToGlue
-          - glue:GetConnection
-          - glue:StartCrawler
-          - glue:ResetJobBookmark
-          - glue:UpdateJob
-          - glue:CreatePartition
-          - glue:UpdatePartition
-          - glue:UpdateUserDefinedFunction
-          - glue:BatchGetPartition
-          - glue:GetDatabases
-          - glue:GetTable
-          - glue:GetDatabase
-          - glue:GetDataflowGraph
-          - glue:UpdateConnection
-          - glue:CreateDatabase
-          - glue:CreateDevEndpoint
-          - glue:UpdateDevEndpoint
-          - glue:GetPlan
-          - glue:GetCrawlerMetrics
-          - glue:GetJobRuns
-          Effect: Allow
-          Resource: '*'
-          Sid: VisualEditor0
-        - Action:
-          - s3:Get*
-          - s3:List*
-          - s3:HeadBucket
-          Effect: Allow
-          Resource:
-          - arn:aws:s3:::cvent-development-datawarehouse/*
-          - arn:aws:s3:::arn:aws:s3:::cvent-development-datawarehouse
-          Sid: VisualEditor1
+          - Action:
+              - glue:BatchCreatePartition
+              - glue:GetCrawler
+              - glue:GetTableVersions
+              - glue:CreateClassifier
+              - glue:GetPartitions
+              - glue:UpdateTable
+              - glue:UpdateCrawler
+              - glue:GetDevEndpoint
+              - glue:CreateScript
+              - glue:UpdateTrigger
+              - glue:GetTrigger
+              - glue:GetUserDefinedFunction
+              - glue:GetJobRun
+              - glue:StopCrawlerSchedule
+              - glue:GetUserDefinedFunctions
+              - glue:GetClassifier
+              - glue:UpdateDatabase
+              - glue:GetJobs
+              - glue:GetTables
+              - glue:CreateTable
+              - glue:GetTriggers
+              - glue:CreateConnection
+              - glue:CreateCrawler
+              - glue:GetMapping
+              - glue:GetPartition
+              - glue:GetDevEndpoints
+              - glue:StartCrawlerSchedule
+              - glue:StartJobRun
+              - glue:UpdateClassifier
+              - glue:GetJob
+              - glue:GetConnections
+              - glue:GetCrawlers
+              - glue:GetClassifiers
+              - glue:CreateTrigger
+              - glue:StopTrigger
+              - glue:CreateUserDefinedFunction
+              - glue:StopCrawler
+              - glue:StartTrigger
+              - glue:GetCatalogImportStatus
+              - glue:CreateJob
+              - glue:ImportCatalogToGlue
+              - glue:GetConnection
+              - glue:StartCrawler
+              - glue:ResetJobBookmark
+              - glue:UpdateJob
+              - glue:CreatePartition
+              - glue:UpdatePartition
+              - glue:UpdateUserDefinedFunction
+              - glue:BatchGetPartition
+              - glue:GetDatabases
+              - glue:GetTable
+              - glue:GetDatabase
+              - glue:GetDataflowGraph
+              - glue:UpdateConnection
+              - glue:CreateDatabase
+              - glue:CreateDevEndpoint
+              - glue:UpdateDevEndpoint
+              - glue:GetPlan
+              - glue:GetCrawlerMetrics
+              - glue:GetJobRuns
+            Effect: Allow
+            Resource: '*'
+            Sid: VisualEditor0
+          - Action:
+              - s3:Get*
+              - s3:List*
+              - s3:HeadBucket
+            Effect: Allow
+            Resource:
+              - arn:aws:s3:::cvent-development-datawarehouse/*
+              - arn:aws:s3:::arn:aws:s3:::cvent-development-datawarehouse
+            Sid: VisualEditor1
         Version: '2012-10-17'
       PolicyName: cvent-development-glue-and-s3
       Roles:
-      - Ref: AwsCvtDevsRole
+        - !Ref AwsCvtDevsRole
     Type: AWS::IAM::Policy
+
   AwsCvtDevsRole:
     Properties:
       AssumeRolePolicyDocument:
         Statement:
-        - Action: sts:AssumeRoleWithSAML
-          Condition:
-            StringEquals:
-              SAML:aud: https://signin.aws.amazon.com/saml
-          Effect: Allow
-          Principal:
-            Federated: arn:aws:iam::504055967630:saml-provider/development-okta-sso
-        - Action: sts:AssumeRole
-          Condition: {}
-          Effect: Allow
-          Principal:
-            AWS: arn:aws:iam::667621734181:root
+          - Action: sts:AssumeRoleWithSAML
+            Condition:
+              StringEquals:
+                SAML:aud: https://signin.aws.amazon.com/saml
+            Effect: Allow
+            Principal:
+              Federated: arn:aws:iam::504055967630:saml-provider/development-okta-sso
+          - Action: sts:AssumeRole
+            Condition: {}
+            Effect: Allow
+            Principal:
+              AWS: arn:aws:iam::667621734181:root
         Version: '2012-10-17'
       ManagedPolicyArns:
-      - arn:aws:iam::504055967630:policy/cvent-dms-redshift
-      - arn:aws:iam::aws:policy/ReadOnlyAccess
-      - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
-      - arn:aws:iam::aws:policy/AmazonAthenaFullAccess
-      - arn:aws:iam::aws:policy/CloudFrontFullAccess
-      - arn:aws:iam::aws:policy/AmazonRedshiftFullAccess
-      - arn:aws:iam::aws:policy/AmazonAPIGatewayAdministrator
-      - arn:aws:iam::504055967630:policy/cvent-devs-policy
-      - arn:aws:iam::aws:policy/AWSSupportAccess
+        - arn:aws:iam::504055967630:policy/cvent-dms-redshift
+        - arn:aws:iam::aws:policy/ReadOnlyAccess
+        - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+        - arn:aws:iam::aws:policy/AmazonAthenaFullAccess
+        - arn:aws:iam::aws:policy/CloudFrontFullAccess
+        - arn:aws:iam::aws:policy/AmazonRedshiftFullAccess
+        - arn:aws:iam::aws:policy/AmazonAPIGatewayAdministrator
+        - arn:aws:iam::504055967630:policy/cvent-devs-policy
+        - arn:aws:iam::aws:policy/AWSSupportAccess
       MaxSessionDuration: 43200
       Path: /
       RoleName: aws-cvt-devs

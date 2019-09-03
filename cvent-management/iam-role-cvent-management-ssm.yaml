@@ -17,7 +17,5 @@ Resources:
             Action: sts:AssumeRole
       Path: /service-role/
       MaxSessionDuration: 3600
-      ManagedPolicyArns: 
+      ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM
-
- 

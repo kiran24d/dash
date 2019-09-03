@@ -1,159 +1,159 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: Create base IAM roles
 
 Resources:
 
-    CoreCbProdPower:
-        Type: AWS::IAM::Role
-        Properties:
-            AssumeRolePolicyDocument: !Sub
-                |
-                {
-                  "Version": "2012-10-17",
-                  "Statement": [
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
-                      },
-                      "Action": "sts:AssumeRoleWithSAML",
-                      "Condition": {
-                        "StringEquals": {
-                          "SAML:aud": "https://signin.aws.amazon.com/saml"
-                        }
-                      }
-                    },
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "AWS": "arn:aws:iam::667621734181:root"
-                      },
-                      "Action": "sts:AssumeRole",
-                      "Condition": {}
-                    }
-                  ]
+  CoreCbProdPower:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument: !Sub
+        |
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+              },
+              "Action": "sts:AssumeRoleWithSAML",
+              "Condition": {
+                "StringEquals": {
+                  "SAML:aud": "https://signin.aws.amazon.com/saml"
                 }
-            ManagedPolicyArns:
-                - arn:aws:iam::aws:policy/PowerUserAccess
-            RoleName: core-cb-prod-power
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "arn:aws:iam::667621734181:root"
+              },
+              "Action": "sts:AssumeRole",
+              "Condition": {}
+            }
+          ]
+        }
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/PowerUserAccess
+      RoleName: core-cb-prod-power
 
-    CoreCbProdView:
-        Type: AWS::IAM::Role
-        Properties:
-            AssumeRolePolicyDocument: !Sub
-                |
-                {
-                  "Version": "2012-10-17",
-                  "Statement": [
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
-                      },
-                      "Action": "sts:AssumeRoleWithSAML",
-                      "Condition": {
-                        "StringEquals": {
-                          "SAML:aud": "https://signin.aws.amazon.com/saml"
-                        }
-                      }
-                    },
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "AWS": "arn:aws:iam::667621734181:root"
-                      },
-                      "Action": "sts:AssumeRole",
-                      "Condition": {}
-                    }
-                  ]
+  CoreCbProdView:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument: !Sub
+        |
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+              },
+              "Action": "sts:AssumeRoleWithSAML",
+              "Condition": {
+                "StringEquals": {
+                  "SAML:aud": "https://signin.aws.amazon.com/saml"
                 }
-            ManagedPolicyArns:
-                - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
-            RoleName: core-cb-prod-view
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "arn:aws:iam::667621734181:root"
+              },
+              "Action": "sts:AssumeRole",
+              "Condition": {}
+            }
+          ]
+        }
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
+      RoleName: core-cb-prod-view
 
-
-    CoreCbProdDba:
-        Type: AWS::IAM::Role
-        Properties:
-            AssumeRolePolicyDocument: !Sub
-                |
-                {
-                  "Version": "2012-10-17",
-                  "Statement": [
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
-                      },
-                      "Action": "sts:AssumeRoleWithSAML",
-                      "Condition": {
-                        "StringEquals": {
-                          "SAML:aud": "https://signin.aws.amazon.com/saml"
-                        }
-                      }
-                    },
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "AWS": "arn:aws:iam::667621734181:root"
-                      },
-                      "Action": "sts:AssumeRole",
-                      "Condition": {}
-                    }
-                  ]
+  CoreCbProdDba:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument: !Sub
+        |
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+              },
+              "Action": "sts:AssumeRoleWithSAML",
+              "Condition": {
+                "StringEquals": {
+                  "SAML:aud": "https://signin.aws.amazon.com/saml"
                 }
-            ManagedPolicyArns:
-                - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
-            RoleName: core-cb-prod-dba
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "arn:aws:iam::667621734181:root"
+              },
+              "Action": "sts:AssumeRole",
+              "Condition": {}
+            }
+          ]
+        }
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
+      RoleName: core-cb-prod-dba
 
-    CoreCbProdSre:
-        Type: AWS::IAM::Role
-        Properties:
-            AssumeRolePolicyDocument: !Sub
-                |
-                {
-                  "Version": "2012-10-17",
-                  "Statement": [
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
-                      },
-                      "Action": "sts:AssumeRoleWithSAML",
-                      "Condition": {
-                        "StringEquals": {
-                          "SAML:aud": "https://signin.aws.amazon.com/saml"
-                        }
-                      }
-                    },
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "AWS": "arn:aws:iam::667621734181:root"
-                      },
-                      "Action": "sts:AssumeRole",
-                      "Condition": {}
-                    }
-                  ]
+  CoreCbProdSre:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument: !Sub
+        |
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+              },
+              "Action": "sts:AssumeRoleWithSAML",
+              "Condition": {
+                "StringEquals": {
+                  "SAML:aud": "https://signin.aws.amazon.com/saml"
                 }
-            ManagedPolicyArns:
-                - arn:aws:iam::aws:policy/PowerUserAccess
-                - arn:aws:iam::aws:policy/IAMReadOnlyAccess
-            RoleName: core-cb-prod-sre
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "arn:aws:iam::667621734181:root"
+              },
+              "Action": "sts:AssumeRole",
+              "Condition": {}
+            }
+          ]
+        }
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/PowerUserAccess
+        - arn:aws:iam::aws:policy/IAMReadOnlyAccess
+      RoleName: core-cb-prod-sre
 
 
-    CventDbaPolicy:
-        Type: AWS::IAM::Policy
-        Properties:
-          PolicyName: core-cb-prod-dba
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-            - Sid: CoreCbProdDbaPolicy
-              Action:
-                - rds:ModifyDBInstance
-                - es:DescribeReservedElasticsearchInstances
-              Effect: Allow
-              Resource: "*"
-          Roles:
-              - Ref: "CoreCbProdDba"
+  CventDbaPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: core-cb-prod-dba
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: CoreCbProdDbaPolicy
+            Action:
+              - rds:ModifyDBInstance
+              - es:DescribeReservedElasticsearchInstances
+            Effect: Allow
+            Resource: "*"
+      Roles:
+        - Ref: "CoreCbProdDba"

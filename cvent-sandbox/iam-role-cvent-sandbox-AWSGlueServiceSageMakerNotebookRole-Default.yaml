@@ -1,3 +1,4 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: Description
 
@@ -6,27 +7,27 @@ Resources:
     Properties:
       AssumeRolePolicyDocument:
         Statement:
-        - Action: sts:AssumeRole
-          Condition: {}
-          Effect: Allow
-          Principal:
-            Service: sagemaker.amazonaws.com
+          - Action: sts:AssumeRole
+            Condition: {}
+            Effect: Allow
+            Principal:
+              Service: sagemaker.amazonaws.com
         Version: '2012-10-17'
       RoleName: AWSGlueServiceSageMakerNotebookRole-Data
     Type: AWS::IAM::Role
 
   AWSGlueServiceSageMakerNotebookPolicy:
-      Type: AWS::IAM::Policy
-      Properties:
-        PolicyName: AWSGlueServiceSageMakerNotebook-policy
-        PolicyDocument:
-          Version: '2012-10-17'
-          Statement:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: AWSGlueServiceSageMakerNotebook-policy
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
           - Action:
               - s3:ListBucket
             Effect: Allow
             Resource:
-            - arn:aws:s3:::cvent-sandbox-datawarehouse-datadev
+              - arn:aws:s3:::cvent-sandbox-datawarehouse-datadev
           - Action:
               - s3:GetObject
               - s3:PutObject
@@ -54,5 +55,5 @@ Resources:
           - Action: comprehend:*
             Effect: Allow
             Resource: "*"
-        Roles:
-          - !Ref AWSGlueServiceSageMakerNotebookRole
+      Roles:
+        - !Ref AWSGlueServiceSageMakerNotebookRole

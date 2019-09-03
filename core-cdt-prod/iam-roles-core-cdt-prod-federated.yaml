@@ -1,6 +1,6 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: Create base IAM roles
-
 
 Mappings:
 
@@ -35,598 +35,587 @@ Mappings:
 
 Resources:
 
-    RoleCoreCdtProdView:
-        Type: AWS::IAM::Role
-        Properties:
-            AssumeRolePolicyDocument: !Sub
-                |
-                {
-                  "Version": "2012-10-17",
-                  "Statement": [
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
-                      },
-                      "Action": "sts:AssumeRoleWithSAML",
-                      "Condition": {
-                        "StringEquals": {
-                          "SAML:aud": "https://signin.aws.amazon.com/saml"
-                        }
+  RoleCoreCdtProdView:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument: !Sub
+        |
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+              },
+              "Action": "sts:AssumeRoleWithSAML",
+              "Condition": {
+                "StringEquals": {
+                  "SAML:aud": "https://signin.aws.amazon.com/saml"
+                }
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "arn:aws:iam::667621734181:root"
+              },
+              "Action": "sts:AssumeRole",
+              "Condition": {}
+            }
+          ]
+        }
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
+        - arn:aws:iam::aws:policy/AWSCloudFormationReadOnlyAccess
+        - arn:aws:iam::aws:policy/AWSLambdaReadOnlyAccess
+        - arn:aws:iam::aws:policy/IAMReadOnlyAccess
+        - arn:aws:iam::aws:policy/CloudWatchReadOnlyAccess
+        - arn:aws:iam::aws:policy/AmazonDynamoDBReadOnlyAccess
+      RoleName: core-cdt-prod-view
+
+  RoleCoreCdtProdPower:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument: !Sub
+        |
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+              },
+              "Action": "sts:AssumeRoleWithSAML",
+              "Condition": {
+                "StringEquals": {
+                  "SAML:aud": "https://signin.aws.amazon.com/saml"
+                }
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "arn:aws:iam::667621734181:root"
+              },
+              "Action": "sts:AssumeRole",
+              "Condition": {}
+            }
+          ]
+        }
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/PowerUserAccess
+      RoleName: core-cdt-prod-power
+
+  RoleCoreCdtProdDba:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument: !Sub
+        |
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+              },
+              "Action": "sts:AssumeRoleWithSAML",
+              "Condition": {
+                "StringEquals": {
+                  "SAML:aud": "https://signin.aws.amazon.com/saml"
+                }
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "arn:aws:iam::667621734181:root"
+              },
+              "Action": "sts:AssumeRole",
+              "Condition": {}
+            }
+          ]
+        }
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonEC2FullAccess
+        - arn:aws:iam::aws:policy/AmazonRDSFullAccess
+        - arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess
+        - arn:aws:iam::aws:policy/AWSCloudFormationReadOnlyAccess
+      RoleName: core-cdt-prod-dba
+
+  RoleCoreCdtProdDbaLeads:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument: !Sub
+        |
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+              },
+              "Action": "sts:AssumeRoleWithSAML",
+              "Condition": {
+                "StringEquals": {
+                  "SAML:aud": "https://signin.aws.amazon.com/saml"
+                }
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "arn:aws:iam::667621734181:root"
+              },
+              "Action": "sts:AssumeRole",
+              "Condition": {}
+            }
+          ]
+        }
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/PowerUserAccess
+      RoleName: core-cdt-prod-dbaleads
+
+  CoreCdtProdDevs:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument: !Sub
+        |
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+              },
+              "Action": "sts:AssumeRoleWithSAML",
+              "Condition": {
+                "StringEquals": {
+                  "SAML:aud": "https://signin.aws.amazon.com/saml"
+                }
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "arn:aws:iam::667621734181:root"
+              },
+              "Action": "sts:AssumeRole",
+              "Condition": {}
+            }
+          ]
+        }
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
+      RoleName: core-cdt-prod-devs
+
+  CoreCdtProdQa:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument: !Sub
+        |
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+              },
+              "Action": "sts:AssumeRoleWithSAML",
+              "Condition": {
+                "StringEquals": {
+                  "SAML:aud": "https://signin.aws.amazon.com/saml"
+                }
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "arn:aws:iam::667621734181:root"
+              },
+              "Action": "sts:AssumeRole",
+              "Condition": {}
+            }
+          ]
+        }
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
+      RoleName: core-cdt-prod-qa
+
+  CoreCdtProdAppSupport:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument: !Sub
+        |
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+              },
+              "Action": "sts:AssumeRoleWithSAML",
+              "Condition": {
+                "StringEquals": {
+                  "SAML:aud": "https://signin.aws.amazon.com/saml"
+                }
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "arn:aws:iam::667621734181:root"
+              },
+              "Action": "sts:AssumeRole",
+              "Condition": {}
+            }
+          ]
+        }
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
+      RoleName: core-cdt-prod-appsupport
+
+  CoreCdtProdAppUi:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument: !Sub
+        |
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+              },
+              "Action": "sts:AssumeRoleWithSAML",
+              "Condition": {
+                "StringEquals": {
+                  "SAML:aud": "https://signin.aws.amazon.com/saml"
+                }
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "arn:aws:iam::667621734181:root"
+              },
+              "Action": "sts:AssumeRole",
+              "Condition": {}
+            }
+          ]
+        }
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
+      RoleName: core-cdt-prod-ui
+
+  CoreCdtProdSre:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument: !Sub
+        |
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+              },
+              "Action": "sts:AssumeRoleWithSAML",
+              "Condition": {
+                "StringEquals": {
+                  "SAML:aud": "https://signin.aws.amazon.com/saml"
+                }
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "arn:aws:iam::667621734181:root"
+              },
+              "Action": "sts:AssumeRole",
+              "Condition": {}
+            }
+          ]
+        }
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/PowerUserAccess
+        - arn:aws:iam::aws:policy/IAMReadOnlyAccess
+      RoleName: core-cdt-prod-sre
+
+  CoreCdtAttendeeJourneyDatomicPeer:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument: !Sub
+        |
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+              },
+              "Action": "sts:AssumeRoleWithSAML",
+              "Condition": {
+                "StringEquals": {
+                  "SAML:aud": "https://signin.aws.amazon.com/saml"
+                }
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "arn:aws:iam::667621734181:root"
+              },
+              "Action": "sts:AssumeRole",
+              "Condition": {}
+            }
+          ]
+        }
+      RoleName: core-cdt-attendee-journey-datomicpeer
+
+  CoreCdtAttendeeJourneyDatomicTransactor:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument: !Sub
+        |
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+              },
+              "Action": "sts:AssumeRoleWithSAML",
+              "Condition": {
+                "StringEquals": {
+                  "SAML:aud": "https://signin.aws.amazon.com/saml"
+                }
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "arn:aws:iam::667621734181:root"
+              },
+              "Action": "sts:AssumeRole",
+              "Condition": {}
+            }
+          ]
+        }
+      RoleName: core-cdt-attendee-journey-datomictransactor
+
+  DatomicPeerPolicy1:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument: !Sub
+        |
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                  "dynamodb:GetItem",
+                  "dynamodb:BatchGetItem",
+                  "dynamodb:Scan",
+                  "dynamodb:Query"
+              ],
+              "Resource": "arn:aws:dynamodb:*:${AWS::AccountId}:table/core-cdt-prod-attendee-journey-ephemera-P2-production-eu-west-1"
+            }
+          ]
+        }
+      PolicyName: attendee-journey-ephemera-P2-peer
+      Roles:
+        - Ref: "CoreCdtAttendeeJourneyDatomicPeer"
+
+  DatomicPeerPolicy2:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument: !Sub
+        |
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                  "dynamodb:GetItem",
+                  "dynamodb:BatchGetItem",
+                  "dynamodb:Scan",
+                  "dynamodb:Query"
+              ],
+              "Resource": "arn:aws:dynamodb:*:${AWS::AccountId}:table/core-cdt-prod-attendee-journey-kenoma-P2-production-eu-west-1"
+            }
+          ]
+        }
+      PolicyName: attendee-journey-kenoma-P2-peer
+      Roles:
+        - Ref: "CoreCdtAttendeeJourneyDatomicPeer"
+
+  DatomicTransactorPolicy1:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument: !Sub
+        |
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+              {
+                  "Effect": "Allow",
+                  "Action": [
+                      "dynamodb:*"
+                  ],
+                  "Resource": [
+                      "arn:aws:dynamodb:*:${AWS::AccountId}:table/core-cdt-prod-attendee-journey-ephemera-P2-production-eu-west-1",
+                      "arn:aws:dynamodb:*:${AWS::AccountId}:table/core-cdt-prod-attendee-journey-kenoma-P2-production-eu-west-1"
+                  ]
+              },
+              {
+                  "Effect": "Allow",
+                  "Action": [
+                      "cloudwatch:PutMetricData",
+                      "cloudwatch:PutMetricDataBatch"
+                  ],
+                  "Resource": "*",
+                  "Condition": {
+                      "Bool": {
+                          "aws:SecureTransport": "true"
                       }
-                    },
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "AWS": "arn:aws:iam::667621734181:root"
-                      },
-                      "Action": "sts:AssumeRole",
-                      "Condition": {}
-                    }
-                  ]
-                }
-            ManagedPolicyArns:
-                - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
-                - arn:aws:iam::aws:policy/AWSCloudFormationReadOnlyAccess
-                - arn:aws:iam::aws:policy/AWSLambdaReadOnlyAccess
-                - arn:aws:iam::aws:policy/IAMReadOnlyAccess
-                - arn:aws:iam::aws:policy/CloudWatchReadOnlyAccess
-                - arn:aws:iam::aws:policy/AmazonDynamoDBReadOnlyAccess
-            RoleName: core-cdt-prod-view
+                  }
+              }
+          ]
+        }
+      PolicyName: cvent-policy-attendee-journey-datomic
+      Roles:
+        - Ref: "CoreCdtAttendeeJourneyDatomicTransactor"
 
-    RoleCoreCdtProdPower:
-        Type: AWS::IAM::Role
-        Properties:
-            AssumeRolePolicyDocument: !Sub
-                |
-                {
-                  "Version": "2012-10-17",
-                  "Statement": [
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
-                      },
-                      "Action": "sts:AssumeRoleWithSAML",
-                      "Condition": {
-                        "StringEquals": {
-                          "SAML:aud": "https://signin.aws.amazon.com/saml"
-                        }
+  DatomicTransactorPolicy2:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument: !Sub
+        |
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+              {
+                  "Effect": "Allow",
+                  "Action": [
+                      "dynamodb:*"
+                  ],
+                  "Resource": "arn:aws:dynamodb:*:${AWS::AccountId}:table/core-cdt-prod-attendee-journey-ephemera-P2-production-eu-west-1"
+              }
+          ]
+        }
+      PolicyName: attendee-journey-ephemera-P2-transactor
+      Roles:
+        - Ref: "CoreCdtAttendeeJourneyDatomicTransactor"
+
+  DatomicTransactorPolicy3:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument: !Sub
+        |
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+              {
+                  "Effect": "Allow",
+                  "Action": [
+                      "dynamodb:*"
+                  ],
+                  "Resource": "arn:aws:dynamodb:*:${AWS::AccountId}:table/core-cdt-prod-attendee-journey-kenoma-P2-production-eu-west-1"
+              }
+          ]
+        }
+      PolicyName: attendee-journey-kenoma-P2-transactor
+      Roles:
+        - Ref: "CoreCdtAttendeeJourneyDatomicTransactor"
+
+  DatomicTransactorPolicy4:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument: !Sub
+        |
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+              {
+                  "Effect": "Allow",
+                  "Action": [
+                      "cloudwatch:PutMetricData",
+                      "cloudwatch:PutMetricDataBatch"
+                  ],
+                  "Resource": "*",
+                  "Condition": {
+                      "Bool": {
+                          "aws:SecureTransport": "true"
                       }
-                    },
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "AWS": "arn:aws:iam::667621734181:root"
-                      },
-                      "Action": "sts:AssumeRole",
-                      "Condition": {}
-                    }
-                  ]
-                }
-            ManagedPolicyArns:
-                - arn:aws:iam::aws:policy/PowerUserAccess
-            RoleName: core-cdt-prod-power
+                  }
+              }
+          ]
+        }
+      PolicyName: transactor-metrics
+      Roles:
+        - Ref: "CoreCdtAttendeeJourneyDatomicTransactor"
 
-    RoleCoreCdtProdDba:
-        Type: AWS::IAM::Role
-        Properties:
-            AssumeRolePolicyDocument: !Sub
-                |
-                {
-                  "Version": "2012-10-17",
-                  "Statement": [
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
-                      },
-                      "Action": "sts:AssumeRoleWithSAML",
-                      "Condition": {
-                        "StringEquals": {
-                          "SAML:aud": "https://signin.aws.amazon.com/saml"
-                        }
-                      }
-                    },
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "AWS": "arn:aws:iam::667621734181:root"
-                      },
-                      "Action": "sts:AssumeRole",
-                      "Condition": {}
-                    }
-                  ]
-                }
-            ManagedPolicyArns:
-                - arn:aws:iam::aws:policy/AmazonEC2FullAccess
-                - arn:aws:iam::aws:policy/AmazonRDSFullAccess
-                - arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess
-                - arn:aws:iam::aws:policy/AWSCloudFormationReadOnlyAccess
-            RoleName: core-cdt-prod-dba
+  PowerPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              - iam:GetRole
+            Resource: "*"
+      PolicyName:
+        Fn::Join:
+          - "-"
+          - - !FindInMap [AccountMap, !Ref "AWS::AccountId", AccountName]
+            - power
+      Roles:
+        - !Ref RoleCoreCdtProdPower
 
-    RoleCoreCdtProdDbaLeads:
-        Type: AWS::IAM::Role
-        Properties:
-            AssumeRolePolicyDocument: !Sub
-                |
-                {
-                  "Version": "2012-10-17",
-                  "Statement": [
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
-                      },
-                      "Action": "sts:AssumeRoleWithSAML",
-                      "Condition": {
-                        "StringEquals": {
-                          "SAML:aud": "https://signin.aws.amazon.com/saml"
-                        }
-                      }
-                    },
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "AWS": "arn:aws:iam::667621734181:root"
-                      },
-                      "Action": "sts:AssumeRole",
-                      "Condition": {}
-                    }
-                  ]
-                }
-            ManagedPolicyArns:
-                - arn:aws:iam::aws:policy/PowerUserAccess
-            RoleName: core-cdt-prod-dbaleads
+  ViewPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              - elasticloadbalancing:DescribeInstanceHealth
+            Resource: "*"
+      PolicyName:
+        Fn::Join:
+          - "-"
+          - - !FindInMap [AccountMap, !Ref "AWS::AccountId", AccountName]
+            - View
+      Roles:
+        - !Ref RoleCoreCdtProdView
 
-    CoreCdtProdDevs:
-        Type: AWS::IAM::Role
-        Properties:
-            AssumeRolePolicyDocument: !Sub
-                |
-                {
-                  "Version": "2012-10-17",
-                  "Statement": [
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
-                      },
-                      "Action": "sts:AssumeRoleWithSAML",
-                      "Condition": {
-                        "StringEquals": {
-                          "SAML:aud": "https://signin.aws.amazon.com/saml"
-                        }
-                      }
-                    },
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "AWS": "arn:aws:iam::667621734181:root"
-                      },
-                      "Action": "sts:AssumeRole",
-                      "Condition": {}
-                    }
-                  ]
-                }
-            ManagedPolicyArns:
-                - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
-            RoleName: core-cdt-prod-devs
-
-    CoreCdtProdQa:
-        Type: AWS::IAM::Role
-        Properties:
-            AssumeRolePolicyDocument: !Sub
-                |
-                {
-                  "Version": "2012-10-17",
-                  "Statement": [
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
-                      },
-                      "Action": "sts:AssumeRoleWithSAML",
-                      "Condition": {
-                        "StringEquals": {
-                          "SAML:aud": "https://signin.aws.amazon.com/saml"
-                        }
-                      }
-                    },
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "AWS": "arn:aws:iam::667621734181:root"
-                      },
-                      "Action": "sts:AssumeRole",
-                      "Condition": {}
-                    }
-                  ]
-                }
-            ManagedPolicyArns:
-                - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
-            RoleName: core-cdt-prod-qa
-
-    CoreCdtProdAppSupport:
-        Type: AWS::IAM::Role
-        Properties:
-            AssumeRolePolicyDocument: !Sub
-                |
-                {
-                  "Version": "2012-10-17",
-                  "Statement": [
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
-                      },
-                      "Action": "sts:AssumeRoleWithSAML",
-                      "Condition": {
-                        "StringEquals": {
-                          "SAML:aud": "https://signin.aws.amazon.com/saml"
-                        }
-                      }
-                    },
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "AWS": "arn:aws:iam::667621734181:root"
-                      },
-                      "Action": "sts:AssumeRole",
-                      "Condition": {}
-                    }
-                  ]
-                }
-            ManagedPolicyArns:
-                - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
-            RoleName: core-cdt-prod-appsupport
-
-    CoreCdtProdAppUi:
-        Type: AWS::IAM::Role
-        Properties:
-            AssumeRolePolicyDocument: !Sub
-                |
-                {
-                  "Version": "2012-10-17",
-                  "Statement": [
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
-                      },
-                      "Action": "sts:AssumeRoleWithSAML",
-                      "Condition": {
-                        "StringEquals": {
-                          "SAML:aud": "https://signin.aws.amazon.com/saml"
-                        }
-                      }
-                    },
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "AWS": "arn:aws:iam::667621734181:root"
-                      },
-                      "Action": "sts:AssumeRole",
-                      "Condition": {}
-                    }
-                  ]
-                }
-            ManagedPolicyArns:
-                - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
-            RoleName: core-cdt-prod-ui
-
-    CoreCdtProdSre:
-        Type: AWS::IAM::Role
-        Properties:
-            AssumeRolePolicyDocument: !Sub
-                |
-                {
-                  "Version": "2012-10-17",
-                  "Statement": [
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
-                      },
-                      "Action": "sts:AssumeRoleWithSAML",
-                      "Condition": {
-                        "StringEquals": {
-                          "SAML:aud": "https://signin.aws.amazon.com/saml"
-                        }
-                      }
-                    },
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "AWS": "arn:aws:iam::667621734181:root"
-                      },
-                      "Action": "sts:AssumeRole",
-                      "Condition": {}
-                    }
-                  ]
-                }
-            ManagedPolicyArns:
-                - arn:aws:iam::aws:policy/PowerUserAccess
-                - arn:aws:iam::aws:policy/IAMReadOnlyAccess
-            RoleName: core-cdt-prod-sre
-
-    CoreCdtAttendeeJourneyDatomicPeer:
-        Type: AWS::IAM::Role
-        Properties:
-            AssumeRolePolicyDocument: !Sub
-                |
-                {
-                  "Version": "2012-10-17",
-                  "Statement": [
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
-                      },
-                      "Action": "sts:AssumeRoleWithSAML",
-                      "Condition": {
-                        "StringEquals": {
-                          "SAML:aud": "https://signin.aws.amazon.com/saml"
-                        }
-                      }
-                    },
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "AWS": "arn:aws:iam::667621734181:root"
-                      },
-                      "Action": "sts:AssumeRole",
-                      "Condition": {}
-                    }
-                  ]
-                }
-            RoleName: core-cdt-attendee-journey-datomicpeer
-
-    CoreCdtAttendeeJourneyDatomicTransactor:
-        Type: AWS::IAM::Role
-        Properties:
-            AssumeRolePolicyDocument: !Sub
-                |
-                {
-                  "Version": "2012-10-17",
-                  "Statement": [
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
-                      },
-                      "Action": "sts:AssumeRoleWithSAML",
-                      "Condition": {
-                        "StringEquals": {
-                          "SAML:aud": "https://signin.aws.amazon.com/saml"
-                        }
-                      }
-                    },
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "AWS": "arn:aws:iam::667621734181:root"
-                      },
-                      "Action": "sts:AssumeRole",
-                      "Condition": {}
-                    }
-                  ]
-                }
-            RoleName: core-cdt-attendee-journey-datomictransactor
-
-# Define Custom Policies
-    DatomicPeerPolicy1:
-        Type: AWS::IAM::Policy
-        Properties:
-            PolicyDocument: !Sub
-                |
-                {
-                  "Version": "2012-10-17",
-                  "Statement": [
-                    {
-                      "Effect": "Allow",
-                      "Action": [
-                          "dynamodb:GetItem",
-                          "dynamodb:BatchGetItem",
-                          "dynamodb:Scan",
-                          "dynamodb:Query"
-                      ],
-                      "Resource": "arn:aws:dynamodb:*:${AWS::AccountId}:table/core-cdt-prod-attendee-journey-ephemera-P2-production-eu-west-1"
-                    }
-                  ]
-                }
-            PolicyName: attendee-journey-ephemera-P2-peer
-            Roles:
-                -
-                    Ref: "CoreCdtAttendeeJourneyDatomicPeer"
-
-    DatomicPeerPolicy2:
-        Type: AWS::IAM::Policy
-        Properties:
-            PolicyDocument: !Sub
-                |
-                {
-                  "Version": "2012-10-17",
-                  "Statement": [
-                    {
-                      "Effect": "Allow",
-                      "Action": [
-                          "dynamodb:GetItem",
-                          "dynamodb:BatchGetItem",
-                          "dynamodb:Scan",
-                          "dynamodb:Query"
-                      ],
-                      "Resource": "arn:aws:dynamodb:*:${AWS::AccountId}:table/core-cdt-prod-attendee-journey-kenoma-P2-production-eu-west-1"
-                    }
-                  ]
-                }
-            PolicyName: attendee-journey-kenoma-P2-peer
-            Roles:
-                -
-                    Ref: "CoreCdtAttendeeJourneyDatomicPeer"
-
-    DatomicTransactorPolicy1:
-        Type: AWS::IAM::Policy
-        Properties:
-            PolicyDocument: !Sub
-                |
-                {
-                  "Version": "2012-10-17",
-                  "Statement": [
-                      {
-                          "Effect": "Allow",
-                          "Action": [
-                              "dynamodb:*"
-                          ],
-                          "Resource": [
-                              "arn:aws:dynamodb:*:${AWS::AccountId}:table/core-cdt-prod-attendee-journey-ephemera-P2-production-eu-west-1",
-                              "arn:aws:dynamodb:*:${AWS::AccountId}:table/core-cdt-prod-attendee-journey-kenoma-P2-production-eu-west-1"
-                          ]
-                      },
-                      {
-                          "Effect": "Allow",
-                          "Action": [
-                              "cloudwatch:PutMetricData",
-                              "cloudwatch:PutMetricDataBatch"
-                          ],
-                          "Resource": "*",
-                          "Condition": {
-                              "Bool": {
-                                  "aws:SecureTransport": "true"
-                              }
-                          }
-                      }
-                  ]
-                }
-            PolicyName: cvent-policy-attendee-journey-datomic
-            Roles:
-                -
-                    Ref: "CoreCdtAttendeeJourneyDatomicTransactor"
-
-    DatomicTransactorPolicy2:
-        Type: AWS::IAM::Policy
-        Properties:
-            PolicyDocument: !Sub
-                |
-                {
-                  "Version": "2012-10-17",
-                  "Statement": [
-                      {
-                          "Effect": "Allow",
-                          "Action": [
-                              "dynamodb:*"
-                          ],
-                          "Resource": "arn:aws:dynamodb:*:${AWS::AccountId}:table/core-cdt-prod-attendee-journey-ephemera-P2-production-eu-west-1"
-                      }
-                  ]
-                }
-            PolicyName: attendee-journey-ephemera-P2-transactor
-            Roles:
-                -
-                    Ref: "CoreCdtAttendeeJourneyDatomicTransactor"
-
-    DatomicTransactorPolicy3:
-        Type: AWS::IAM::Policy
-        Properties:
-            PolicyDocument: !Sub
-                |
-                {
-                  "Version": "2012-10-17",
-                  "Statement": [
-                      {
-                          "Effect": "Allow",
-                          "Action": [
-                              "dynamodb:*"
-                          ],
-                          "Resource": "arn:aws:dynamodb:*:${AWS::AccountId}:table/core-cdt-prod-attendee-journey-kenoma-P2-production-eu-west-1"
-                      }
-                  ]
-                }
-            PolicyName: attendee-journey-kenoma-P2-transactor
-            Roles:
-                -
-                    Ref: "CoreCdtAttendeeJourneyDatomicTransactor"
-
-    DatomicTransactorPolicy4:
-        Type: AWS::IAM::Policy
-        Properties:
-            PolicyDocument: !Sub
-                |
-                {
-                  "Version": "2012-10-17",
-                  "Statement": [
-                      {
-                          "Effect": "Allow",
-                          "Action": [
-                              "cloudwatch:PutMetricData",
-                              "cloudwatch:PutMetricDataBatch"
-                          ],
-                          "Resource": "*",
-                          "Condition": {
-                              "Bool": {
-                                  "aws:SecureTransport": "true"
-                              }
-                          }
-                      }
-                  ]
-                }
-            PolicyName: transactor-metrics
-            Roles:
-                -
-                    Ref: "CoreCdtAttendeeJourneyDatomicTransactor"
-
-    PowerPolicy:
-        Type: AWS::IAM::Policy
-        Properties:
-            PolicyDocument:
-              Version: 2012-10-17
-              Statement:
-                -
-                  Effect: Allow
-                  Action:
-                    - iam:GetRole
-                  Resource: "*"
-            PolicyName:
-              Fn::Join:
-                - "-"
-                -
-                  - !FindInMap [ AccountMap, !Ref "AWS::AccountId", AccountName ]
-                  - power
-            Roles:
-              - !Ref RoleCoreCdtProdPower
-
-    ViewPolicy:
-      Type: AWS::IAM::Policy
-      Properties:
-        PolicyDocument:
-          Version: 2012-10-17
-          Statement:
-            -
-              Effect: Allow
-              Action:
-                - elasticloadbalancing:DescribeInstanceHealth
-              Resource: "*"
-        PolicyName:
-              Fn::Join:
-                - "-"
-                -
-                  - !FindInMap [ AccountMap, !Ref "AWS::AccountId", AccountName ]
-                  - View
-        Roles:
-          - !Ref RoleCoreCdtProdView
-
-    CventDbaPolicy:
-        Type: AWS::IAM::Policy
-        Properties:
-          PolicyName: core-cdt-prod-dba
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-            - Sid: CoreCbProdDbaPolicy
-              Action:
-                - rds:ModifyDBInstance
-                - es:DescribeReservedElasticsearchInstances
-              Effect: Allow
-              Resource: "*"
-          Roles:
-              - Ref: "RoleCoreCdtProdDba"
+  CventDbaPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: core-cdt-prod-dba
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: CoreCbProdDbaPolicy
+            Action:
+              - rds:ModifyDBInstance
+              - es:DescribeReservedElasticsearchInstances
+            Effect: Allow
+            Resource: "*"
+      Roles:
+        - Ref: "RoleCoreCdtProdDba"

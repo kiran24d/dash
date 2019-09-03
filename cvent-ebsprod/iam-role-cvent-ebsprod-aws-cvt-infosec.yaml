@@ -1,13 +1,14 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: Creates infosec role
 
 Parameters:
 
-    AccountName:
-        Type: String
-        Description: Name of the account this has been deployed on
+  AccountName:
+    Type: String
+    Description: Name of the account this has been deployed on
 
-Resources: 
+Resources:
 
   AwsCvtInfosec:
     Type: AWS::IAM::Role
@@ -15,143 +16,140 @@ Resources:
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
-            - Effect: Allow
-              Principal:
-                Federated: !Sub arn:aws:iam::${AWS::AccountId}:saml-provider/cvent-ebsprod-sso-okta
-              Action: sts:AssumeRoleWithSAML
-              Condition:
-                StringEquals:
-                  SAML:aud: https://signin.aws.amazon.com/saml
-            - Effect: Allow
-              Principal:
-                AWS: arn:aws:iam::667621734181:root
-              Action: sts:AssumeRole
-              Condition: {}
+          - Effect: Allow
+            Principal:
+              Federated: !Sub arn:aws:iam::${AWS::AccountId}:saml-provider/cvent-ebsprod-sso-okta
+            Action: sts:AssumeRoleWithSAML
+            Condition:
+              StringEquals:
+                SAML:aud: https://signin.aws.amazon.com/saml
+          - Effect: Allow
+            Principal:
+              AWS: arn:aws:iam::667621734181:root
+            Action: sts:AssumeRole
+            Condition: {}
       ManagedPolicyArns:
-          - arn:aws:iam::aws:policy/ReadOnlyAccess
-          - arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
+        - arn:aws:iam::aws:policy/ReadOnlyAccess
+        - arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
       RoleName: aws-cvt-infosec
 
   AwsCvtInfosecPolicy:
     Type: AWS::IAM::Policy
-    Properties: 
+    Properties:
       PolicyName:
         Fn::Join:
           - "-"
-          -
-            - !Ref AccountName
+          - - !Ref AccountName
             - infosec
-      Roles: 
+      Roles:
         - !Ref AwsCvtInfosec
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
-        - 
-          Effect: Allow
-          Action:
-            - apigateway:Get*
-            - artifact:*
-            - athena:*
-            - acm:*
-            - acm-pca:List*
-            - acm-pca:Describe*
-            - acm-pca:List*
-            - cloudfront:Get*
-            - cloudfront:List*
-            - cloudhsm:Describe*
-            - cloudhsm:Get*
-            - cloudhsm:List*
-            - cloudtrail:*
-            - cloudwatch:*
-            - events:*
-            - logs:*
-            - cognito-identity:*
-            - cognito-sync:*
-            - cognito-idp:*
-            - config:*
-            - ds:*
-            - ec2:Describe*
-            - ec2:Get*
-            - ec2:Search
-            - autoscaling:Describe*
-            - ec2messages:Get*
-            - ecr:Batch*
-            - ecr:Get*
-            - ecr:Describe*
-            - ecr:List*
-            - ecs:Describe*
-            - ecs:List*
-            - es:*
-            - firehose:*
-            - fms:*
-            - guardduty:*
-            - iam:Generate*
-            - iam:Get*
-            - iam:List*
-            - iam:Simulate*
-            - inspector:*
-            - kinesis:*
-            - kinesisanalytics:*
-            - kms:*
-            - lambda:*
-            - macie:*
-            - organizations:*
-            - ram:*
-            - route53:Get*
-            - route53:List*
-            - route53:Test*
-            - route53resolver:Get*
-            - route53resolver:List*
-            - route53domains:Check*
-            - route53domains:Get*
-            - route53domains:List*
-            - s3:Get*
-            - s3:Head*
-            - s3:List*
-            - s3:Abort*
-            - s3:Create*
-            - s3:Delete*
-            - s3:Put*
-            - s3:Replicate*
-            - s3:Restore*
-            - secretsmanager:*
-            - securityhub:*
-            - ses:Describe*
-            - ses:Get*
-            - ses:List*
-            - ses:Verify*
-            - sqs:Get*
-            - sqs:List*
-            - sqs:Receive*
-            - ssmmessages:*
-            - sso:*
-            - sso-directory:*
-            - ssm:Get*
-            - ssm:Describe*
-            - ssm:List*
-            - ssm:PutConfigurePackageResult
-            - support:*
-            - waf:*
-            - waf-regional:*
-          Resource: "*"
-        - Effect: Allow
-          Action:
-            - iam:CreateServiceLinkedRole
-          Resource: "*"
-          Condition:
-            StringLike:
-                iam:AWSServiceName: securityhub.amazonaws.com 
-        - Effect: Allow
-          Action:
-            - s3:GetObjectVersionTorrent
-            - s3:GetObjectAcl
-            - s3:GetObject
-            - s3:GetObjectTorrent
-            - s3:GetObjectVersionTagging
-            - s3:GetObjectVersionAcl
-            - s3:GetObjectTagging
-            - s3:GetObjectVersionForReplication
-            - s3:GetObjectVersion
-            - s3:ListMultipartUploadParts
-          Resource: arn:aws:s3:::*/*
-          
+          - Effect: Allow
+            Action:
+              - apigateway:Get*
+              - artifact:*
+              - athena:*
+              - acm:*
+              - acm-pca:List*
+              - acm-pca:Describe*
+              - acm-pca:List*
+              - cloudfront:Get*
+              - cloudfront:List*
+              - cloudhsm:Describe*
+              - cloudhsm:Get*
+              - cloudhsm:List*
+              - cloudtrail:*
+              - cloudwatch:*
+              - events:*
+              - logs:*
+              - cognito-identity:*
+              - cognito-sync:*
+              - cognito-idp:*
+              - config:*
+              - ds:*
+              - ec2:Describe*
+              - ec2:Get*
+              - ec2:Search
+              - autoscaling:Describe*
+              - ec2messages:Get*
+              - ecr:Batch*
+              - ecr:Get*
+              - ecr:Describe*
+              - ecr:List*
+              - ecs:Describe*
+              - ecs:List*
+              - es:*
+              - firehose:*
+              - fms:*
+              - guardduty:*
+              - iam:Generate*
+              - iam:Get*
+              - iam:List*
+              - iam:Simulate*
+              - inspector:*
+              - kinesis:*
+              - kinesisanalytics:*
+              - kms:*
+              - lambda:*
+              - macie:*
+              - organizations:*
+              - ram:*
+              - route53:Get*
+              - route53:List*
+              - route53:Test*
+              - route53resolver:Get*
+              - route53resolver:List*
+              - route53domains:Check*
+              - route53domains:Get*
+              - route53domains:List*
+              - s3:Get*
+              - s3:Head*
+              - s3:List*
+              - s3:Abort*
+              - s3:Create*
+              - s3:Delete*
+              - s3:Put*
+              - s3:Replicate*
+              - s3:Restore*
+              - secretsmanager:*
+              - securityhub:*
+              - ses:Describe*
+              - ses:Get*
+              - ses:List*
+              - ses:Verify*
+              - sqs:Get*
+              - sqs:List*
+              - sqs:Receive*
+              - ssmmessages:*
+              - sso:*
+              - sso-directory:*
+              - ssm:Get*
+              - ssm:Describe*
+              - ssm:List*
+              - ssm:PutConfigurePackageResult
+              - support:*
+              - waf:*
+              - waf-regional:*
+            Resource: "*"
+          - Effect: Allow
+            Action:
+              - iam:CreateServiceLinkedRole
+            Resource: "*"
+            Condition:
+              StringLike:
+                iam:AWSServiceName: securityhub.amazonaws.com
+          - Effect: Allow
+            Action:
+              - s3:GetObjectVersionTorrent
+              - s3:GetObjectAcl
+              - s3:GetObject
+              - s3:GetObjectTorrent
+              - s3:GetObjectVersionTagging
+              - s3:GetObjectVersionAcl
+              - s3:GetObjectTagging
+              - s3:GetObjectVersionForReplication
+              - s3:GetObjectVersion
+              - s3:ListMultipartUploadParts
+            Resource: arn:aws:s3:::*/*

@@ -1,0 +1,19 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: Create base IAM roles
+
+Resources:
+
+  DataEngRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: glue.amazonaws.com
+          Action: sts:AssumeRole
+      RoleName: core-fnd-prod-dataengineering-glue
+      ManagedPolicyArns: 
+      - arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole

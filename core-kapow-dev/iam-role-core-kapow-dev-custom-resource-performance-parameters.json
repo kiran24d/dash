@@ -1,0 +1,10 @@
+[
+    {
+        "ParameterKey": "OriginS3Bucket",
+        "ParameterValue": "xb-assets-nonprod"
+    },
+    {
+      "ParameterKey": "UIDestPrefix",
+      "ParameterValue": "serverless-image-handler-ui/"
+    }
+]
