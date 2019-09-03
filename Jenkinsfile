@@ -242,10 +242,9 @@ pipeline {
                         parameters: [
                             string(name: 'wf_requester', value: user_email.split('@')[0].toLowerCase()),
                             string(name: 'wf_ticket_number', value: ''),
-                            string(name: 'wf_created_for', value: 'Cloud Automation'),
-                            string(name: 'wf_business_service', value: 'Management Services'),
-                            string(name: 'wf_technical_service', value: 'IAM'),
-                            string(name: 'wf_market', value: 'all'),
+                            string(name: 'wf_pod', value: 'not-applicable'),
+                            string(name: 'wf_cloud', value: ''),
+                            string(name: 'wf_business_unit', value: 'Security'),
                             string(name: 'wf_product', value: 'infrastructure'),
                             string(name: 'wf_icr_branch_name', value: 'master'),
                             string(name: 'wf_repository_name', value: 'iam'),
