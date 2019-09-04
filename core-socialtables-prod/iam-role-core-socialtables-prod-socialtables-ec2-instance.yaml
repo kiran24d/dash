@@ -13,6 +13,7 @@ Resources:
     CoreSocialtablesProdSocialtablesEc2InstanceRole:
         Type: AWS::IAM::Role
         Properties:
+            RoleName: core-socialtables-prod-socialtables-ec2-instance
             AssumeRolePolicyDocument:
                 Version: "2012-10-17"
                 Statement:
