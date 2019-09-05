@@ -1,0 +1,52 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: ICR-3251, Create IAM role for Kapow Firehose Delivery
+
+Resources:
+
+  KpwFirehoseDeliveryRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: firehose.amazonaws.com
+            Action: sts:AssumeRole
+            Condition:
+              StringEquals:
+                sts:ExternalId: 449196748993
+      RoleName: core-kapow-dev-kpw-firehose-delivery
+
+  KpwFirehoseDeliveryPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: core-kapow-dev-kpw-firehose-delivery-policy
+      Roles:
+        - !Ref KpwFirehoseDeliveryRole
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - s3:AbortMultipartUpload
+              - s3:GetBucketLocation
+              - s3:GetObject
+              - s3:ListBucket
+              - s3:ListBucketMultipartUploads
+              - s3:PutObject
+              - s3:PutObjectAcl
+            Resource:
+              - arn:aws:s3:::core-kapow-dev-redshift-nonprod-us-east-1
+              - arn:aws:s3:::core-kapow-dev-redshift-nonprod-us-east-1/*
+          - Effect: Allow
+            Action:
+              - logs:PutLogEvents
+            Resource:
+              - arn:aws:logs:us-east-1:449196748993:log-group:/aws/kinesisfirehose/firehose_impressions_perf:log-stream:RedshiftDelivery
+              - arn:aws:logs:us-east-1:449196748993:log-group:/aws/kinesisfirehose/firehose_impressions_perf:log-stream:S3Delivery
+              - arn:aws:logs:us-east-1:449196748993:log-group:/aws/kinesisfirehose/firehose_impressions_qa:log-stream:RedshiftDelivery
+              - arn:aws:logs:us-east-1:449196748993:log-group:/aws/kinesisfirehose/firehose_impressions_qa:log-stream:S3Delivery
+              - arn:aws:logs:us-east-1:449196748993:log-group:/aws/kinesisfirehose/firehose_impressions_staging:log-stream:RedshiftDelivery
+              - arn:aws:logs:us-east-1:449196748993:log-group:/aws/kinesisfirehose/firehose_impressions_staging:log-stream:S3Delivery
