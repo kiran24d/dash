@@ -1,6 +1,6 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Create an IAM service user for Social Tables for 3rd party CI integration with ECR
+Description: Create an IAM service user for Social Tables for Terraform
 
 Parameters:
   Name:
