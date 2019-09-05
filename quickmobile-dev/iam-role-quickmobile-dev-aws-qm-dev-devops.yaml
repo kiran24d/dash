@@ -85,9 +85,4 @@ Resources:
             Resource: "*"
           - Effect: Allow
             Action: "*"
-          - Effect: Allow
-            Action:
-              - iam:ListInstanceProfiles
-              - iam:ListPolicies
-              - iam:ListRolePolicies
             Resource: "*"

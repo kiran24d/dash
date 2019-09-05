@@ -35,9 +35,6 @@ Resources:
         Statement:
           - Effect: Deny
             Action:
-              - iam:ListInstanceProfiles
-              - iam:ListPolicies
-              - iam:ListRolePolicies
               - iam:AddUserToGroup
               - iam:AttachGroupPolicy
               - iam:AttachRolePolicy
@@ -88,3 +85,4 @@ Resources:
             Resource: "*"
           - Effect: Allow
             Action: "*"
+            Resource: "*"
