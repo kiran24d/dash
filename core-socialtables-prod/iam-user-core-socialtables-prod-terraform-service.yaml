@@ -18,6 +18,7 @@ Resources:
   CoreSocialtablesProdTerraformServicePolicy:
     Type: AWS::IAM::ManagedPolicy
     Properties:
+      ManagedPolicyName: iam-user-core-socialtables-prod-terraform-service
       Description: Policy to be attached to the mostly-admin IAM terraform user
       Users:
         - !Ref CoreSocialtablesProdTerraformServiceUser
