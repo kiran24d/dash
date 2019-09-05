@@ -16,9 +16,9 @@ Resources:
         - arn:aws:iam::aws:policy/PowerUserAccess  # This includes IAM write restrictions
 
   CoreSocialtablesProdTerraformServicePolicy:
-    Type: AWS::IAM::Policy
+    Type: AWS::IAM::ManagedPolicy
     Properties:
-      PolicyName: iam-user-core-socialtables-prod-terraform-service
+      Description: Policy to be attached to the mostly-admin IAM terraform user
       Users:
         - !Ref CoreSocialtablesProdTerraformServiceUser
       PolicyDocument:
