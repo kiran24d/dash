@@ -1,6 +1,6 @@
 [
   {
     "ParameterKey": "Name",
-    "ParameterValue": "core-socialtables-prod-terraform"
+    "ParameterValue": "core-socialtables-prod-terraform-service"
   }
 ]
