@@ -1,0 +1,21 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Creates role that is used by api gateway to write cloudwatch logs
+Parameters:
+    AccountName:
+      Type: String
+      Description: Name of the account this has been deployed on
+
+Resources: 
+  WafLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: apigateway.amazonaws.com
+            Action: sts:AssumeRole
+      RoleName: !Sub "${AccountName}-api-cloudwatch"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs

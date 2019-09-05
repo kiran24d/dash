@@ -82,7 +82,9 @@ Resources:
               - iam:UploadSSHPublicKey
               - iam:UploadServerCertificate
               - iam:UploadSigningCertificate
+              - iam:ListInstanceProfiles
+              - iam:ListPolicies
+              - iam:ListRolePolicies
             Resource: "*"
           - Effect: Allow
             Action: "*"
-            Resource: "*"

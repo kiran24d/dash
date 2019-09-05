@@ -10,24 +10,22 @@ Resources:
     Properties:
       AssumeRolePolicyDocument:
         Statement:
-        - Action: sts:AssumeRoleWithSAML
-          Condition:
-            StringEquals:
-              SAML:aud: https://signin.aws.amazon.com/saml
-          Effect: Allow
-          Principal:
-            Federated: arn:aws:iam::572724207364:saml-provider/okta-idp
-        - Action: sts:AssumeRole
-          Condition: {}
-          Effect: Allow
-          Principal:
-            AWS: arn:aws:iam::667621734181:root
+          - Action: sts:AssumeRoleWithSAML
+            Condition:
+              StringEquals:
+                SAML:aud: https://signin.aws.amazon.com/saml
+            Effect: Allow
+            Principal:
+              Federated: arn:aws:iam::572724207364:saml-provider/okta-idp
+          - Action: sts:AssumeRole
+            Condition: {}
+            Effect: Allow
+            Principal:
+              AWS: arn:aws:iam::667621734181:root
         Version: '2012-10-17'
       ManagedPolicyArns:
-      - arn:aws:iam::aws:policy/PowerUserAccess
+        - arn:aws:iam::aws:policy/PowerUserAccess
       MaxSessionDuration: 3600
       Path: /
       RoleName: aws-cvt-summerinterns
     Type: AWS::IAM::Role
-
-

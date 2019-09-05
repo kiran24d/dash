@@ -19,7 +19,7 @@ Resources:
           - '-'
           - - !Ref AccountName
             - informatica-redshift
-      Policies: 
+      Policies:
         - PolicyName:
             Fn::Join:
               - '-'

@@ -1,7 +1,13 @@
+<<<<<<< HEAD
+---
+=======
+>>>>>>> d54bb49605bc7b745256b5c569c9dbc0f16ca5f5
 AWSTemplateFormatVersion: '2010-09-09'
 Description: create IAM users for Kapow applications to read/write to S3
 Metadata: {}
 
+<<<<<<< HEAD
+=======
 Mappings:
 
   AccountMap:
@@ -42,6 +48,7 @@ Mappings:
     '449196748993':
       AccountName: core-kapow-dev
 
+>>>>>>> d54bb49605bc7b745256b5c569c9dbc0f16ca5f5
 Resources:
 
   CoreKapowDevS3Cp:

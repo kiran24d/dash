@@ -42,13 +42,16 @@ Resources:
             Action:
               - ec2:Describe*
               - elasticloadbalancing:Describe*
+              - elasticloadbalancing:DeregisterTargets
+              - elasticloadbalancing:RegisterTargets
+              - elasticloadbalancing:Describe*
               - autoscaling:Describe*
               - autoscaling:SuspendProcesses
               - autoscaling:ResumeProcesses
               - cloudwatch:Describe*
               - cloudwatch:List*
               - cloudwatch:Get*
-              - s3:Get* 
+              - s3:Get*
               - s3:List*
               - sns:Get*
               - sns:List*
@@ -58,6 +61,7 @@ Resources:
               - cloudformation:List*
               - cloudformation:Validate*
               - cloudformation:Estimate*
+              - cloudformation:UpdateStack
               - elasticbeanstalk:Describe*
               - elasticbeanstalk:List*
               - elasticbeanstalk:Check*

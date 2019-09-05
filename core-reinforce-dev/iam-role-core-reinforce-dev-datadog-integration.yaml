@@ -1,31 +1,32 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: Create the DatadogAWSIntegration Role
 
 Resources:
 
-    DatadogAWSIntegrationRole:
-        Type: AWS::IAM::Role
-        Properties:
-          AssumeRolePolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-            - Effect: Allow
-              Principal:
-                AWS: arn:aws:iam::464622532012:root
-              Action: sts:AssumeRole
-              Condition:
-                StringEquals:
-                  sts:ExternalId: f3d969eecc6e401c95f7d8859d69ab83
-          RoleName: core-reinforce-dev-datadog-integration
+  DatadogAWSIntegrationRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: arn:aws:iam::464622532012:root
+            Action: sts:AssumeRole
+            Condition:
+              StringEquals:
+                sts:ExternalId: f3d969eecc6e401c95f7d8859d69ab83
+      RoleName: core-reinforce-dev-datadog-integration
 
-    DatadogAWSIntegrationRolePolicy:
-        Type: AWS::IAM::Policy
-        Properties:
-          PolicyName: core-reinforced-dev-datadog-integration
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-            - Action:
+  DatadogAWSIntegrationRolePolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: core-reinforced-dev-datadog-integration
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Action:
               - autoscaling:Describe*
               - budgets:ViewBudget
               - cloudfront:GetDistributionConfig
@@ -88,8 +89,7 @@ Resources:
               - tag:GetResources
               - tag:GetTagKeys
               - tag:GetTagValues
-              Effect: Allow
-              Resource: "*"
-          Roles:
-                -
-                  !Ref DatadogAWSIntegrationRole
+            Effect: Allow
+            Resource: "*"
+      Roles:
+        - !Ref DatadogAWSIntegrationRole

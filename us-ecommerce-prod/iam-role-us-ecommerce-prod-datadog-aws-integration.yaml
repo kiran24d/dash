@@ -1,9 +1,10 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: Datadog and AWS integration IAM role
 
 Parameters:
     ExternalId:
-        Description: The external ID of the Datadog integration 
+        Description: The external ID of the Datadog integration
         Type: String
 
     RoleName:

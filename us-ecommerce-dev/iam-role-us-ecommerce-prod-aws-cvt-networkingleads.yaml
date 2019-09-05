@@ -1,13 +1,15 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: Create base IAM roles
+
 Resources:
 
-    NetworkingLeadsRole:
-      Type: AWS::IAM::Role
-      Properties:
-        AssumeRolePolicyDocument:
-          Version: '2012-10-17'
-          Statement:
+  NetworkingLeadsRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
           - Effect: Allow
             Principal:
               Federated: !Sub arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso-new
@@ -20,54 +22,54 @@ Resources:
               AWS: arn:aws:iam::667621734181:root
             Action: sts:AssumeRole
             Condition: {}
-        RoleName: aws-cvt-networkingleads
+      RoleName: aws-cvt-networkingleads
 
-    NetworkingLeadsPolicy:
-        Type: AWS::IAM::Policy
-        Properties:
-          PolicyName: aws-cvt-networkingleads
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Action:
-                  - iam:AddUserToGroup
-                  - iam:CreateAccessKey
-                  - iam:CreateGroup
-                  - iam:CreateSAMLProvider
-                  - iam:CreateUser
-                  - iam:CreateVirtualMFADevice
-                  - iam:DeactivateMFADevice
-                  - iam:DeleteAccessKey
-                  - iam:DeleteAccountAlias
-                  - iam:DeleteAccountPasswordPolicy
-                  - iam:DeleteGroup
-                  - iam:DeleteGroupPolicy
-                  - iam:DeletePolicy
-                  - iam:DeletePolicyVersion
-                  - iam:DeleteRole
-                  - iam:DeleteRolePolicy
-                  - iam:DeleteSAMLProvider
-                  - iam:DeleteSSHPublicKey
-                  - iam:DeleteUser
-                  - iam:DeleteUserPolicy
-                  - iam:DeleteVirtualMFADevice
-                  - iam:EnableMFADevice
-                  - iam:RemoveUserFromGroup
-                  - iam:UpdateGroup
-                  - iam:UpdateLoginProfile
-                  - iam:UpdateOpenIDConnectProviderThumbprint
-                  - iam:UpdateSAMLProvider
-                  - iam:UpdateSSHPublicKey
-                  - iam:UpdateServerCertificate
-                  - iam:UpdateSigningCertificate
-                  - iam:UpdateUser
-                  - iam:UploadSSHPublicKey
-                  - iam:UploadServerCertificate
-                  - iam:UploadSigningCertificate
-                Effect: Deny
-                Resource: "*"
-              - Effect: Allow
-                Action: "*"
-                Resource: "*"
-          Roles:
-              - Ref: NetworkingLeadsRole
+  NetworkingLeadsPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: aws-cvt-networkingleads
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Action:
+              - iam:AddUserToGroup
+              - iam:CreateAccessKey
+              - iam:CreateGroup
+              - iam:CreateSAMLProvider
+              - iam:CreateUser
+              - iam:CreateVirtualMFADevice
+              - iam:DeactivateMFADevice
+              - iam:DeleteAccessKey
+              - iam:DeleteAccountAlias
+              - iam:DeleteAccountPasswordPolicy
+              - iam:DeleteGroup
+              - iam:DeleteGroupPolicy
+              - iam:DeletePolicy
+              - iam:DeletePolicyVersion
+              - iam:DeleteRole
+              - iam:DeleteRolePolicy
+              - iam:DeleteSAMLProvider
+              - iam:DeleteSSHPublicKey
+              - iam:DeleteUser
+              - iam:DeleteUserPolicy
+              - iam:DeleteVirtualMFADevice
+              - iam:EnableMFADevice
+              - iam:RemoveUserFromGroup
+              - iam:UpdateGroup
+              - iam:UpdateLoginProfile
+              - iam:UpdateOpenIDConnectProviderThumbprint
+              - iam:UpdateSAMLProvider
+              - iam:UpdateSSHPublicKey
+              - iam:UpdateServerCertificate
+              - iam:UpdateSigningCertificate
+              - iam:UpdateUser
+              - iam:UploadSSHPublicKey
+              - iam:UploadServerCertificate
+              - iam:UploadSigningCertificate
+            Effect: Deny
+            Resource: "*"
+          - Effect: Allow
+            Action: "*"
+            Resource: "*"
+      Roles:
+        - Ref: NetworkingLeadsRole

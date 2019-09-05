@@ -1,9 +1,9 @@
 ---
 AWSTemplateFormatVersion: 2010-09-09
 Description: Lambda Default Role
- 
+
 Resources:
- 
+
   LambdaDefaultRole:
     Type: AWS::IAM::Role
     Properties:
@@ -33,9 +33,15 @@ Resources:
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
-        - Effect: Allow
-          Action:
-            - datapipeline:*
-          Resource: "*"
-      Roles: 
+          - Effect: Allow
+            Action:
+              - datapipeline:*
+            Resource: "*"
+          - Effect: Allow
+            Action:
+              - iam:PassRole
+            Resource:
+              - arn:aws:iam::668679206736:role/wedding-spot-datapipeline-datadev
+              - arn:aws:iam::668679206736:role/wedding-spot-datapipeline-resource-datadev
+      Roles:
         - !Ref LambdaDefaultRole

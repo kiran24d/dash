@@ -23,7 +23,7 @@ Resources:
     Type: AWS::IAM::Policy
     Properties:
       PolicyName: aws-cvt-datadevs-assumption
-      Roles: 
+      Roles:
         - !Ref AwsCvtDatadevs
       PolicyDocument:
         Version: '2012-10-17'
@@ -32,5 +32,4 @@ Resources:
             Action:
               - sts:AssumeRole
             Resource:
-              # role in the wedding spot account
               - arn:aws:iam::668679206736:role/aws-cvt-datadevs

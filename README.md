@@ -1,7 +1,7 @@
 # IAM
 
 This is the source repository for all of Cvent's CloudFormation IAM templates and the entry point for automation for accounts supported by ICR. Instructions on how to create and update IAM CloudFormation templates can be found 
-[here](https://wiki.cvent.com/pages/viewpage.action?pageId=176355858). 
+[here](https://wiki.cvent.com/pages/viewpage.action?pageId=176355858).
 
 
 # Workflow
@@ -24,4 +24,3 @@ Once the build has passed and the PR has been approved, it can be merged into ma
 ### Cloud Automation
 
 Their wiki space can be found [here](https://wiki.cvent.com/pages/viewpage.action?pageId=50961668)
-

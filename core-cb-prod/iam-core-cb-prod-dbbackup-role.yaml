@@ -1,17 +1,16 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: Create IAM role for db backups
 
 Resources:
 
-  # Roles
   CoreCbProdDbbackup:
     Type: AWS::IAM::Role
     Properties:
-        AssumeRolePolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              -
-                Effect: Allow
-                Principal: { "AWS": "arn:aws:iam::594924633499:user/iam-core-cb-prod-dbbackup-user" }
-                Action: sts:AssumeRole
-        RoleName: core-cb-prod-dbbackup
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: {"AWS": "arn:aws:iam::594924633499:user/iam-core-cb-prod-dbbackup-user"}
+            Action: sts:AssumeRole
+      RoleName: core-cb-prod-dbbackup

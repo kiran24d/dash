@@ -1,0 +1,130 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Creates role that is used for WAF modifying lambdas
+Parameters:
+    AccountName:
+      Type: String
+      Description: Name of the account this has been deployed on
+
+Resources: 
+  WafLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      RoleName: !Sub "${AccountName}-waf-lambda"
+
+  WafLambdaRolePolicy:
+    Type: AWS::IAM::Policy
+    Properties: 
+      PolicyName: !Sub "${AccountName}-waf-integration"
+      Roles: 
+        - !Ref WafLambdaRole
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+            - cloudformation:DescribeAccountLimits
+            - cloudformation:EstimateTemplateCost
+            - cloudformation:GetTemplateSummary
+            - cloudformation:ListExports
+            - cloudformation:ListImports
+            - cloudformation:ListStacks
+            - cloudwatch:DescribeAlarmHistory
+            - cloudwatch:DescribeAlarms
+            - cloudwatch:DescribeAlarmsForMetric
+            - cloudwatch:GetDashboard
+            - cloudwatch:GetMetricData
+            - cloudwatch:GetMetricStatistics
+            - cloudwatch:GetMetricWidgetImage
+            - cloudwatch:ListDashboards
+            - cloudwatch:ListMetrics
+            - logs:CreateLogGroup
+            - logs:DescribeDestinations
+            - logs:DescribeExportTasks
+            - logs:DescribeResourcePolicies
+            - logs:TestMetricFilter
+            - waf:GetChangeToken
+            - waf:GetChangeTokenStatus
+            - waf:ListActivatedRulesInRuleGroup
+            - waf:ListByteMatchSets
+            - waf:ListGeoMatchSets
+            - waf:ListIPSets
+            - waf:ListRateBasedRules
+            - waf:ListRegexMatchSets
+            - waf:ListRegexPatternSets
+            - waf:ListRuleGroups
+            - waf:ListRules
+            - waf:ListSizeConstraintSets
+            - waf:ListSqlInjectionMatchSets
+            - waf:ListSubscribedRuleGroups
+            - waf:ListWebACLs
+            - waf:ListXssMatchSets
+          Resource: "*"
+        - Effect: Allow
+          Action:
+            - cloudformation:DescribeChangeSet
+            - cloudformation:DescribeStackEvents
+            - cloudformation:DescribeStackInstance
+            - cloudformation:DescribeStackResource
+            - cloudformation:DescribeStackResources
+            - cloudformation:DescribeStackSet
+            - cloudformation:DescribeStackSetOperation
+            - cloudformation:DescribeStacks
+            - cloudformation:GetStackPolicy
+            - cloudformation:GetTemplate
+            - cloudformation:ListChangeSets
+            - cloudformation:ListStackInstances
+            - cloudformation:ListStackResources
+            - cloudformation:ListStackSetOperationResults
+            - cloudformation:ListStackSetOperations
+            - cloudformation:ListStackSets
+            - logs:GetLogEvents
+            - waf:GetByteMatchSet
+            - waf:GetGeoMatchSet
+            - waf:GetIPSet
+            - waf:GetPermissionPolicy
+            - waf:GetRateBasedRule
+            - waf:GetRateBasedRuleManagedKeys
+            - waf:GetRegexMatchSet
+            - waf:GetRegexPatternSet
+            - waf:GetRule
+            - waf:GetRuleGroup
+            - waf:GetSampledRequests
+            - waf:GetSizeConstraintSet
+            - waf:GetSqlInjectionMatchSet
+            - waf:GetWebACL
+            - waf:GetXssMatchSet
+            - waf:UpdateIPSet
+          Resource:
+            - "arn:aws:cloudformation:*:*:stack/*/*"
+            - "arn:aws:cloudformation:*:*:stackset/*:*"
+            - "arn:aws:logs:*:*:log-group:*:*:*"
+            - "arn:aws:waf::*:bytematchset/*"
+            - "arn:aws:waf::*:geomatchset/*"
+            - "arn:aws:waf::*:ipset/*"
+            - "arn:aws:waf::*:ratebasedrule/*"
+            - "arn:aws:waf::*:regexmatch/*"
+            - "arn:aws:waf::*:regexpatternset/*"
+            - "arn:aws:waf::*:rule/*"
+            - "arn:aws:waf::*:rulegroup/*"
+            - "arn:aws:waf::*:sizeconstraintset/*"
+            - "arn:aws:waf::*:sqlinjectionmatchset/*"
+            - "arn:aws:waf::*:webacl/*"
+            - "arn:aws:waf::*:xssmatchset/*"
+        - Effect: Allow
+          Action:
+            - logs:CreateLogStream
+            - logs:DescribeLogGroups
+            - logs:DescribeLogStreams
+            - logs:DescribeMetricFilters
+            - logs:DescribeSubscriptionFilters
+            - logs:FilterLogEvents
+            - logs:GetLogEvents
+            - logs:ListTagsLogGroup
+          Resource: "arn:aws:logs:*:*:log-group:*"

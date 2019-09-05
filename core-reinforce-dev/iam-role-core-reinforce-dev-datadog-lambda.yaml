@@ -1,39 +1,40 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: Create the DatadogLambdaRole Role
 
 Resources:
 
-    DatadogLambdaRole:
-        Type: AWS::IAM::Role
-        Properties:
-          AssumeRolePolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-            - Effect: Allow
-              Principal:
-                Service: lambda.amazonaws.com
-              Action: sts:AssumeRole
-          RoleName: core-reinforce-dev-datadog-lambda
+  DatadogLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      RoleName: core-reinforce-dev-datadog-lambda
 
-    DatadogLambdaRolePolicy:
-        Type: AWS::IAM::Policy
-        Properties:
-          PolicyName: core-reinforced-dev-datadog-integration
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-            - Effect: Allow
-              Action: logs:CreateLogGroup
-              Resource: !Sub arn:aws:logs:us-east-1:${AWS::AccountId}:*
-            - Effect: Allow
-              Action:
+  DatadogLambdaRolePolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: core-reinforced-dev-datadog-integration
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action: logs:CreateLogGroup
+            Resource: !Sub arn:aws:logs:us-east-1:${AWS::AccountId}:*
+          - Effect: Allow
+            Action:
               - logs:CreateLogStream
               - logs:PutLogEvents
-              Resource:
+            Resource:
               - !Sub arn:aws:logs:us-east-1:${AWS::AccountId}:log-group:/aws/lambda/DatadogLambdaFunction:*
-            - Effect: Allow
-              Action:
+          - Effect: Allow
+            Action:
               - s3:GetObject
-              Resource: arn:aws:s3:::*
-          Roles:
-            - !Ref DatadogLambdaRole
+            Resource: arn:aws:s3:::*
+      Roles:
+        - !Ref DatadogLambdaRole

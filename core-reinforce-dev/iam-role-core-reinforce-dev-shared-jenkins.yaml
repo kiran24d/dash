@@ -1,3 +1,4 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: Create base IAM roles
 
@@ -32,11 +33,9 @@ Mappings:
     # eu-ecommerce-prod
     '380741956730':
       AccountName: eu-ecommerce-prod
-
     # core-reinforce-prod
     '981730702137':
       AccountName: core-reinforce-prod
-
     # core-reinforce-dev
     '219736445914':
       AccountName: core-reinforce-dev
@@ -45,9 +44,9 @@ Resources:
 
   UserCoreReinforceProdSharedJenkins:
     Type: AWS::IAM::User
-    Properties: 
+    Properties:
       Path: /
-      UserName: 
+      UserName:
         Fn::Join:
           - "-"
           - - !FindInMap [AccountMap, !Ref "AWS::AccountId", AccountName]
@@ -60,15 +59,15 @@ Resources:
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
-        - Effect: Allow
-          Principal:
-            AWS:
-              Fn::Join:
-                - ""
-                - - !Sub arn:aws:iam::${AWS::AccountId}:user/
-                  - !FindInMap [AccountMap, !Ref "AWS::AccountId", AccountName]
-                  - -shared-jenkins
-          Action: sts:AssumeRole
+          - Effect: Allow
+            Principal:
+              AWS:
+                Fn::Join:
+                  - ""
+                  - - !Sub arn:aws:iam::${AWS::AccountId}:user/
+                    - !FindInMap [AccountMap, !Ref "AWS::AccountId", AccountName]
+                    - -shared-jenkins
+            Action: sts:AssumeRole
       RoleName:
         Fn::Join:
           - "-"
@@ -79,13 +78,13 @@ Resources:
 
   PolicySharedJenkinsRole:
     Type: AWS::IAM::Policy
-    Properties: 
+    Properties:
       PolicyName:
         Fn::Join:
           - "-"
           - - !FindInMap [AccountMap, !Ref "AWS::AccountId", AccountName]
             - shared-jenkins-policy
-      Roles: 
+      Roles:
         - !Ref RoleCoreReinforceProdSharedJenkins
       PolicyDocument:
         Version: '2012-10-17'
@@ -97,13 +96,13 @@ Resources:
 
   PolicySharedJenkinsUser:
     Type: AWS::IAM::Policy
-    Properties: 
+    Properties:
       PolicyName:
         Fn::Join:
           - "-"
           - - !FindInMap [AccountMap, !Ref "AWS::AccountId", AccountName]
             - shared-jenkins-policy
-      Users: 
+      Users:
         - !Ref UserCoreReinforceProdSharedJenkins
       PolicyDocument:
         Version: '2012-10-17'
