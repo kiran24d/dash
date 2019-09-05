@@ -8,19 +8,19 @@ Parameters:
     Type: String
 
 Resources:
-  User:
+  CoreSocialtablesProdTerraformServiceUser:
     Type: AWS::IAM::User
     Properties:
       UserName: !Ref Name
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/PowerUserAccess  # This includes IAM write restrictions
 
-  ManagedPolicy:
-    Type: AWS::IAM::ManagedPolicy
+  CoreSocialtablesProdTerraformServiceManagedPolicy:
+    Type: AWS::IAM::Policy
     Properties:
       Description: Policy to be attached to the mostly-admin IAM terraform user
       Users:
-        - !Ref User
+        - !Ref CoreSocialtablesProdTerraformServiceUser
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
