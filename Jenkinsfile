@@ -12,10 +12,9 @@ properties([
 ])
 
 pipeline {
-  agent {
-    label 'domain:core.cvent.org && os:linux'
-  }
+  agent none
   options {
+    timeout(time: 5, unit: 'MINUTES')
     ansiColor('xterm')
     timestamps()
   }
@@ -23,6 +22,9 @@ pipeline {
     stage('Build-Initiator') {
         agent {
             label 'domain:core.cvent.org && os:linux'
+        }
+        options {
+            timeout(time: 5, unit: 'MINUTES')
         }
         steps {
           script {
@@ -43,6 +45,9 @@ pipeline {
     stage ('Find changed files') {
         agent {
             label 'domain:core.cvent.org && os:linux'
+        }
+        options {
+            timeout(time: 5, unit: 'MINUTES')
         }
         steps {
           script {
@@ -81,6 +86,9 @@ pipeline {
               args '--entrypoint ""'
             }
           }
+          options {
+            timeout(time: 5, unit: 'MINUTES')
+        }
           steps {
             script {
               def cfn_lint_errors = [:]
@@ -156,6 +164,9 @@ pipeline {
               alwaysPull true
             }
           }
+          options {
+            timeout(time: 5, unit: 'MINUTES')
+          }
           steps {
             script {
                 def yaml_lint_errors = [:]
@@ -211,6 +222,9 @@ pipeline {
       agent {
         label 'domain:core.cvent.org && os:linux'
       }
+      options {
+            timeout(time: 5, unit: 'MINUTES')
+      }
       when { branch 'master' }
       steps {
         script {
@@ -231,13 +245,16 @@ pipeline {
     }
     stage ('Publish'){
         agent {
-            label 'master'
+            node {
+                label 'domain:core.cvent.org && os:linux'
+            }
         }
         when { branch 'master' }
         steps {
           script {
               update_failed_stacks = []
               supported_files.findAll { file -> fileExists(file) && (file.endsWith('.yaml') || file.endsWith('.yml'))}.each {
+                timeout(time: 10, unit: 'MINUTES'){
                   def result = build(job: "aws-update-cloudformation-stack",
                         parameters: [
                             string(name: 'wf_requester', value: user_email.split('@')[0].toLowerCase()),
@@ -267,13 +284,14 @@ pipeline {
                         'BUILD_URL': result.getAbsoluteUrl(),
                         'result': result.getResult()
                     ]
-                  if (result.getResult() != 'Success') {
+                  if (result.getResult() != 'SUCCESS') {
                       update_failed_stacks += update_info
                       log.error "Update stack job failed: ", update_info
                   }
                   else {
                       log.success "Update stack job: ", update_info
                   }
+                }
               }
               if (update_failed_stacks.size() != 0) {
                   log.error "Failed updating all stacks", ['failed_updates': update_failed_stacks]
@@ -379,19 +397,18 @@ pipeline {
           slackMsg += "<${env.BUILD_URL}|Build> to update cloudformation stacks for IAM resources failed in the following steps:\n${errors.join('\n')}"
           slackSend message: slackMsg,
                     color: 'danger',
-                    channel: '#cloud-auto-internal'
+                    channel: '#cloud-auto-alerts'
         }
       }
     }
-    // Commenting this section to avoid too much noise on slack channel
-    // fixed {
-    //   script {
-    //     if (env.BRANCH_NAME == 'master') {
-    //         def slackMsg = "*OPS AWS - IAM Role*\n:white_check_mark::white_check_mark::white_check_mark:\n\n"
-    //         slackMsg += "<${env.BUILD_URL}|Build> to update cloudformation stacks for IAM roles succeeded"
-    //         slackSend message: slackMsg,color: 'good',channel: '#cloud-auto-testing'
-    //     }
-    //   }
-    // }
+    aborted {
+      script {
+        def slackMsg = "*OPS AWS - IAM*\n:interrobang::interrobang::interrobang:\n\n"
+        slackMsg += "<${env.BUILD_URL}|Build> for IAM has aborted prematurely\n"
+        slackSend message: slackMsg,
+                color: 'danger',
+                channel: '#cloud-auto-alerts'
+      }
+    }
   }
 }

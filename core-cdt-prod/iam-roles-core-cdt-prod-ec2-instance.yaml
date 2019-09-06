@@ -1,42 +1,38 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: Create base IAM roles
 
 Resources:
 
-  # Roles
   CoreCdtSharedDba:
     Type: AWS::IAM::Role
     Properties:
-        AssumeRolePolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              -
-                Effect: Allow
-                Principal:
-                  Service: ec2.amazonaws.com
-                Action: sts:AssumeRole
-        RoleName: core-cdt-prod-shared-dba
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      RoleName: core-cdt-prod-shared-dba
 
-  # Instance Profiles
   CoreCdtSharedDbaProfile:
     Type: AWS::IAM::InstanceProfile
-    Properties: 
+    Properties:
       Roles:
         - !Ref CoreCdtSharedDba
       InstanceProfileName: core-cdt-prod-shared-dba-profile
 
-  # Custom Policies
   SharedArchiveDbaPolicy:
-        Type: AWS::IAM::Policy
-        Properties:
-            PolicyDocument:
-                Version: '2012-10-17'
-                Statement:
-                  - 
-                    Effect: Allow
-                    Action: sts:AssumeRole
-                    Resource:
-                      - arn:aws:iam::667621734181:role/cvent-management-shared-dba
-            PolicyName: SharedArchiveDbaPolicy
-            Roles:
-              - Ref: "CoreCdtSharedDba"
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action: sts:AssumeRole
+            Resource:
+              - arn:aws:iam::667621734181:role/cvent-management-shared-dba
+      PolicyName: SharedArchiveDbaPolicy
+      Roles:
+        - Ref: "CoreCdtSharedDba"

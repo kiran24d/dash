@@ -4,9 +4,9 @@ Description: Create federated IAM roles
 
 Parameters:
 
-AccountName:
-  Description: The name of the AWS account this template is launched in.
-  Type: String
+  AccountName:
+    Description: The name of the AWS account this template is launched in.
+    Type: String
 
 Resources:
 
@@ -40,9 +40,34 @@ Resources:
             }
           ]
         }
-    ManagedPolicyArns:
-      - arn:aws:iam::aws:policy/PowerUserAccess
-      - arn:aws:iam::aws:policy/IAMReadOnlyAccess
-    RoleName: !Sub
-      - "${Account}-sre"
-      - Account: !Ref AccountName
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/PowerUserAccess
+        - arn:aws:iam::aws:policy/IAMReadOnlyAccess
+      RoleName: !Sub
+        - "${Account}-sre"
+        - Account: !Ref AccountName
+
+  ECSPassthroughPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        |
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "iam:PassRole"
+                
+              ],
+              "Resource": [
+                "arn:aws:iam::684904355706:role/reinvent-ECSServiceRole-us-east-1",
+                "arn:aws:iam::684904355706:role/core-conference-dev-waf-lambda"
+              ]
+            }
+          ]
+        }
+      PolicyName: cvent-ecs-passthrough
+      Roles:
+        - !Ref Sre

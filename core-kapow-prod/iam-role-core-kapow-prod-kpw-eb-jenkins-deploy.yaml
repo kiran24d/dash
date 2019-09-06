@@ -1,0 +1,71 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: ICR-3139, Create IAM role for Kapow EB jenkins deployments
+
+Resources:
+
+  KpwEbJenkinsDeployRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: arn:aws:iam::667621734181:role/cvent-management-kpw-eb-deploy
+            Action: sts:AssumeRole
+      RoleName: core-kapow-prod-kpw-eb-jenkins-deploy
+
+  KpwEbJenkinsDeployPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: core-kapow-prod-kpw-eb-jenkins-deploy-policy
+      Roles:
+        - !Ref KpwEbJenkinsDeployRole
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Action:
+              - s3:Get*
+              - s3:List*
+              - s3:PutObject
+              - s3:PutObjectAcl
+              - s3:CreateMultipartUpload
+              - s3:DeleteObject
+            Resource:
+              - "arn:aws:s3:::core-kapow-prod-kpw-eb-us-east-1/*"
+              - "arn:aws:s3:::core-kapow-prod-kpw-eb-us-east-1"
+              - "arn:aws:s3:::elasticbeanstalk-/*"
+              - "arn:aws:s3:::elasticbeanstalk-*/*"
+          - Effect: "Allow"
+            Action:
+              - ec2:Describe*
+              - elasticloadbalancing:Describe*
+              - autoscaling:Describe*
+              - elasticloadbalancing:DeregisterTargets
+              - elasticloadbalancing:RegisterTargets
+              - elasticloadbalancing:Describe*
+              - autoscaling:SuspendProcesses
+              - autoscaling:ResumeProcesses
+              - cloudwatch:Describe*
+              - cloudwatch:List*
+              - cloudwatch:Get*
+              - sns:Get*
+              - sns:List*
+              - rds:Describe*
+              - cloudformation:Describe*
+              - cloudformation:Get*
+              - cloudformation:List*
+              - cloudformation:Validate*
+              - cloudformation:Estimate*
+              - cloudformation:UpdateStack
+              - elasticbeanstalk:Describe*
+              - elasticbeanstalk:List*
+              - elasticbeanstalk:Check*
+              - elasticbeanstalk:CreateApplicationVersion
+              - elasticbeanstalk:UpdateApplicationVersion
+              - elasticbeanstalk:UpdateEnvironment
+              - elasticbeanstalk:RequestEnvironmentInfo
+              - elasticbeanstalk:RetrieveEnvironmentInfo
+            Resource: "*"

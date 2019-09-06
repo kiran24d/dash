@@ -7,7 +7,7 @@ Resources:
   AwsQmDevDevopsRole:
     Type: AWS::IAM::Role
     Properties:
-      AssumeRolePolicyDocument: 
+      AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
           - Effect: Allow
@@ -22,23 +22,67 @@ Resources:
               AWS: arn:aws:iam::667621734181:root
             Action: sts:AssumeRole
             Condition: {}
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/PowerUserAccess
-      RoleName: aws-qm-dev-devops
+      RoleName: aws-qm-prod-devops
 
   AwsQmDevDevopsPolicy:
     Type: AWS::IAM::Policy
-    Properties: 
-      PolicyName: aws-qm-dev-devops-policy
-      Roles: 
+    Properties:
+      PolicyName: aws-qm-prod-devops-policy
+      Roles:
         - !Ref AwsQmDevDevopsRole
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
-        - 
-          Effect: Allow
-          Action:
-            - iam:ListInstanceProfiles
-            - iam:ListPolicies
-            - iam:ListRolePolicies
-          Resource: "*"
+          - Effect: Deny
+            Action:
+              - iam:AddUserToGroup
+              - iam:AttachGroupPolicy
+              - iam:AttachRolePolicy
+              - iam:AttachUserPolicy
+              - iam:CreateAccessKey
+              - iam:CreateGroup
+              - iam:CreatePolicy
+              - iam:CreatePolicyVersion
+              - iam:CreateRole
+              - iam:CreateSAMLProvider
+              - iam:CreateUser
+              - iam:CreateVirtualMFADevice
+              - iam:DeactivateMFADevice
+              - iam:DeleteAccessKey
+              - iam:DeleteAccountAlias
+              - iam:DeleteAccountPasswordPolicy
+              - iam:DeleteGroup
+              - iam:DeleteGroupPolicy
+              - iam:DeletePolicy
+              - iam:DeletePolicyVersion
+              - iam:DeleteRole
+              - iam:DeleteRolePolicy
+              - iam:DeleteSAMLProvider
+              - iam:DeleteSSHPublicKey
+              - iam:DeleteUser
+              - iam:DeleteUserPolicy
+              - iam:DeleteVirtualMFADevice
+              - iam:DetachGroupPolicy
+              - iam:DetachRolePolicy
+              - iam:DetachUserPolicy
+              - iam:EnableMFADevice
+              - iam:PutGroupPolicy
+              - iam:PutRolePolicy
+              - iam:PutUserPolicy
+              - iam:RemoveUserFromGroup
+              - iam:UpdateAssumeRolePolicy
+              - iam:UpdateGroup
+              - iam:UpdateLoginProfile
+              - iam:UpdateOpenIDConnectProviderThumbprint
+              - iam:UpdateSAMLProvider
+              - iam:UpdateSSHPublicKey
+              - iam:UpdateServerCertificate
+              - iam:UpdateSigningCertificate
+              - iam:UpdateUser
+              - iam:UploadSSHPublicKey
+              - iam:UploadServerCertificate
+              - iam:UploadSigningCertificate
+            Resource: "*"
+          - Effect: Allow
+            Action: "*"
+            Resource: "*"

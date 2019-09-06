@@ -1,27 +1,28 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: create the aws-cvt-devops role
 
 Resources:
 
   AwsCvtDevops:
-      Type: AWS::IAM::Role
-      Properties:
-          AssumeRolePolicyDocument: 
-              Version: '2012-10-17'
-              Statement:
-              - Effect: Allow
-                Principal:
-                  Federated: !Sub arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso
-                Action: sts:AssumeRoleWithSAML
-                Condition:
-                  StringEquals:
-                    SAML:aud: https://signin.aws.amazon.com/saml
-              - Effect: Allow
-                Principal:
-                  AWS: arn:aws:iam::667621734181:root
-                Action: sts:AssumeRole
-                Condition: {}
-          RoleName: aws-cvt-devops
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Federated: !Sub arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso
+            Action: sts:AssumeRoleWithSAML
+            Condition:
+              StringEquals:
+                SAML:aud: https://signin.aws.amazon.com/saml
+          - Effect: Allow
+            Principal:
+              AWS: arn:aws:iam::667621734181:root
+            Action: sts:AssumeRole
+            Condition: {}
+      RoleName: aws-cvt-devops
 
   AwsCvtDevopsPolicy:
     Type: AWS::IAM::Policy
@@ -32,57 +33,57 @@ Resources:
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
-        - Sid: Stmt1483996566309
-          Action:
-          - iam:AddUserToGroup
-          - iam:AttachGroupPolicy
-          - iam:AttachRolePolicy
-          - iam:AttachUserPolicy
-          - iam:CreateAccessKey
-          - iam:CreateGroup
-          - iam:CreatePolicy
-          - iam:CreatePolicyVersion
-          - iam:CreateRole
-          - iam:CreateSAMLProvider
-          - iam:CreateUser
-          - iam:CreateVirtualMFADevice
-          - iam:DeactivateMFADevice
-          - iam:DeleteAccessKey
-          - iam:DeleteAccountAlias
-          - iam:DeleteAccountPasswordPolicy
-          - iam:DeleteGroup
-          - iam:DeleteGroupPolicy
-          - iam:DeletePolicy
-          - iam:DeletePolicyVersion
-          - iam:DeleteRole
-          - iam:DeleteRolePolicy
-          - iam:DeleteSAMLProvider
-          - iam:DeleteSSHPublicKey
-          - iam:DeleteUser
-          - iam:DeleteUserPolicy
-          - iam:DeleteVirtualMFADevice
-          - iam:DetachGroupPolicy
-          - iam:DetachRolePolicy
-          - iam:DetachUserPolicy
-          - iam:EnableMFADevice
-          - iam:PutGroupPolicy
-          - iam:PutRolePolicy
-          - iam:PutUserPolicy
-          - iam:RemoveUserFromGroup
-          - iam:UpdateAssumeRolePolicy
-          - iam:UpdateGroup
-          - iam:UpdateLoginProfile
-          - iam:UpdateOpenIDConnectProviderThumbprint
-          - iam:UpdateSAMLProvider
-          - iam:UpdateSSHPublicKey
-          - iam:UpdateServerCertificate
-          - iam:UpdateSigningCertificate
-          - iam:UpdateUser
-          - iam:UploadSSHPublicKey
-          - iam:UploadServerCertificate
-          - iam:UploadSigningCertificate
-          Effect: Deny
-          Resource: "*"
-        - Effect: Allow
-          Action: "*"
-          Resource: "*"
+          - Sid: Stmt1483996566309
+            Action:
+              - iam:AddUserToGroup
+              - iam:AttachGroupPolicy
+              - iam:AttachRolePolicy
+              - iam:AttachUserPolicy
+              - iam:CreateAccessKey
+              - iam:CreateGroup
+              - iam:CreatePolicy
+              - iam:CreatePolicyVersion
+              - iam:CreateRole
+              - iam:CreateSAMLProvider
+              - iam:CreateUser
+              - iam:CreateVirtualMFADevice
+              - iam:DeactivateMFADevice
+              - iam:DeleteAccessKey
+              - iam:DeleteAccountAlias
+              - iam:DeleteAccountPasswordPolicy
+              - iam:DeleteGroup
+              - iam:DeleteGroupPolicy
+              - iam:DeletePolicy
+              - iam:DeletePolicyVersion
+              - iam:DeleteRole
+              - iam:DeleteRolePolicy
+              - iam:DeleteSAMLProvider
+              - iam:DeleteSSHPublicKey
+              - iam:DeleteUser
+              - iam:DeleteUserPolicy
+              - iam:DeleteVirtualMFADevice
+              - iam:DetachGroupPolicy
+              - iam:DetachRolePolicy
+              - iam:DetachUserPolicy
+              - iam:EnableMFADevice
+              - iam:PutGroupPolicy
+              - iam:PutRolePolicy
+              - iam:PutUserPolicy
+              - iam:RemoveUserFromGroup
+              - iam:UpdateAssumeRolePolicy
+              - iam:UpdateGroup
+              - iam:UpdateLoginProfile
+              - iam:UpdateOpenIDConnectProviderThumbprint
+              - iam:UpdateSAMLProvider
+              - iam:UpdateSSHPublicKey
+              - iam:UpdateServerCertificate
+              - iam:UpdateSigningCertificate
+              - iam:UpdateUser
+              - iam:UploadSSHPublicKey
+              - iam:UploadServerCertificate
+              - iam:UploadSigningCertificate
+            Effect: Deny
+            Resource: "*"
+          - Effect: Allow
+            Action: "*"
+            Resource: "*"

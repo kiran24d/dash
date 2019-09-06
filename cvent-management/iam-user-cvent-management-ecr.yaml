@@ -1,0 +1,30 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create an IAM service user for Social Tables for 3rd party CI integration with ECR
+
+Parameters:
+  Name:
+    Description: Name of the user to create
+    Type: String
+
+Resources:
+  User:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: !Ref Name
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser
+      Policies:
+        - PolicyName:
+            Fn::Join:
+              - '-'
+              - - !Ref Name
+                - ecr-create-repo
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - ecr:CreateRepository
+                Resource:
+                  - '*'

@@ -1,51 +1,51 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: Create cusotom IAM role
 
 Resources:
 
-    CoreCdtDynamoDBAutoscalingRole:
-        Type: AWS::IAM::Role
-        Properties:
-            AssumeRolePolicyDocument: !Sub
-                |
-                {
-                  "Version": "2012-10-17",
-                  "Statement": [
-                    {
-                      "Effect": "Allow",
-                      "Principal": {
-                        "Service": "application-autoscaling.amazonaws.com"
-                      },
-                      "Action": "sts:AssumeRole"
-                    }
-                  ]
-                }
-            RoleName: core-cdt-dynamodb-autoscaling
+  CoreCdtDynamoDBAutoscalingRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument: !Sub
+        |
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "application-autoscaling.amazonaws.com"
+              },
+              "Action": "sts:AssumeRole"
+            }
+          ]
+        }
+      RoleName: core-cdt-dynamodb-autoscaling
 
-# Define Custom Policies
-    DynamoDBPolicy:
-        Type: AWS::IAM::Policy
-        Properties:
-            PolicyDocument: !Sub
-                |
+  DynamoDBPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument: !Sub
+        |
+        {
+            "Version": "2012-10-17",
+            "Statement": [
                 {
-                    "Version": "2012-10-17",
-                    "Statement": [
-                        {
-                            "Effect": "Allow",
-                            "Action": [
-                                "dynamodb:DescribeTable",
-                                "dynamodb:UpdateTable",
-                                "cloudwatch:PutMetricAlarm",
-                                "cloudwatch:DescribeAlarms",
-                                "cloudwatch:GetMetricStatistics",
-                                "cloudwatch:SetAlarmState",
-                                "cloudwatch:DeleteAlarms"
-                            ],
-                            "Resource": "*"
-                        }
-                    ]
+                    "Effect": "Allow",
+                    "Action": [
+                        "dynamodb:DescribeTable",
+                        "dynamodb:UpdateTable",
+                        "cloudwatch:PutMetricAlarm",
+                        "cloudwatch:DescribeAlarms",
+                        "cloudwatch:GetMetricStatistics",
+                        "cloudwatch:SetAlarmState",
+                        "cloudwatch:DeleteAlarms"
+                    ],
+                    "Resource": "*"
                 }
-            PolicyName: DynamoDBAutoscalePolicy
-            Roles:
-              - Ref: "CoreCdtDynamoDBAutoscalingRole"
+            ]
+        }
+      PolicyName: DynamoDBAutoscalePolicy
+      Roles:
+        - Ref: "CoreCdtDynamoDBAutoscalingRole"

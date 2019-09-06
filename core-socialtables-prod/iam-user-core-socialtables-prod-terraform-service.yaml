@@ -1,0 +1,135 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create an IAM service user for Social Tables for Terraform
+
+Parameters:
+  Name:
+    Description: Name of the user to create
+    Type: String
+
+Resources:
+  CoreSocialtablesProdTerraformServiceUser:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: !Ref Name
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/PowerUserAccess  # This includes IAM write restrictions
+
+  CoreSocialtablesProdTerraformServicePolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName: iam-user-core-socialtables-prod-terraform-service
+      Description: Policy to be attached to the mostly-admin IAM terraform user
+      Users:
+        - !Ref CoreSocialtablesProdTerraformServiceUser
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: DenyVpcEdits
+            Effect: Deny
+            Action:
+              # These actions are from arn:aws:iam::aws:policy/AmazonVPCFullAccess
+              # except any `ec2:Describe*` actions. It has been collapsed with
+              # wildcards to evade the policy size limits on users.
+              - "ec2:AcceptVpc*"
+              - "ec2:AllocateAddress"
+              - "ec2:AssignIpv6Addresses"
+              - "ec2:AssignPrivateIpAddresses"
+              - "ec2:AssociateAddress"
+              - "ec2:AssociateDhcpOptions"
+              - "ec2:AssociateRouteTable"
+              - "ec2:AssociateSubnetCidrBlock"
+              - "ec2:AssociateVpcCidrBlock"
+              - "ec2:AttachClassicLinkVpc"
+              - "ec2:AttachInternetGateway"
+              - "ec2:AttachNetworkInterface"
+              - "ec2:AttachVpnGateway"
+              - "ec2:AuthorizeSecurityGroup*"
+              - "ec2:CreateCustomerGateway"
+              - "ec2:CreateDefaultSubnet"
+              - "ec2:CreateDefaultVpc"
+              - "ec2:CreateDhcpOptions"
+              - "ec2:CreateEgressOnlyInternetGateway"
+              - "ec2:CreateFlowLogs"
+              - "ec2:CreateInternetGateway"
+              - "ec2:CreateNatGateway"
+              - "ec2:CreateNetwork*"
+              - "ec2:CreateRoute*"
+              - "ec2:CreateSubnet"
+              - "ec2:CreateVpc*"
+              - "ec2:CreateVpn*"
+              - "ec2:DeleteCustomerGateway"
+              - "ec2:DeleteDhcpOptions"
+              - "ec2:DeleteEgressOnlyInternetGateway"
+              - "ec2:DeleteFlowLogs"
+              - "ec2:DeleteInternetGateway"
+              - "ec2:DeleteNatGateway"
+              - "ec2:DeleteNetwork*"
+              - "ec2:DeleteRoute*"
+              - "ec2:DeleteSubnet"
+              - "ec2:DeleteVpc*"
+              - "ec2:DeleteVpn*"
+              - "ec2:DetachClassicLinkVpc"
+              - "ec2:DetachInternetGateway"
+              - "ec2:DetachNetworkInterface"
+              - "ec2:DetachVpnGateway"
+              - "ec2:DisableVgwRoutePropagation"
+              - "ec2:DisableVpcClassicLink*"
+              - "ec2:DisassociateAddress"
+              - "ec2:DisassociateRouteTable"
+              - "ec2:DisassociateSubnetCidrBlock"
+              - "ec2:DisassociateVpcCidrBlock"
+              - "ec2:EnableVgwRoutePropagation"
+              - "ec2:EnableVpcClassicLink*"
+              - "ec2:EnableVpcClassicLinkDnsSupport"
+              - "ec2:ModifyNetworkInterfaceAttribute"
+              - "ec2:ModifySubnetAttribute"
+              - "ec2:ModifyVpc*"
+              - "ec2:MoveAddressToVpc"
+              - "ec2:RejectVpc*"
+              - "ec2:ReleaseAddress"
+              - "ec2:ReplaceNetworkAcl*"
+              - "ec2:ReplaceRoute*"
+              - "ec2:ResetNetworkInterfaceAttribute"
+              - "ec2:RestoreAddressToClassic"
+              - "ec2:RevokeSecurityGroup*"
+              - "ec2:UnassignIpv6Addresses"
+              - "ec2:UnassignPrivateIpAddresses"
+            Resource: "*"
+
+          - Sid: LimitedIamActions
+            Action:
+              - iam:AddRoleToInstanceProfile
+              - iam:CreateInstanceProfile
+              - iam:CreatePolicy
+              - iam:CreatePolicyVersion
+              - iam:CreateRole
+              - iam:CreateServiceLinkedRole
+              - iam:DeleteInstanceProfile
+              - iam:DeletePolicy
+              - iam:DeletePolicyVersion
+              - iam:DeleteRole
+              - iam:DeleteRolePolicy
+              - iam:DeleteServiceLinkedRole
+              - iam:DetachRolePolicy
+              - iam:Get*
+              - iam:List*
+              - iam:PassRole
+              - iam:PutRolePolicy
+              - iam:RemoveRoleFromInstanceProfile
+              - iam:TagRole
+              - iam:UntagRole
+            Effect: Allow
+            Resource: "*"
+
+          - Sid: LimitedIamAttachmentPermissions
+            Action:
+              - iam:AttachRolePolicy
+            Effect: Allow
+            Resource: "*"
+            Condition:
+              ArnNotEquals:
+                iam:PolicyArn:
+                  - arn:aws:iam::aws:policy/*FullAccess
+                  - arn:aws:iam::aws:policy/AdministratorAccess
+                  - arn:aws:iam::aws:policy/PowerUserAccess

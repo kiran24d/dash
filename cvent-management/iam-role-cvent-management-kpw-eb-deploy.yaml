@@ -29,3 +29,5 @@ Resources:
             Action: sts:AssumeRole
             Resource:
               - arn:aws:iam::449196748993:role/core-kapow-dev-kpw-eb-jenkins-deploy
+              - arn:aws:iam::572724207364:role/cvent-sandbox-kpw-eb-jenkins-deploy
+              - arn:aws:iam::546564536810:role/core-kapow-prod-kpw-eb-jenkins-deploy

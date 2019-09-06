@@ -1,30 +1,28 @@
+---
 AWSTemplateFormatVersion: 2010-09-09
 Description: Description
-Parameters:
-  AccountName:
-    Description: Name of the account this template is being deployed too
-    Type: String
+
 Resources:
   AwsCvtUiRole:
     Properties:
       AssumeRolePolicyDocument:
         Statement:
-        - Action: sts:AssumeRoleWithSAML
-          Condition:
-            StringEquals:
-              SAML:aud: https://signin.aws.amazon.com/saml
-          Effect: Allow
-          Principal:
-            Federated: arn:aws:iam::572724207364:saml-provider/okta-idp
-        - Action: sts:AssumeRole
-          Condition: {}
-          Effect: Allow
-          Principal:
-            AWS: arn:aws:iam::667621734181:root
+          - Action: sts:AssumeRoleWithSAML
+            Condition:
+              StringEquals:
+                SAML:aud: https://signin.aws.amazon.com/saml
+            Effect: Allow
+            Principal:
+              Federated: arn:aws:iam::572724207364:saml-provider/okta-idp
+          - Action: sts:AssumeRole
+            Condition: {}
+            Effect: Allow
+            Principal:
+              AWS: arn:aws:iam::667621734181:root
         Version: '2012-10-17'
       ManagedPolicyArns:
-      - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
-      - arn:aws:iam::572724207364:policy/cvent-aws-ui
+        - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
+        - arn:aws:iam::572724207364:policy/cvent-aws-ui
       MaxSessionDuration: 3600
       Path: /
       RoleName: aws-cvt-ui
@@ -33,162 +31,162 @@ Resources:
     Properties:
       PolicyDocument:
         Statement:
-        - Action:
-          - ec2:AcceptVpcPeeringConnection
-          - ec2:AssociateDhcpOptions
-          - ec2:AssociateRouteTable
-          - ec2:AssociateSubnetCidrBlock
-          - ec2:AssociateVpcCidrBlock
-          - ec2:AttachInternetGateway
-          - ec2:AttachVpnGateway
-          - ec2:CreateCustomerGateway
-          - ec2:CreateDefaultVpc
-          - ec2:CreateDhcpOptions
-          - ec2:CreateInternetGateway
-          - ec2:CreateNatGateway
-          - ec2:CreateNetworkAcl
-          - ec2:CreateNetworkAclEntry
-          - ec2:CreateRoute
-          - ec2:CreateRouteTable
-          - ec2:CreateSubnet
-          - ec2:CreateVpc
-          - ec2:CreateVpcEndpoint
-          - ec2:CreateVpcPeeringConnection
-          - ec2:CreateVpnConnection
-          - ec2:CreateVpnConnectionRoute
-          - ec2:CreateVpnGateway
-          - ec2:DeleteCustomerGateway
-          - ec2:DeleteDhcpOptions
-          - ec2:DeleteInternetGateway
-          - ec2:DeleteNatGateway
-          - ec2:DeleteNetworkAcl
-          - ec2:DeleteNetworkAclEntry
-          - ec2:DeleteRoute
-          - ec2:DeleteRouteTable
-          - ec2:DeleteSubnet
-          - ec2:DeleteVpc
-          - ec2:DeleteVpcEndpoints
-          - ec2:DeleteVpcPeeringConnection
-          - ec2:DeleteVpnConnection
-          - ec2:DeleteVpnConnectionRoute
-          - ec2:DeleteVpnGateway
-          - ec2:DetachInternetGateway
-          - ec2:DetachVpnGateway
-          - ec2:DisableVpcClassicLink
-          - ec2:DisableVpcClassicLinkDnsSupport
-          - ec2:DisableVgwRoutePropagation
-          - ec2:DisassociateRouteTable
-          - ec2:DisassociateSubnetCidrBlock
-          - ec2:DisassociateVpcCidrBlock
-          - ec2:EnableVgwRoutePropagation
-          - ec2:EnableVpcClassicLink
-          - ec2:EnableVpcClassicLinkDnsSupport
-          - ec2:ModifySubnetAttribute
-          - ec2:ModifyVpcAttribute
-          - ec2:ModifyVpcEndpoint
-          - ec2:ModifyVpcPeeringConnectionOptions
-          - ec2:ModifyVpcTenancy
-          - ec2:RejectVpcPeeringConnection
-          - ec2:ReplaceNetworkAclAssociation
-          - ec2:ReplaceNetworkAclEntry
-          - ec2:ReplaceRoute
-          - ec2:ReplaceRouteTableAssociation
-          Effect: Deny
-          Resource: '*'
-          Sid: DenyVpcChangesToSanboxVpc
+          - Action:
+              - ec2:AcceptVpcPeeringConnection
+              - ec2:AssociateDhcpOptions
+              - ec2:AssociateRouteTable
+              - ec2:AssociateSubnetCidrBlock
+              - ec2:AssociateVpcCidrBlock
+              - ec2:AttachInternetGateway
+              - ec2:AttachVpnGateway
+              - ec2:CreateCustomerGateway
+              - ec2:CreateDefaultVpc
+              - ec2:CreateDhcpOptions
+              - ec2:CreateInternetGateway
+              - ec2:CreateNatGateway
+              - ec2:CreateNetworkAcl
+              - ec2:CreateNetworkAclEntry
+              - ec2:CreateRoute
+              - ec2:CreateRouteTable
+              - ec2:CreateSubnet
+              - ec2:CreateVpc
+              - ec2:CreateVpcEndpoint
+              - ec2:CreateVpcPeeringConnection
+              - ec2:CreateVpnConnection
+              - ec2:CreateVpnConnectionRoute
+              - ec2:CreateVpnGateway
+              - ec2:DeleteCustomerGateway
+              - ec2:DeleteDhcpOptions
+              - ec2:DeleteInternetGateway
+              - ec2:DeleteNatGateway
+              - ec2:DeleteNetworkAcl
+              - ec2:DeleteNetworkAclEntry
+              - ec2:DeleteRoute
+              - ec2:DeleteRouteTable
+              - ec2:DeleteSubnet
+              - ec2:DeleteVpc
+              - ec2:DeleteVpcEndpoints
+              - ec2:DeleteVpcPeeringConnection
+              - ec2:DeleteVpnConnection
+              - ec2:DeleteVpnConnectionRoute
+              - ec2:DeleteVpnGateway
+              - ec2:DetachInternetGateway
+              - ec2:DetachVpnGateway
+              - ec2:DisableVpcClassicLink
+              - ec2:DisableVpcClassicLinkDnsSupport
+              - ec2:DisableVgwRoutePropagation
+              - ec2:DisassociateRouteTable
+              - ec2:DisassociateSubnetCidrBlock
+              - ec2:DisassociateVpcCidrBlock
+              - ec2:EnableVgwRoutePropagation
+              - ec2:EnableVpcClassicLink
+              - ec2:EnableVpcClassicLinkDnsSupport
+              - ec2:ModifySubnetAttribute
+              - ec2:ModifyVpcAttribute
+              - ec2:ModifyVpcEndpoint
+              - ec2:ModifyVpcPeeringConnectionOptions
+              - ec2:ModifyVpcTenancy
+              - ec2:RejectVpcPeeringConnection
+              - ec2:ReplaceNetworkAclAssociation
+              - ec2:ReplaceNetworkAclEntry
+              - ec2:ReplaceRoute
+              - ec2:ReplaceRouteTableAssociation
+            Effect: Deny
+            Resource: '*'
+            Sid: DenyVpcChangesToSanboxVpc
         Version: '2012-10-17'
       PolicyName: cvent-sandbox-test-2
       Roles:
-      - Ref: AwsCvtUiRole
+        - Ref: AwsCvtUiRole
     Type: AWS::IAM::Policy
   AwsCvtUiTestPolicyPolicy:
     Properties:
       PolicyDocument:
         Statement:
-        - Action:
-          - s3:DeleteObjectTagging
-          - s3:DeleteObjectVersion
-          - s3:GetObjectVersionTagging
-          - s3:ReplicateTags
-          - s3:RestoreObject
-          - s3:PutObjectVersionTagging
-          - s3:DeleteObjectVersionTagging
-          - s3:ListMultipartUploadParts
-          - s3:ReplicateObject
-          - s3:GetObjectVersionTorrent
-          - s3:PutObject
-          - s3:GetObjectAcl
-          - s3:GetObject
-          - s3:GetObjectTorrent
-          - s3:AbortMultipartUpload
-          - s3:GetObjectVersionAcl
-          - s3:GetObjectTagging
-          - s3:PutObjectTagging
-          - s3:GetObjectVersionForReplication
-          - s3:DeleteObject
-          - s3:ReplicateDelete
-          - s3:GetObjectVersion
-          Effect: Allow
-          Resource: arn:aws:s3:::*/*
-          Sid: VisualEditor0
-        - Action:
-          - s3:ListBucketByTags
-          - s3:GetLifecycleConfiguration
-          - s3:GetBucketTagging
-          - s3:GetInventoryConfiguration
-          - s3:PutAnalyticsConfiguration
-          - s3:PutAccelerateConfiguration
-          - s3:ListBucketVersions
-          - s3:GetBucketLogging
-          - s3:CreateBucket
-          - s3:ListBucket
-          - s3:GetAccelerateConfiguration
-          - s3:GetBucketPolicy
-          - s3:PutEncryptionConfiguration
-          - s3:GetEncryptionConfiguration
-          - s3:DeleteBucketWebsite
-          - s3:PutBucketTagging
-          - s3:GetBucketRequestPayment
-          - s3:PutLifecycleConfiguration
-          - s3:PutBucketAcl
-          - s3:GetMetricsConfiguration
-          - s3:DeleteBucket
-          - s3:PutBucketVersioning
-          - s3:GetIpConfiguration
-          - s3:PutObjectAcl
-          - s3:ListBucketMultipartUploads
-          - s3:GetBucketWebsite
-          - s3:PutMetricsConfiguration
-          - s3:PutReplicationConfiguration
-          - s3:GetBucketVersioning
-          - s3:PutBucketCORS
-          - s3:GetBucketAcl
-          - s3:GetBucketNotification
-          - s3:DeleteBucketPolicy
-          - s3:GetReplicationConfiguration
-          - s3:PutInventoryConfiguration
-          - s3:PutIpConfiguration
-          - s3:PutBucketNotification
-          - s3:ObjectOwnerOverrideToBucketOwner
-          - s3:PutBucketWebsite
-          - s3:PutBucketRequestPayment
-          - s3:PutBucketLogging
-          - s3:PutObjectVersionAcl
-          - s3:GetBucketCORS
-          - s3:GetAnalyticsConfiguration
-          - s3:PutBucketPolicy
-          - s3:GetBucketLocation
-          Effect: Allow
-          Resource: arn:aws:s3:::*
-          Sid: VisualEditor1
-        - Action:
-          - s3:ListAllMyBuckets
-          - s3:HeadBucket
-          Effect: Allow
-          Resource: '*'
-          Sid: VisualEditor2
+          - Action:
+              - s3:DeleteObjectTagging
+              - s3:DeleteObjectVersion
+              - s3:GetObjectVersionTagging
+              - s3:ReplicateTags
+              - s3:RestoreObject
+              - s3:PutObjectVersionTagging
+              - s3:DeleteObjectVersionTagging
+              - s3:ListMultipartUploadParts
+              - s3:ReplicateObject
+              - s3:GetObjectVersionTorrent
+              - s3:PutObject
+              - s3:GetObjectAcl
+              - s3:GetObject
+              - s3:GetObjectTorrent
+              - s3:AbortMultipartUpload
+              - s3:GetObjectVersionAcl
+              - s3:GetObjectTagging
+              - s3:PutObjectTagging
+              - s3:GetObjectVersionForReplication
+              - s3:DeleteObject
+              - s3:ReplicateDelete
+              - s3:GetObjectVersion
+            Effect: Allow
+            Resource: arn:aws:s3:::*/*
+            Sid: VisualEditor0
+          - Action:
+              - s3:ListBucketByTags
+              - s3:GetLifecycleConfiguration
+              - s3:GetBucketTagging
+              - s3:GetInventoryConfiguration
+              - s3:PutAnalyticsConfiguration
+              - s3:PutAccelerateConfiguration
+              - s3:ListBucketVersions
+              - s3:GetBucketLogging
+              - s3:CreateBucket
+              - s3:ListBucket
+              - s3:GetAccelerateConfiguration
+              - s3:GetBucketPolicy
+              - s3:PutEncryptionConfiguration
+              - s3:GetEncryptionConfiguration
+              - s3:DeleteBucketWebsite
+              - s3:PutBucketTagging
+              - s3:GetBucketRequestPayment
+              - s3:PutLifecycleConfiguration
+              - s3:PutBucketAcl
+              - s3:GetMetricsConfiguration
+              - s3:DeleteBucket
+              - s3:PutBucketVersioning
+              - s3:GetIpConfiguration
+              - s3:PutObjectAcl
+              - s3:ListBucketMultipartUploads
+              - s3:GetBucketWebsite
+              - s3:PutMetricsConfiguration
+              - s3:PutReplicationConfiguration
+              - s3:GetBucketVersioning
+              - s3:PutBucketCORS
+              - s3:GetBucketAcl
+              - s3:GetBucketNotification
+              - s3:DeleteBucketPolicy
+              - s3:GetReplicationConfiguration
+              - s3:PutInventoryConfiguration
+              - s3:PutIpConfiguration
+              - s3:PutBucketNotification
+              - s3:ObjectOwnerOverrideToBucketOwner
+              - s3:PutBucketWebsite
+              - s3:PutBucketRequestPayment
+              - s3:PutBucketLogging
+              - s3:PutObjectVersionAcl
+              - s3:GetBucketCORS
+              - s3:GetAnalyticsConfiguration
+              - s3:PutBucketPolicy
+              - s3:GetBucketLocation
+            Effect: Allow
+            Resource: arn:aws:s3:::*
+            Sid: VisualEditor1
+          - Action:
+              - s3:ListAllMyBuckets
+              - s3:HeadBucket
+            Effect: Allow
+            Resource: '*'
+            Sid: VisualEditor2
         Version: '2012-10-17'
       PolicyName: cvent-sandbox-test-policy
       Roles:
-      - Ref: AwsCvtUiRole
+        - Ref: AwsCvtUiRole
     Type: AWS::IAM::Policy

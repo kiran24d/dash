@@ -1,101 +1,102 @@
 ---
 AWSTemplateFormatVersion: 2010-09-09
-Description: Create a custom managed policy for systems manager. A custom policy is required to further restrict S3 permissions found in the default policy.
+Description: 'Create a custom managed policy for systems manager. A custom
+  policy is required to further restrict S3 permissions found in the default policy.'
 
 Resources:
-    CventSystemsManagerPolicy:
-      Type: AWS::IAM::ManagedPolicy
-      Properties:
-        ManagedPolicyName: cvent-systems-manager-policy
-        PolicyDocument:
-          Version: '2012-10-17'
-          Statement:
-            - Effect: Allow
-              Action:
-                - ssm:DescribeAssociation
-                - ssm:GetDeployablePatchSnapshotForInstance
-                - ssm:GetDocument
-                - ssm:DescribeDocument
-                - ssm:GetManifest
-                - ssm:GetParameters
-                - ssm:ListAssociations
-                - ssm:ListInstanceAssociations
-                - ssm:PutInventory
-                - ssm:PutComplianceItems
-                - ssm:PutConfigurePackageResult
-                - ssm:UpdateAssociationStatus
-                - ssm:UpdateInstanceAssociationStatus
-                - ssm:UpdateInstanceInformation
-              Resource: "*"
+  CventSystemsManagerPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName: cvent-systems-manager-policy
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - ssm:DescribeAssociation
+              - ssm:GetDeployablePatchSnapshotForInstance
+              - ssm:GetDocument
+              - ssm:DescribeDocument
+              - ssm:GetManifest
+              - ssm:GetParameters
+              - ssm:ListAssociations
+              - ssm:ListInstanceAssociations
+              - ssm:PutInventory
+              - ssm:PutComplianceItems
+              - ssm:PutConfigurePackageResult
+              - ssm:UpdateAssociationStatus
+              - ssm:UpdateInstanceAssociationStatus
+              - ssm:UpdateInstanceInformation
+            Resource: "*"
 
-            - Effect: Allow
-              Action:
-                - ssmmessages:CreateControlChannel
-                - ssmmessages:CreateDataChannel
-                - ssmmessages:OpenControlChannel
-                - ssmmessages:OpenDataChannel
-              Resource: "*"
+          - Effect: Allow
+            Action:
+              - ssmmessages:CreateControlChannel
+              - ssmmessages:CreateDataChannel
+              - ssmmessages:OpenControlChannel
+              - ssmmessages:OpenDataChannel
+            Resource: "*"
 
-            - Effect: Allow
-              Action:
-                - ec2messages:AcknowledgeMessage
-                - ec2messages:DeleteMessage
-                - ec2messages:FailMessage
-                - ec2messages:GetEndpoint
-                - ec2messages:GetMessages
-                - ec2messages:SendReply
-              Resource: "*"
+          - Effect: Allow
+            Action:
+              - ec2messages:AcknowledgeMessage
+              - ec2messages:DeleteMessage
+              - ec2messages:FailMessage
+              - ec2messages:GetEndpoint
+              - ec2messages:GetMessages
+              - ec2messages:SendReply
+            Resource: "*"
 
-            - Effect: Allow
-              Action:
-                - cloudwatch:PutMetricData
-              Resource: "*"
+          - Effect: Allow
+            Action:
+              - cloudwatch:PutMetricData
+            Resource: "*"
 
-            - Effect: Allow
-              Action:
-                - ec2:DescribeInstanceStatus
-              Resource: "*"
+          - Effect: Allow
+            Action:
+              - ec2:DescribeInstanceStatus
+            Resource: "*"
 
-            - Effect: Allow
-              Action:
-                - ds:CreateComputer
-                - ds:DescribeDirectories
-              Resource: "*"
+          - Effect: Allow
+            Action:
+              - ds:CreateComputer
+              - ds:DescribeDirectories
+            Resource: "*"
 
-            - Effect: Allow
-              Action:
-                - logs:CreateLogGroup
-                - logs:CreateLogStream
-                - logs:DescribeLogGroups
-                - logs:DescribeLogStreams
-                - logs:PutLogEvents
-              Resource: "*"
+          - Effect: Allow
+            Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:DescribeLogGroups
+              - logs:DescribeLogStreams
+              - logs:PutLogEvents
+            Resource: "*"
 
-            - Effect: Allow
-              Action: 
-                - s3:GetObject
-              Resource:
-                - arn:aws:s3:::aws-ssm-us-east-1/*
-                - arn:aws:s3:::aws-windows-downloads-us-east-1/*
-                - arn:aws:s3:::amazon-ssm-us-east-1/*
-                - arn:aws:s3:::amazon-ssm-packages-us-east-1/*
-                - arn:aws:s3:::us-east-1-birdwatcher-prod/*
-                - arn:aws:s3:::patch-baseline-snapshot-us-east-1/*
-                - arn:aws:s3:::aws-ssm-us-west-2/*
-                - arn:aws:s3:::aws-windows-downloads-us-west-2/*
-                - arn:aws:s3:::amazon-ssm-us-west-2/*
-                - arn:aws:s3:::amazon-ssm-packages-us-west-2/*
-                - arn:aws:s3:::us-west-2-birdwatcher-prod/*
-                - arn:aws:s3:::patch-baseline-snapshot-us-west-2/*
-                - arn:aws:s3:::aws-ssm-eu-west-1/*
-                - arn:aws:s3:::aws-windows-downloads-eu-west-1/*
-                - arn:aws:s3:::amazon-ssm-eu-west-1/*
-                - arn:aws:s3:::amazon-ssm-packages-eu-west-1/*
-                - arn:aws:s3:::eu-west-1-birdwatcher-prod/*
-                - arn:aws:s3:::patch-baseline-snapshot-eu-west-1/*
-                - arn:aws:s3:::aws-ssm-eu-central-1/*
-                - arn:aws:s3:::aws-windows-downloads-eu-central-1/*
-                - arn:aws:s3:::amazon-ssm-eu-central-1/*
-                - arn:aws:s3:::amazon-ssm-packages-eu-central-1/*
-                - arn:aws:s3:::eu-central-1-birdwatcher-prod/*
-                - arn:aws:s3:::patch-baseline-snapshot-eu-central-1/*
+          - Effect: Allow
+            Action:
+              - s3:GetObject
+            Resource:
+              - arn:aws:s3:::aws-ssm-us-east-1/*
+              - arn:aws:s3:::aws-windows-downloads-us-east-1/*
+              - arn:aws:s3:::amazon-ssm-us-east-1/*
+              - arn:aws:s3:::amazon-ssm-packages-us-east-1/*
+              - arn:aws:s3:::us-east-1-birdwatcher-prod/*
+              - arn:aws:s3:::patch-baseline-snapshot-us-east-1/*
+              - arn:aws:s3:::aws-ssm-us-west-2/*
+              - arn:aws:s3:::aws-windows-downloads-us-west-2/*
+              - arn:aws:s3:::amazon-ssm-us-west-2/*
+              - arn:aws:s3:::amazon-ssm-packages-us-west-2/*
+              - arn:aws:s3:::us-west-2-birdwatcher-prod/*
+              - arn:aws:s3:::patch-baseline-snapshot-us-west-2/*
+              - arn:aws:s3:::aws-ssm-eu-west-1/*
+              - arn:aws:s3:::aws-windows-downloads-eu-west-1/*
+              - arn:aws:s3:::amazon-ssm-eu-west-1/*
+              - arn:aws:s3:::amazon-ssm-packages-eu-west-1/*
+              - arn:aws:s3:::eu-west-1-birdwatcher-prod/*
+              - arn:aws:s3:::patch-baseline-snapshot-eu-west-1/*
+              - arn:aws:s3:::aws-ssm-eu-central-1/*
+              - arn:aws:s3:::aws-windows-downloads-eu-central-1/*
+              - arn:aws:s3:::amazon-ssm-eu-central-1/*
+              - arn:aws:s3:::amazon-ssm-packages-eu-central-1/*
+              - arn:aws:s3:::eu-central-1-birdwatcher-prod/*
+              - arn:aws:s3:::patch-baseline-snapshot-eu-central-1/*

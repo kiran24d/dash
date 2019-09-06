@@ -1,7 +1,7 @@
 ---
 AWSTemplateFormatVersion: 2010-09-09
 Description: ICR-2906, IAM S3 role for cvent-datawarehouse bucket
- 
+
 Resources:
 
   CventDevelopmentSharedServicesGlueRole:
@@ -16,7 +16,7 @@ Resources:
             Principal:
               Service: glue.amazonaws.com
       RoleName: cvent-development-shared-services-glue
-       
+
   CventDevelopmentSharedServicesGluePolicy:
     Type: AWS::IAM::Policy
     Properties:

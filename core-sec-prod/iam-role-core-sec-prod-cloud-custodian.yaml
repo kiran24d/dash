@@ -1,3 +1,4 @@
+---
 AWSTemplateFormatVersion: '2010-09-09'
 Description: Parent template to deploy webACL Firehose Streams
 Metadata: {}
@@ -9,32 +10,29 @@ Parameters:
     Description: The name of the account
     Type: String
 
-Resources: 
+Resources:
 
-  DeliveryStreamRole: 
+  DeliveryStreamRole:
     Type: AWS::IAM::Role
-    Properties: 
+    Properties:
       RoleName: !Sub ${Account}-management-custodian
-      AssumeRolePolicyDocument: 
+      AssumeRolePolicyDocument:
         Version: "2012-10-17"
-        Statement: 
-          - 
-            Effect: "Allow"
-            Principal: 
+        Statement:
+          - Effect: "Allow"
+            Principal:
               Service:
                 - "lambda.amazonaws.com"
-            Action: 
+            Action:
               - "sts:AssumeRole"
-          -
-            Effect: "Allow"
+          - Effect: "Allow"
             Principal:
               AWS:
-              - arn:aws:iam::659687181524:role/cvent-production-management-services-cloud-custodian
+                - arn:aws:iam::659687181524:role/cvent-production-management-services-cloud-custodian
             Action:
               - "sts:AssumeRole"
       Policies:
-        -
-          PolicyName: custodian
+        - PolicyName: custodian
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
