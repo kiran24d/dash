@@ -1,0 +1,43 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: ICR-3277, Create Kapow Redshift IAM role
+
+Resources:
+
+  CoreKapowDevKpwRedshiftRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: redshift.amazonaws.com
+            Action: sts:AssumeRole
+      RoleName: core-kapow-dev-kpw-redshift
+
+  CoreKapowDevKpwRedshiftPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: core-kapow-dev-kpw-redshift-policy
+      Roles:
+        - !Ref CoreKapowDevKpwRedshiftRole
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action: sts:AssumeRole
+            Resource:
+              - arn:aws:iam::791439489411:role/redshift-s3-access
+          - Effect: Allow
+            Action:
+              - s3:AbortMultipartUpload
+              - s3:GetBucketLocation
+              - s3:GetObject
+              - s3:ListBucket
+              - s3:ListBucketMultipartUploads
+              - s3:PutObject
+              - s3:PutObjectAcl
+            Resource:
+              - arn:aws:s3:::core-kapow-dev-redshift-nonprod-us-east-1
+              - arn:aws:s3:::core-kapow-dev-redshift-nonprod-us-east-1/*
