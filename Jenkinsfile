@@ -52,6 +52,7 @@ pipeline {
         steps {
           script {
               filesChanged = BuildUtils.getFilesChanged(env.BRANCH_NAME)
+              filesChanged = filesChanged.flatten()
               log.info "Changed files", ['files': filesChanged]
               // filter files as per configurations
               supported_files = []
