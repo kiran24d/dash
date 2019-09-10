@@ -14,16 +14,14 @@ Resources:
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
-          -
-            Effect: Allow
+          - Effect: Allow
             Principal:
               Federated: !Sub arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso
             Action: sts:AssumeRoleWithSAML
             Condition:
               StringEquals:
                 SAML:aud: https://signin.aws.amazon.com/saml
-          -
-            Effect: Allow
+          - Effect: Allow
             Principal:
               AWS: arn:aws:iam::667621734181:root
             Action: sts:AssumeRole
@@ -40,3 +38,16 @@ Resources:
       RoleName: !Sub
         - "${Account}-dba"
         - Account: !Ref AccountName
+
+  CoreConferenceDevDba:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: !Sub "${AccountName}-dba-policy"
+      Roles:
+        - !Ref Dba
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action: "dms:*"
+            Resource: "*"
