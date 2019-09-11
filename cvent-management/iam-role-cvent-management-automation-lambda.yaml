@@ -1,0 +1,39 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: ICR-3304, Create a role for lambdas used for automation purposes
+
+
+Resources:
+  ICR3304LambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+        ManagedPolicyArns:
+          - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      RoleName: cvent-management-automation-lambda
+
+  SSMLambdaRolePolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: cvent-management-automation-lambda-policy
+      Roles:
+        - !Ref ICR3304LambdaRole
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - ssm:Get*
+            Resource: "*"
+          - Effect: Allow
+            Action:
+              - kms:Decrypt
+              - kms:Encrypt
+            Resource:
+              - "arn:aws:kms:us-east-1:667621734181:key/68467aee-6bc7-4bfe-828c-e1b910649aa0"
