@@ -1,0 +1,20 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: Create a custom managed policy for datomic user.
+
+Resources:
+  CventProductionDatomicPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName: cvent-production-datomic-policy
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - dynamodb:*
+            Resource:
+              - arn:aws:dynamodb:*:659687181524:table/attendee-journey-ephemera-P2
+              - arn:aws:dynamodb:*:659687181524:table/attendee-journey-kenoma-P2
+              - arn:aws:dynamodb:*:659687181524:table/cvent-production-attendee-journey-ephemera-production-us-east-1
+              - arn:aws:dynamodb:*:659687181524:table/cvent-production-attendee-journey-kenoma-production-us-east-1
