@@ -15,6 +15,10 @@ Resources:
               Service: redshift.amazonaws.com
             Action: sts:AssumeRole
       RoleName: core-kapow-prod-kpw-redshift
+      Description: >-
+        IAM role which allows redshift copy and unload commands
+        The permission to assume redshift-s3-access in kapowprod
+        will only be needed through 10/2019.
 
   CoreKapowProdKpwRedshiftPolicy:
     Type: AWS::IAM::Policy
