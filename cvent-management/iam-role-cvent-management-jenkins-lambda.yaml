@@ -1,6 +1,6 @@
 ---
 AWSTemplateFormatVersion: 2010-09-09
-Description: ICR-3304, Create a role for lambdas used for automation purposes
+Description: ICR-3304, Create a role for lambdas used for jenkins API purposes
 
 
 Resources:
@@ -16,12 +16,12 @@ Resources:
             Action: sts:AssumeRole
         ManagedPolicyArns:
           - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-      RoleName: cvent-management-automation-lambda
+      RoleName: cvent-management-jenkins-lambda
 
   SSMLambdaRolePolicy:
     Type: AWS::IAM::Policy
     Properties:
-      PolicyName: cvent-management-automation-lambda-policy
+      PolicyName: cvent-management-jenkins-lambda-policy
       Roles:
         - !Ref ICR3304LambdaRole
       PolicyDocument:
