@@ -12,7 +12,35 @@ Resources:
         Statement:
           - Effect: Allow
             Action:
-              - dynamodb:*
+              - dynamodb:BatchGetItem
+              - dynamodb:BatchWriteItem
+              - dynamodb:ConditionCheck
+              - dynamodb:CreateBackup
+              - dynamodb:CreateGlobalTable
+              - dynamodb:CreateTable
+              - dynamodb:DeleteBackup
+              - dynamodb:DeleteItem
+              - dynamodb:DeleteTable
+              - dynamodb:DescribeBackup
+              - dynamodb:DescribeContinuousBackups
+              - dynamodb:DescribeGlobalTable
+              - dynamodb:DescribeGlobalTableSettings
+              - dynamodb:DescribeTable
+              - dynamodb:GetItem
+              - dynamodb:GetRecords
+              - dynamodb:ListBackups
+              - dynamodb:ListGlobalTables
+              - dynamodb:ListTables
+              - dynamodb:PutItem
+              - dynamodb:Query
+              - dynamodb:RestoreTableFromBackup
+              - dynamodb:RestoreTableToPointInTime
+              - dynamodb:Scan
+              - dynamodb:UpdateContinuousBackups
+              - dynamodb:UpdateGlobalTable
+              - dynamodb:UpdateGlobalTableSettings
+              - dynamodb:UpdateItem
+              - dynamodb:UpdateTable
             Resource:
               - arn:aws:dynamodb:*:659687181524:table/attendee-journey-ephemera-P2
               - arn:aws:dynamodb:*:659687181524:table/attendee-journey-kenoma-P2
