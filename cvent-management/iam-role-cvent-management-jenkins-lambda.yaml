@@ -4,7 +4,7 @@ Description: ICR-3304, Create a role for lambdas used for jenkins API purposes
 
 
 Resources:
-  ICR3304LambdaRole:
+  CventManagementJenkinsLambda:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
@@ -23,7 +23,7 @@ Resources:
     Properties:
       PolicyName: cvent-management-jenkins-lambda-policy
       Roles:
-        - !Ref ICR3304LambdaRole
+        - !Ref CventManagementJenkinsLambda
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
