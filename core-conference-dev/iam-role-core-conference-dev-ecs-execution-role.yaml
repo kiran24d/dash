@@ -13,7 +13,7 @@ Resources:
               - ecs-tasks.amazonaws.com
           Action:
             - 'sts:AssumeRole'
-    Path: /
+    Path: '/'
     Policies:
       - PolicyName: AmazonECSTaskExecutionRolePolicy
         PolicyDocument:
@@ -24,8 +24,7 @@ Resources:
                 - 'ecr:GetAuthorizationToken'
                 - 'ecr:BatchCheckLayerAvailability'
                 - 'ecr:GetDownloadUrlForLayer'
-                - 'ecr:BatchGetImage'                
-                
+                - 'ecr:BatchGetImage'
               # Allow the ECS tasks to upload logs to CloudWatch
                 - 'logs:CreateLogStream'
                 - 'logs:CreateLogGroup'
