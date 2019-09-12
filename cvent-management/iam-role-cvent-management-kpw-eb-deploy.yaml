@@ -1,6 +1,6 @@
 ---
 AWSTemplateFormatVersion: 2010-09-09
-Description: ICR-2743, Create Kapow Eb Deploy IAM role
+Description: ICR-2743, Create Kapow Eb Deploy IAM role.
 
 Resources:
 
