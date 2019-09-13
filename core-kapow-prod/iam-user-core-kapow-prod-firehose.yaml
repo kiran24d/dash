@@ -1,0 +1,40 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: ICR-3322, IAM users for Kapow write to firehose impressions streams
+Metadata: {}
+
+Parameters:
+
+  AccountName:
+    Type: String
+    Description: Name of the account this has been deployed on
+    Default: core-kapow-prod
+
+Resources:
+
+  CoreKapowProdFirehoseUser:
+    Type: AWS::IAM::User
+    Properties:
+      Path: /
+      UserName:
+        Fn::Join:
+          - "-"
+          - - !Ref AccountName
+            - kpw-firehose
+
+  CoreKapowProdFirehosePolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: core-kapow-prod-kpw-firehose-policy
+      Users:
+        - !Ref CoreKapowProdFirehoseUser
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Action:
+              - firehose:PutRecord
+              - firehose:PutRecordBatch
+            Resource:
+              - arn:aws:firehose:us-east-1:449196748993:deliverystream/firehose_impressions_prod
