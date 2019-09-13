@@ -4,6 +4,7 @@ Description: Creates role that is used by ecs fargate tasks for logging
 Resources:
   ECSTaskExecutionRole:
     Type: 'AWS::IAM::Role'
+    RoleName: aws-ecs-fargate-role
     Properties:
       AssumeRolePolicyDocument:
         Statement:
