@@ -13,6 +13,7 @@ Resources:
                 - ecs-tasks.amazonaws.com
             Action:
               - 'sts:AssumeRole'
+      RoleName: aws-ecs-fargate-role
       Path: '/'
       Policies:
         - PolicyName: AmazonECSTaskExecutionRolePolicy
