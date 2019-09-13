@@ -1,0 +1,43 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: ICR-3254, IAM user for Backstory to read from S3
+Metadata: {}
+
+Parameters:
+
+  AccountName:
+    Type: String
+    Description: Name of the account this has been deployed on
+    Default: core-sec-prod
+
+Resources:
+
+  CoreSecProdS3BackstoryUser:
+    Type: AWS::IAM::User
+    Properties:
+      Path: /
+      UserName:
+        Fn::Join:
+          - "-"
+          - - !Ref AccountName
+            - sec-backstory-s3
+
+  CoreSecProdS3BackstoryPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: core-sec-prod-s3-backstory-policy
+      Users:
+        - !Ref CoreSecProdS3BackstoryUser
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Action:
+              - s3:Get*
+              - s3:List*
+            Resource:
+              - "arn:aws:s3:::core-sec-prod-centralized-cloudtrail-us-east-1/*"
+              - "arn:aws:s3:::core-sec-prod-centralized-cloudtrail-us-east-1"
+              - "arn:aws:s3:::core-sec-prod-waf-access-logs-us-east-1/*"
+              - "arn:aws:s3:::core-sec-prod-waf-access-logs-us-east-1"
