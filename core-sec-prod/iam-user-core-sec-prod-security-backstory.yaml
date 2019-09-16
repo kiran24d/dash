@@ -1,11 +1,10 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
 Description: ICR-3254, IAM user for Backstory to read from S3
-Metadata: {
+Metadata:
   Cvent:
     Permanent: no
     ExpirationDate: 2019-11-15
-}
 
 Parameters:
 
