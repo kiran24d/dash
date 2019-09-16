@@ -1,0 +1,10 @@
+[
+  {
+    "ParameterKey": "UserName",
+    "ParameterValue": "livestream-s3-stage"
+  },
+  {
+    "ParameterKey": "PolicyName",
+    "ParameterValue": "livestream-s3-stage-policy"
+  }
+]
