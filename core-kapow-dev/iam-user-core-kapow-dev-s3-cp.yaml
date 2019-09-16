@@ -1,0 +1,49 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: ICR-3322, IAM users for Kapow cp to read/write to S3
+Metadata: {}
+
+Parameters:
+
+  AccountName:
+    Type: String
+    Description: Name of the account this has been deployed on
+    Default: core-kapow-dev
+
+Resources:
+
+  CoreKapowDevS3CpUser:
+    Type: AWS::IAM::User
+    Properties:
+      Path: /
+      UserName:
+        Fn::Join:
+          - "-"
+          - - !Ref AccountName
+            - kpw-s3-cp
+
+  CoreKapowDevS3CpPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: core-kapow-dev-s3-cp-policy
+      Users:
+        - !Ref CoreKapowDevS3CpUser
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Action:
+              - s3:Get*
+              - s3:List*
+              - s3:PutObject
+              - s3:PutObjectAcl
+              - s3:CreateMultipartUpload
+              - s3:DeleteObject
+            Resource:
+              - "arn:aws:s3:::core-kapow-dev-cp-assets-nonprod-us-east-1/*"
+              - "arn:aws:s3:::core-kapow-dev-cp-assets-nonprod-us-east-1"
+              - "arn:aws:s3:::core-kapow-dev-cp-assets-qa-us-east-1/*"
+              - "arn:aws:s3:::core-kapow-dev-cp-assets-qa-us-east-1"
+              - "arn:aws:s3:::core-kapow-dev-cp-assets-staging-us-east-1/*"
+              - "arn:aws:s3:::core-kapow-dev-cp-assets-staging-us-east-1"
