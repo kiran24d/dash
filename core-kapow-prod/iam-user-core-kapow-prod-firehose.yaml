@@ -37,4 +37,4 @@ Resources:
               - firehose:PutRecord
               - firehose:PutRecordBatch
             Resource:
-              - arn:aws:firehose:us-east-1:449196748993:deliverystream/firehose_impressions_prod
+              - arn:aws:firehose:us-east-1:546564536810:deliverystream/firehose_impressions_prod
