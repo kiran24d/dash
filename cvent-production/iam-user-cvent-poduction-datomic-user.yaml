@@ -1,0 +1,16 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create an IAM service user to run Datomic process to manage databases
+
+Parameters:
+  Name:
+    Description: Name of the user to create
+    Type: String
+
+Resources:
+  User:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: !Ref Name
+      ManagedPolicyArns:
+        - arn:aws:iam::659687181524:policy/cvent-production-datomic-policy
