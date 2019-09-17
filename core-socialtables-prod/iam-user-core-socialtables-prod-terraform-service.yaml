@@ -81,7 +81,6 @@ Resources:
               - "ec2:EnableVgwRoutePropagation"
               - "ec2:EnableVpcClassicLink*"
               - "ec2:EnableVpcClassicLinkDnsSupport"
-              - "ec2:ModifyNetworkInterfaceAttribute"
               - "ec2:ModifySubnetAttribute"
               - "ec2:ModifyVpc*"
               - "ec2:MoveAddressToVpc"
