@@ -33,4 +33,4 @@ Resources:
                   - s3:PutObject,
                   - s3:GetObjectVersionAcl
                 Resource:
-                  - arn:aws:s3::517530596106:livestream-production/*
+                  - arn:aws:s3:::livestream-production/*
