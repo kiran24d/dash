@@ -1,6 +1,6 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Create an IAM service user to run Datomic process to manage databases
+Description: ICR-3328, IAM user to access SocialWall S3 bucket
 
 Parameters:
   UserName:
@@ -11,7 +11,7 @@ Parameters:
     Type: String
 
 Resources:
-  User:
+  CventDevelopmentOnsiteSolutionSocialwallUser:
     Type: AWS::IAM::User
     Properties:
       UserName: !Ref UserName
