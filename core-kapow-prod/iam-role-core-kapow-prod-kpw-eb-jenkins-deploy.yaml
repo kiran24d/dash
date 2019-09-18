@@ -51,6 +51,8 @@ Resources:
               - cloudwatch:Describe*
               - cloudwatch:List*
               - cloudwatch:Get*
+              - s3:Get*
+              - s3:List*
               - sns:Get*
               - sns:List*
               - rds:Describe*
