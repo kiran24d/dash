@@ -47,6 +47,18 @@ Resources:
               - autoscaling:CreateLaunchConfiguration
               - autoscaling:DeleteLaunchConfiguration
               - autoscaling:TerminateInstanceInAutoScalingGroup
+              - autoscaling:AttachInstances
+              - autoscaling:CreateAutoScalingGroup
+              - autoscaling:DeleteAutoScalingGroup
+              - autoscaling:DeleteScheduledAction
+              - autoscaling:DetachInstances
+              - autoscaling:DeletePolicy
+              - autoscaling:PutScalingPolicy
+              - autoscaling:PutScheduledUpdateGroupAction
+              - autoscaling:PutNotificationConfiguration
+              - autoscaling:ResumeProcesses
+              - autoscaling:SetDesiredCapacity
+              - autoscaling:SuspendProcesses
               - elasticloadbalancing:DeregisterTargets
               - elasticloadbalancing:RegisterTargets
               - elasticloadbalancing:Describe*
