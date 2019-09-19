@@ -78,6 +78,7 @@ Resources:
               - cloudformation:Validate*
               - cloudformation:Estimate*
               - cloudformation:UpdateStack
+              - cloudformation:CancelUpdateStack
               - elasticbeanstalk:Describe*
               - elasticbeanstalk:List*
               - elasticbeanstalk:Check*
