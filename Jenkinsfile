@@ -235,7 +235,10 @@ pipeline {
                 deploymentFolder = 'production'
             }
             def s3Path = "${deploymentFolder}/cloudformation/iam"
+            sh script:'pwd'
+            sh script:'ls'
             supported_files.findAll { file -> fileExists(file) && (file.endsWith('.yaml') || file.endsWith('.yml') || file.endsWith('.json')) }.each {
+                sh script: "ls -al \"${it}\""
                 awsCmd description: "Copy files to s3 bucket",
                     command: "aws s3 cp \"${it}\" \"s3://${s3Bucket}/${s3Path}/${it}\"",
                     account: 'cvent-management',
