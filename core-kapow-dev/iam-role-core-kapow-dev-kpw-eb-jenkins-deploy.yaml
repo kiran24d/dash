@@ -48,6 +48,7 @@ Resources:
               - autoscaling:Describe*
               - autoscaling:SuspendProcesses
               - autoscaling:ResumeProcesses
+              - autoscaling:UpdateAutoScalingGroup
               - autoscaling:CreateLaunchConfiguration
               - cloudwatch:Describe*
               - cloudwatch:List*
