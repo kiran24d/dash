@@ -45,6 +45,8 @@ Resources:
               - autoscaling:Describe*
               - autoscaling:UpdateAutoScalingGroup
               - autoscaling:CreateLaunchConfiguration
+              - autoscaling:DeleteLaunchConfiguration
+              - autoscaling:TerminateInstanceInAutoScalingGroup
               - elasticloadbalancing:DeregisterTargets
               - elasticloadbalancing:RegisterTargets
               - elasticloadbalancing:Describe*
