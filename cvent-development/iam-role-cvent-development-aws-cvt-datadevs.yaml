@@ -4,74 +4,10 @@ Description: Description
 
 Resources:
 
-  AwsCvtDataDevsGlueAndS3Policy:
+  AwsCvtDataDevsPolicy:
     Properties:
       PolicyDocument:
         Statement:
-          - Action:
-              - glue:BatchCreatePartition
-              - glue:GetCrawler
-              - glue:GetTableVersions
-              - glue:CreateClassifier
-              - glue:GetPartitions
-              - glue:UpdateTable
-              - glue:UpdateCrawler
-              - glue:GetDevEndpoint
-              - glue:CreateScript
-              - glue:UpdateTrigger
-              - glue:GetTrigger
-              - glue:GetUserDefinedFunction
-              - glue:GetJobRun
-              - glue:StopCrawlerSchedule
-              - glue:GetUserDefinedFunctions
-              - glue:GetClassifier
-              - glue:UpdateDatabase
-              - glue:GetJobs
-              - glue:GetTables
-              - glue:CreateTable
-              - glue:GetTriggers
-              - glue:CreateConnection
-              - glue:CreateCrawler
-              - glue:GetMapping
-              - glue:GetPartition
-              - glue:GetDevEndpoints
-              - glue:StartCrawlerSchedule
-              - glue:StartJobRun
-              - glue:UpdateClassifier
-              - glue:GetJob
-              - glue:GetConnections
-              - glue:GetCrawlers
-              - glue:GetClassifiers
-              - glue:CreateTrigger
-              - glue:StopTrigger
-              - glue:CreateUserDefinedFunction
-              - glue:StopCrawler
-              - glue:StartTrigger
-              - glue:GetCatalogImportStatus
-              - glue:CreateJob
-              - glue:ImportCatalogToGlue
-              - glue:GetConnection
-              - glue:StartCrawler
-              - glue:ResetJobBookmark
-              - glue:UpdateJob
-              - glue:CreatePartition
-              - glue:UpdatePartition
-              - glue:UpdateUserDefinedFunction
-              - glue:BatchGetPartition
-              - glue:GetDatabases
-              - glue:GetTable
-              - glue:GetDatabase
-              - glue:GetDataflowGraph
-              - glue:UpdateConnection
-              - glue:CreateDatabase
-              - glue:CreateDevEndpoint
-              - glue:UpdateDevEndpoint
-              - glue:GetPlan
-              - glue:GetCrawlerMetrics
-              - glue:GetJobRuns
-            Effect: Allow
-            Resource: '*'
-            Sid: VisualEditor0
           - Action:
               - s3:*
             Effect: Allow
@@ -108,6 +44,7 @@ Resources:
         - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
         - arn:aws:iam::aws:policy/AWSSupportAccess
         - arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole
+        - arn:aws:iam::aws:policy/AWSGlueConsoleFullAccess
       MaxSessionDuration: 43200
       Path: /
       RoleName: aws-cvt-datadevs
