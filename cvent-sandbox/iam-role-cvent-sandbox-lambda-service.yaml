@@ -1,0 +1,25 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: IAM role for running POC related to aws lambda service for db-inventory project
+Metadata: {}
+
+
+Resources:
+
+  ExampleRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - "sts:AssumeRole"
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+                - apigateway.amazonaws.com
+                - events.amazonaws.com
+      RoleName: cvent-sandbox-dba-lambda-service
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/PowerUserAccess
