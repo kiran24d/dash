@@ -50,6 +50,18 @@ Resources:
               - autoscaling:ResumeProcesses
               - autoscaling:UpdateAutoScalingGroup
               - autoscaling:CreateLaunchConfiguration
+              - autoscaling:DeleteLaunchConfiguration
+              - autoscaling:TerminateInstanceInAutoScalingGroup
+              - autoscaling:AttachInstances
+              - autoscaling:CreateAutoScalingGroup
+              - autoscaling:DeleteAutoScalingGroup
+              - autoscaling:DeleteScheduledAction
+              - autoscaling:DetachInstances
+              - autoscaling:DeletePolicy
+              - autoscaling:PutScalingPolicy
+              - autoscaling:PutScheduledUpdateGroupAction
+              - autoscaling:PutNotificationConfiguration
+              - autoscaling:SetDesiredCapacity
               - cloudwatch:Describe*
               - cloudwatch:List*
               - cloudwatch:Get*
@@ -64,6 +76,7 @@ Resources:
               - cloudformation:Validate*
               - cloudformation:Estimate*
               - cloudformation:UpdateStack
+              - cloudformation:CancelUpdateStack
               - elasticbeanstalk:Describe*
               - elasticbeanstalk:List*
               - elasticbeanstalk:Check*
@@ -72,4 +85,11 @@ Resources:
               - elasticbeanstalk:UpdateEnvironment
               - elasticbeanstalk:RequestEnvironmentInfo
               - elasticbeanstalk:RetrieveEnvironmentInfo
+              - elasticbeanstalk:DeleteApplicationVersion
             Resource: "*"
+          - Effect: "Allow"
+            Action:
+              - iam:PassRole
+              - iam:GetRole
+            Resource:
+              - "arn:aws:iam::449196748993:role/aws-elasticbeanstalk-ec2-role"
