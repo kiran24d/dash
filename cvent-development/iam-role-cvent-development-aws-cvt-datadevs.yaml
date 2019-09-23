@@ -1,0 +1,82 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: Description
+
+Resources:
+
+  AwsCvtDataDevS3Policy:
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - s3:*
+            Effect: Allow
+            Resource:
+              - arn:aws:s3:::cvent-development-datawarehouse/*
+              - arn:aws:s3:::arn:aws:s3:::cvent-development-datawarehouse
+              - arn:aws:s3:::arn:aws:s3:::cvent-development-cvent-datawarehouse-us-east-1/*
+              - arn:aws:s3:::arn:aws:s3:::cvent-development-cvent-datawarehouse-us-east-1
+            Sid: VisualEditor1
+        Version: '2012-10-17'
+      PolicyName: cvent-development-datadev-s3-policy
+      Roles:
+        - !Ref AwsCvtDataDevRole
+    Type: AWS::IAM::Policy
+
+  AwsCvtDataDevRedShiftPolicy:
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - redshift:Create*
+              - redshift:Deletecluster*
+              - redshift:DeleteTags
+              - redshift:Describe*
+              - redshift:Get*
+              - redshift:Enable*
+              - redshift:Modify*
+              - redshift:RebootCluster
+              - redshift:Restore*
+              - redshift:RotateEncryptionKey
+              - redshift:List*
+              - redshift:ViewQueriesFromConsole
+              - redshift:ExecuteQuery
+              - redshift:FetchResults
+              - redshift:CancelQuery
+              - redshift:AuthorizeSnapshotAccess
+              - redshift:CopyClusterSnapshot
+            Effect: Allow
+            Resource: "*"
+            Sid: VisualEditor1
+        Version: '2012-10-17'
+      PolicyName: cvent-development-datadev-redshift-policy
+      Roles:
+        - !Ref AwsCvtDataDevRole
+    Type: AWS::IAM::Policy
+
+  AwsCvtDataDevRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRoleWithSAML
+            Condition:
+              StringEquals:
+                SAML:aud: https://signin.aws.amazon.com/saml
+            Effect: Allow
+            Principal:
+              Federated: arn:aws:iam::504055967630:saml-provider/development-okta-sso
+          - Action: sts:AssumeRole
+            Condition: {}
+            Effect: Allow
+            Principal:
+              AWS: arn:aws:iam::667621734181:root
+        Version: '2012-10-17'
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
+        - arn:aws:iam::aws:policy/AWSSupportAccess
+        - arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole
+        - arn:aws:iam::aws:policy/AWSGlueConsoleFullAccess
+      MaxSessionDuration: 43200
+      Path: /
+      RoleName: aws-cvt-datadev
+    Type: AWS::IAM::Role
