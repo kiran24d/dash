@@ -78,5 +78,5 @@ Resources:
         - arn:aws:iam::aws:policy/AWSGlueConsoleFullAccess
       MaxSessionDuration: 43200
       Path: /
-      RoleName: aws-cvt-datadev
+      RoleName: aws-cvt-datadevs
     Type: AWS::IAM::Role
