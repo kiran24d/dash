@@ -1,6 +1,6 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Create an IAM service user for Social Tables for 3rd party CI integration with ECR
+Description: IAM service user for ST for 3rd party CI integration with ECR
 
 Parameters:
   Name:
@@ -26,5 +26,19 @@ Resources:
               - Effect: Allow
                 Action:
                   - ecr:CreateRepository
+                Resource:
+                  - '*'
+        - PolicyName:
+            Fn::Join:
+              - '-'
+              - - !Ref Name
+                - ecr-put-lifecycle-set-repo-policy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - ecr:PutLifecyclePolicy
+                  - ecr:SetRepositoryPolicy
                 Resource:
                   - '*'
