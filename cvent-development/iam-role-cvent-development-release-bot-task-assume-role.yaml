@@ -1,0 +1,32 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: IAM role for release-bot task
+
+Resources:
+  ReleaseBotAssumeRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: cvent-development-release-bot-task-assume-role
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action: sts:AssumeRole
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+      ManagedPolicyArns:
+        - !Sub arn:aws:iam::${AWS::AccountId}:policy/CrossAccountKMSPolicy-v2-${AWS::Region}
+
+  ReleaseBotAssumePolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: cvent-development-release-bot-policy
+      Roles:
+        - !Ref ReleaseBotAssumeRole
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Resource: arn:aws:iam::*:role/*-release-bot-role
+            Action:
+              - sts:AssumeRole
