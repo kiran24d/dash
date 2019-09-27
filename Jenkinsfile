@@ -242,7 +242,9 @@ pipeline {
                 awsCmd description: "Copy files to s3 bucket",
                     command: "aws s3 cp \"${it}\" \"s3://${s3Bucket}/${s3Path}/${it}\"",
                     account: 'cvent-management',
-                    region: 'us-east-1'
+                    region: 'us-east-1',
+                    allocate_node: false,
+                    return_status: true
             }
         }
       }
