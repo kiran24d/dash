@@ -47,6 +47,8 @@ IgnoreAccounts:
     # - lanyon-servicesprod
     # - quickmobile
     # - quickmobile-dev
+    # - wedding-spot
+    
 
 FilesToIgnore: []
 
