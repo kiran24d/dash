@@ -47,7 +47,7 @@ IgnoreAccounts:
     # - lanyon-servicesprod
     # - quickmobile
     # - quickmobile-dev
-    # - wedding-spot
+    # - aws_doubledutch
     
 
 FilesToIgnore: []
