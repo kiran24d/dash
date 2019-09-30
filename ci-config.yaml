@@ -2,6 +2,7 @@
 ---
 
 IgnoreAccounts:
+  - double-dutch
     # folder name in repo
     # - aws-cc
     # - cc-dev
@@ -47,8 +48,7 @@ IgnoreAccounts:
     # - lanyon-servicesprod
     # - quickmobile
     # - quickmobile-dev
-    # - aws_doubledutch
-    
+
 
 FilesToIgnore: []
 
