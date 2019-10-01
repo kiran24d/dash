@@ -1,0 +1,273 @@
+---
+# See arn:aws:iam::504055967630:role/aws-cvt-devs for reference
+AWSTemplateFormatVersion: 2010-09-09
+Description: Create federated IAM roles
+
+Parameters:
+
+  AccountName:
+    Description: The name of the AWS account this template is launched in.
+    Type: String
+
+Resources:
+
+  Devs:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument: !Sub
+        |
+        {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Federated": "arn:aws:iam::${AWS::AccountId}:saml-provider/okta-sso"
+              },
+              "Action": "sts:AssumeRoleWithSAML",
+              "Condition": {
+                "StringEquals": {
+                  "SAML:aud": "https://signin.aws.amazon.com/saml"
+                }
+              }
+            },
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "arn:aws:iam::667621734181:root"
+              },
+              "Action": "sts:AssumeRole",
+              "Condition": {}
+            }
+          ]
+        }
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/job-function/ViewOnlyAccess
+        - arn:aws:iam::aws:policy/AWSSupportAccess
+        - arn:aws:iam::aws:policy/IAMReadOnlyAccess
+        - arn:aws:iam::aws:policy/AWSCloudFormationReadOnlyAccess
+        - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+        - arn:aws:iam::aws:policy/AmazonAthenaFullAccess
+        - arn:aws:iam::aws:policy/CloudFrontFullAccess
+        - arn:aws:iam::aws:policy/AmazonRedshiftFullAccess
+        - arn:aws:iam::aws:policy/AmazonAPIGatewayAdministrator
+      RoleName: !Sub
+        - "${Account}-devs"
+        - Account: !Ref AccountName
+
+  DmsRedshiftPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: dms-redshift-policy
+      Roles:
+        - !Ref Devs
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Resource: "*"
+            Action:
+              - "elasticloadbalancing:*"
+          - Effect: Allow
+            Action: dms:*
+            Resource: "*"
+          - Effect: Allow
+            Action:
+              - kms:DescribeKey
+              - kms:ListAliases
+            Resource: "*"
+          - Effect: Allow
+            Action:
+              - iam:AttachRolePolicy
+              - iam:CreateRole
+              - iam:GetRole
+              - iam:PassRole
+            Resource: "*"
+          - Effect: Allow
+            Action:
+              - ec2:CreateNetworkInterface
+              - ec2:DeleteNetworkInterface
+              - ec2:DescribeAvailabilityZones
+              - ec2:DescribeInternetGateways
+              - ec2:DescribeSecurityGroups
+              - ec2:DescribeSubnets
+              - ec2:DescribeVpcs
+              - ec2:ModifyNetworkInterfaceAttribute
+            Resource: "*"
+          - Effect: Allow
+            Action:
+              - cloudwatch:Get*
+              - cloudwatch:List*
+            Resource: "*"
+          - Effect: Allow
+            Action:
+              - logs:DescribeLogGroups
+              - logs:DescribeLogStreams
+              - logs:FilterLogEvents
+              - logs:GetLogEvents
+            Resource: "*"
+          - Effect: Allow
+            Action:
+              - redshift:Describe*
+              - redshift:ModifyClusterIamRoles
+            Resource: "*"
+
+  DevsPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: devs-policy
+      Roles:
+        - !Ref Devs
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - comprehend:*
+              - dynamodb:UpdateItem
+              - ecr:*
+            Resource:
+              - "*"
+
+  ApiGatewayStagesAdmin:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: api-gateway-stages-admin-policy
+      Roles:
+        - !Ref Devs
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - apigateway:*
+            Resource:
+              - arn:aws:apigateway:::/restapis/*/stages
+              - arn:aws:apigateway:::/restapis/*/stages/*
+
+  DataPipeline:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: data-pipeline-policy
+      Roles:
+        - !Ref Devs
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - datapipeline:ActivatePipeline
+              - datapipeline:AddTags
+              - datapipeline:CreatePipeline
+              - datapipeline:DescribeObjects
+              - datapipeline:DescribePipelines
+              - datapipeline:EvaluateExpression
+              - datapipeline:GetAccountLimits
+              - datapipeline:GetPipelineDefinition
+              - datapipeline:ListPipelines
+              - datapipeline:PollForTask
+              - datapipeline:PutAccountLimits
+              - datapipeline:PutPipelineDefinition
+              - datapipeline:QueryObjects
+              - datapipeline:ReportTaskProgress
+              - datapipeline:ReportTaskRunnerHeartbeat
+              - datapipeline:SetStatus
+              - datapipeline:SetTaskStatus
+              - datapipeline:ValidatePipelineDefinition
+            Resource: "*"
+
+  DataPipelineAccess:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: data-pipeline-access-policy
+      Roles:
+        - !Ref Devs
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - iam:AddRoleToInstanceProfile
+              - iam:CreateInstanceProfile
+            Resource: !Sub "arn:aws:iam::${AWS::AccountId}:instance-profile/DataPipeline*"
+
+  GlueAndS3:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: glue-and-s3-policy
+      Roles:
+        - !Ref Devs
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - glue:BatchCreatePartition
+              - glue:BatchGetPartition
+              - glue:CreateClassifier
+              - glue:CreateConnection
+              - glue:CreateCrawler
+              - glue:CreateDatabase
+              - glue:CreateDevEndpoint
+              - glue:CreateJob
+              - glue:CreatePartition
+              - glue:CreateScript
+              - glue:CreateTable
+              - glue:CreateTrigger
+              - glue:CreateUserDefinedFunction
+              - glue:GetCatalogImportStatus
+              - glue:GetClassifier
+              - glue:GetClassifiers
+              - glue:GetConnection
+              - glue:GetConnections
+              - glue:GetCrawler
+              - glue:GetCrawlerMetrics
+              - glue:GetCrawlers
+              - glue:GetDatabase
+              - glue:GetDatabases
+              - glue:GetDataflowGraph
+              - glue:GetDevEndpoint
+              - glue:GetDevEndpoints
+              - glue:GetJob
+              - glue:GetJobRun
+              - glue:GetJobRuns
+              - glue:GetJobs
+              - glue:GetMapping
+              - glue:GetPartition
+              - glue:GetPartitions
+              - glue:GetPlan
+              - glue:GetTable
+              - glue:GetTables
+              - glue:GetTableVersions
+              - glue:GetTrigger
+              - glue:GetTriggers
+              - glue:GetUserDefinedFunction
+              - glue:GetUserDefinedFunctions
+              - glue:ImportCatalogToGlue
+              - glue:ResetJobBookmark
+              - glue:StartCrawler
+              - glue:StartCrawlerSchedule
+              - glue:StartJobRun
+              - glue:StartTrigger
+              - glue:StopCrawler
+              - glue:StopCrawlerSchedule
+              - glue:StopTrigger
+              - glue:UpdateClassifier
+              - glue:UpdateConnection
+              - glue:UpdateCrawler
+              - glue:UpdateDatabase
+              - glue:UpdateDevEndpoint
+              - glue:UpdateJob
+              - glue:UpdatePartition
+              - glue:UpdateTable
+              - glue:UpdateTrigger
+              - glue:UpdateUserDefinedFunction
+            Resource: "*"
+          - Effect: Allow
+            Action:
+              - s3:Get*
+              - s3:HeadBucket
+              - s3:List*
+            Resource:
+              - "arn:aws:s3:::*-datawarehouse/*"
+              - "arn:aws:s3:::*-datawarehouse"
