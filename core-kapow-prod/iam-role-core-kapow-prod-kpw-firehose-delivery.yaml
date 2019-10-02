@@ -38,8 +38,8 @@ Resources:
               - s3:PutObject
               - s3:PutObjectAcl
             Resource:
-              - arn:aws:s3:::core-kapow-dev-redshift-prod-us-east-1
-              - arn:aws:s3:::core-kapow-dev-redshift-prod-us-east-1/*
+              - arn:aws:s3:::core-kapow-prod-redshift-prod-us-east-1
+              - arn:aws:s3:::core-kapow-prod-redshift-prod-us-east-1/*
           - Effect: Allow
             Action:
               - logs:PutLogEvents
