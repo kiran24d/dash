@@ -12,10 +12,8 @@ Resources:
               - s3:*
             Effect: Allow
             Resource:
-              - arn:aws:s3:::cvent-development-datawarehouse/*
-              - arn:aws:s3:::cvent-development-datawarehouse
-              - arn:aws:s3:::cvent-development-cvent-datawarehouse-us-east-1/*
-              - arn:aws:s3:::cvent-development-cvent-datawarehouse-us-east-1
+              - arn:aws:s3:::cvent-sandbox-datawarehouse-datadev/*
+              - arn:aws:s3:::cvent-sandbox-datawarehouse-datadev
             Sid: VisualEditor1
         Version: '2012-10-17'
       PolicyName: cvent-development-datadev-s3-policy
@@ -76,6 +74,7 @@ Resources:
         - arn:aws:iam::aws:policy/AWSSupportAccess
         - arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole
         - arn:aws:iam::aws:policy/AWSGlueConsoleFullAccess
+        - arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess
       MaxSessionDuration: 43200
       Path: /
       RoleName: aws-cvt-datadevs
