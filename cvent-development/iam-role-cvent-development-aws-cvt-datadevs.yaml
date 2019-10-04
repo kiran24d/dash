@@ -33,7 +33,7 @@ Resources:
             Resource:
               - arn:aws:iam::504055967630:role/aws-service-role/redshift.amazonaws.com/AWSServiceRoleForRedshift
               - arn:aws:iam::504055967630:role/cvent-development-shared-services-redshift
-              - !GetAtt AwsCvtDataDevRole.arn
+              - !GetAtt AwsCvtDataDevRole.Arn
         Version: '2012-10-17'
       PolicyName: cvent-development-datadev-pass-policy
       Roles:
