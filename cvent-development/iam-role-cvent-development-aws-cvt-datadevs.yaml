@@ -22,7 +22,7 @@ Resources:
       Roles:
         - !Ref AwsCvtDataDevRole
     Type: AWS::IAM::Policy
-    
+
   AwsCvtDataDevPassPolicy:
     Properties:
       PolicyDocument:
