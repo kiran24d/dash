@@ -47,30 +47,30 @@ Resources:
         - !Ref Dba
       PolicyDocument:
         Version: '2012-10-17'
-        Statement: 
+        Statement:
           - Effect: Allow,
             Action:
               -	dms:*
-              - kms:ListAliases, 
+              - kms:ListAliases 
               - kms:DescribeKey
-              - iam:GetRole,
-              - iam:PassRole,
-              - iam:CreateRole,
+              - iam:GetRole
+              - iam:PassRole
+              - iam:CreateRole
               - iam:AttachRolePolicy
-              - ec2:DescribeVpcs,
-              - ec2:DescribeInternetGateways,
-              - ec2:DescribeAvailabilityZones,
-              - ec2:DescribeSubnets,
-              - ec2:DescribeSecurityGroups,
-              - ec2:ModifyNetworkInterfaceAttribute,
-              - ec2:CreateNetworkInterface,
+              - ec2:DescribeVpcs
+              - ec2:DescribeInternetGateways
+              - ec2:DescribeAvailabilityZones
+              - ec2:DescribeSubnets
+              - ec2:DescribeSecurityGroups
+              - ec2:ModifyNetworkInterfaceAttribute
+              - ec2:CreateNetworkInterface
               - ec2:DeleteNetworkInterface
-              - cloudwatch:Get*,
+              - cloudwatch:Get*
               - cloudwatch:List*
-              - logs:DescribeLogGroups,
-              - logs:DescribeLogStreams,
-              - logs:FilterLogEvents,
+              - logs:DescribeLogGroups
+              - logs:DescribeLogStreams
+              - logs:FilterLogEvents
               - logs:GetLogEvents
-              - redshift:Describe*,
+              - redshift:Describe*
               - redshift:ModifyClusterIamRoles
             Resource: "*"
