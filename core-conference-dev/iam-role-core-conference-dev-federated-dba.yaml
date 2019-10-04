@@ -48,10 +48,10 @@ Resources:
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
-          - Effect: Allow,
+          - Effect: Allow
             Action:
-              -	dms:*
-              - kms:ListAliases 
+              - dms:*
+              - kms:ListAliases
               - kms:DescribeKey
               - iam:GetRole
               - iam:PassRole
