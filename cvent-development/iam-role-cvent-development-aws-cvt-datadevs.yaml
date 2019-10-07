@@ -23,6 +23,23 @@ Resources:
         - !Ref AwsCvtDataDevRole
     Type: AWS::IAM::Policy
 
+  AwsCvtDataDevPassPolicy:
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - iam:passrole
+            Effect: Allow
+            Resource:
+              - arn:aws:iam::504055967630:role/aws-service-role/redshift.amazonaws.com/AWSServiceRoleForRedshift
+              - arn:aws:iam::504055967630:role/cvent-development-shared-services-redshift
+              - !GetAtt AwsCvtDataDevRole.Arn
+        Version: '2012-10-17'
+      PolicyName: cvent-development-datadev-pass-policy
+      Roles:
+        - !Ref AwsCvtDataDevRole
+    Type: AWS::IAM::Policy
+
   AwsCvtDataDevRedShiftPolicy:
     Properties:
       PolicyDocument:
