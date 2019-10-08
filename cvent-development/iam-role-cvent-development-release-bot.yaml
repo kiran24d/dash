@@ -66,23 +66,6 @@ Resources:
               - ec2:DescribeInstances
               - ec2:DescribeTags
               - s3:GetObject
-              - sqs:AddPermission
-              - sqs:ChangeMessageVisibility
-              - sqs:CreateQueue
-              - sqs:DeleteMessage
-              - sqs:DeleteQueue
-              - sqs:GetQueueAttributes
-              - sqs:GetQueueUrl
-              - sqs:ListDeadLetterSourceQueues
-              - sqs:ListQueues
-              - sqs:ListQueueTags
-              - sqs:PurgeQueue
-              - sqs:ReceiveMessage
-              - sqs:RemovePermission
-              - sqs:SendMessage
-              - sqs:SetQueueAttributes
-              - sqs:TagQueue
-              - sqs:UntagQueue
 
   ReleaseBotSQSPolicy:
     Type: AWS::IAM::Policy
