@@ -66,3 +66,37 @@ Resources:
               - ec2:DescribeInstances
               - ec2:DescribeTags
               - s3:GetObject
+
+  ReleaseBotSQSPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName:
+        Fn::Join:
+          - "-"
+          - - !Ref AccountName
+            - release-bot-sqs-policy
+      Roles:
+        - !Ref ReleaseBotRole
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Resource: arn:aws:sqs:::release-bot-*
+            Action:
+              - sqs:AddPermission
+              - sqs:ChangeMessageVisibility
+              - sqs:CreateQueue
+              - sqs:DeleteMessage
+              - sqs:DeleteQueue
+              - sqs:GetQueueAttributes
+              - sqs:GetQueueUrl
+              - sqs:ListDeadLetterSourceQueues
+              - sqs:ListQueues
+              - sqs:ListQueueTags
+              - sqs:PurgeQueue
+              - sqs:ReceiveMessage
+              - sqs:RemovePermission
+              - sqs:SendMessage
+              - sqs:SetQueueAttributes
+              - sqs:TagQueue
+              - sqs:UntagQueue
