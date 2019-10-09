@@ -79,4 +79,5 @@ Resources:
               - s3:Get*
               - s3:HeadBucket
               - s3:List*
+            Resource: "arn:aws:s3:::dms-684904355706-cdfbas3a0vph"
             Resource: "arn:aws:s3:::dms-684904355706-cdfbas3a0vph/*"
