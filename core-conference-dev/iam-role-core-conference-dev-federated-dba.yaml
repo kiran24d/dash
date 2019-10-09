@@ -74,3 +74,7 @@ Resources:
               - redshift:Describe*
               - redshift:ModifyClusterIamRoles
             Resource: "*"
+          - Effect: Allow
+            Action:
+              - '*'
+            Resource: "arn:aws:s3:::dms-684904355706-cdfbas3a0vph" 
