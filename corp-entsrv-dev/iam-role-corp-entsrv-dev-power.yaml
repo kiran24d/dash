@@ -54,4 +54,3 @@ Resources:
           Resource: "arn:aws:iam::176015922052:role/corp-entsrv-dev-ssm"
       Roles:
         - Ref: RoleCorpEntsrvProdPower
-        
