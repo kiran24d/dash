@@ -1,0 +1,22 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: ICR-3512, Adding Socialtables to New Relic with this role
+
+Resources:
+
+  SocialTablesNewRelicRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Condition:
+              StringEquals:
+                sts:ExternalId: '760382'
+            Effect: Allow
+            Principal:
+              AWS: arn:aws:iam::754728514883:root
+        Version: '2012-10-17'
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/ReadOnlyAccess
+      RoleName: socialtables-newrelic
