@@ -49,5 +49,36 @@ Resources:
         Version: '2012-10-17'
         Statement:
           - Effect: Allow
-            Action: "dms:*"
+            Action:
+              - dms:*
+              - kms:ListAliases
+              - kms:DescribeKey
+              - iam:GetRole
+              - iam:PassRole
+              - iam:CreateRole
+              - iam:AttachRolePolicy
+              - ec2:DescribeVpcs
+              - ec2:DescribeInternetGateways
+              - ec2:DescribeAvailabilityZones
+              - ec2:DescribeSubnets
+              - ec2:DescribeSecurityGroups
+              - ec2:ModifyNetworkInterfaceAttribute
+              - ec2:CreateNetworkInterface
+              - ec2:DeleteNetworkInterface
+              - cloudwatch:Get*
+              - cloudwatch:List*
+              - logs:DescribeLogGroups
+              - logs:DescribeLogStreams
+              - logs:FilterLogEvents
+              - logs:GetLogEvents
+              - redshift:Describe*
+              - redshift:ModifyClusterIamRoles
             Resource: "*"
+          - Effect: Allow
+            Action:
+              - s3:Get*
+              - s3:HeadBucket
+              - s3:List*
+            Resource:
+              - "arn:aws:s3:::dms-684904355706-cdfbas3a0vph"
+              - "arn:aws:s3:::dms-684904355706-cdfbas3a0vph/*"

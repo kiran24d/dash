@@ -40,3 +40,17 @@ Resources:
           Resource: "*"
       Roles:
         - Ref: RoleCorpEntsrvProdPower
+  PolicyCorpEntsrvDevSSM:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: corp-entsrv-dev-ssm
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          Action:
+            - iam:PassRole
+            - iam:GetRole
+          Effect: Allow
+          Resource: "arn:aws:iam::176015922052:role/corp-entsrv-dev-ssm"
+      Roles:
+        - Ref: RoleCorpEntsrvProdPower
