@@ -1,6 +1,6 @@
 ---
 AWSTemplateFormatVersion: 2010-09-09
-Description: Description
+Description: ICR-3512, Adding Socialtables to New Relic with this role
 
 Resources:
 
