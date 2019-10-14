@@ -12,7 +12,7 @@ Resources:
           - Action: sts:AssumeRole
             Condition:
               StringEquals:
-                sts:ExternalId: '760382'
+                sts:ExternalId: '492660'
             Effect: Allow
             Principal:
               AWS: arn:aws:iam::754728514883:root
